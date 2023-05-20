@@ -5,7 +5,7 @@ using namespace std;
 
 class User {
 protected:
-	int UID;
+	int ID;
 	string username;
 	string email;
 	string password;
@@ -13,12 +13,12 @@ protected:
 
 public:
 	User() {
-		UID = NULL;
+		ID = NULL;
 		username = email = password = "";
 	}
 
 	User(int UID, string username, string email, string password, string phoneNo) {
-		this->UID = UID;
+		this->ID = UID;
 		this->username = username;
 		this->email = email;
 		this->password = password;
@@ -29,7 +29,7 @@ public:
 
 	// Getter Function
 	int getUID() {
-		return UID;
+		return ID;
 	}
 
 	string getUsername() {
@@ -50,7 +50,7 @@ public:
 
 	// Setter function
 	void setUID(int tmpUID) {
-		UID = tmpUID;
+		ID = tmpUID;
 	}
 
 	void setUsername(string tmpUsername) {

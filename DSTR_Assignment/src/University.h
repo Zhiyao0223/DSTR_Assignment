@@ -23,6 +23,7 @@ protected:
 
 	int rank;
 	string institution;
+	string locationCode;
 	string location;
 	int ArScore;
 	int ArRank;
@@ -50,10 +51,10 @@ public:
 
 	// Constructor
 	University() {
-		// Get all data from dataset
+		// Delete this constructor later coz no use, declare for no error temporary.
 	}
 
-	University(string tmpName, string tmpLocation, int data[]) {
+	University(string tmpName, string locationCode, string tmpLocation, int data[]) {
 		institution = tmpName;
 		location = tmpLocation;
 		rank = data[0];
@@ -104,6 +105,10 @@ public:
 
 	string getInstitution(){
 		return institution;
+	}
+
+	string getLocationCode() {
+		return locationCode;
 	}
 
 	string getLocation() {
@@ -185,6 +190,10 @@ public:
 
 	void setInstitution(string tmpData) {
 		institution = tmpData;
+	}
+
+	void setLocationCode(string tmpData) {
+		locationCode = tmpData;
 	}
 
 	void setLocation(string tmpData) {
