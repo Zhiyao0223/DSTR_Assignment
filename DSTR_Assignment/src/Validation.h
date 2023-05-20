@@ -52,4 +52,8 @@ public:
     bool isEmpty(string test) {
         return test.empty();
     }
+
+    bool hasBackSlash(string test) {
+        return test.find('\ "');
+    }
 };

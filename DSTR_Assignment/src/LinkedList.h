@@ -41,6 +41,7 @@ public:
 
 	node<T>* createNewNode(T* data) {
 		node<T>* newNode = new node<T>;
+		newNode->data = *data;
 		newNode->nextAddress = newNode->prevAddress = NULL;
 		return newNode;
 	}

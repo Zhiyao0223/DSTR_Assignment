@@ -13,6 +13,7 @@ void test();
 
 int main() {
 	test();
+
 	// Store data
 	//Customer cust;
 	//Admin admin;
