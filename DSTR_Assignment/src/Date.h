@@ -41,10 +41,12 @@ public:
 		year = tmpYear;
 	}
 
+
 	// Return date in string
 	string toString() {
 		return to_string(day) + "/" + to_string(month) + "/" + to_string(year);
 	}
+
 
 	// Get today date
 	tm getToday() {
@@ -53,6 +55,7 @@ public:
 		localtime_s(&localTime, &currentTime);
 		return localTime;
 	}
+
 
 	// Update login date to today
 	void setToday() {

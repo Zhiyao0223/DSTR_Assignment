@@ -12,41 +12,57 @@ void test();
 
 
 int main() {
-	test();
+	//test();
 
-	// Store data
-	//Customer cust;
-	//Admin admin;
+	//Store data
+	Customer cust;
+	Admin admin;
 
-	//int option = 0;
+	int option = 0;
 
-	//// Print welcome message, draft only for now
-	//cout << "Welcome" << endl;
-	//cout << "1. Customer" << endl;
-	//cout << "2. Admin" << endl;
+	// Print welcome message, draft only for now
+	cout << "Welcome" << endl;
+	cout << "1. Customer" << endl;
+	cout << "2. Admin" << endl;
 
-	//cin >> option;
+	cin >> option;
 
+	// Main Menu
+	while (option != 6) {
+		cout << "1. A" << endl;
+		cout << "2. B" << endl;
+		cout << "3. C" << endl;
+		cout << "4. D" << endl;
+		cout << "5. F" << endl;
+		cout << "6. Exit" << endl;
 
-	//while (option != 6) {
-	//	cout << "1. ..";
-
-	//	
-	//	switch (option) {
-	//		case 1:
-	//			break;
-	//		case 2:
-	//			break;
-	//		default:
-	//			cout << "Please enter only the option available." << endl;
-	//	}
-	//}
-	//cout << "Thanks" << endl;
+		
+		switch (option) {
+			case 1:
+				break;
+			case 2:
+				break;
+			case 3:
+				break;
+			case 4:
+				break;
+			case 5:
+				break;
+			case 6:
+				break;
+			default:
+				cout << "Please enter only the option available." << endl;
+		}
+	}
+	cout << "Thanks for using the system" << endl;
 
 	return  0;
 }
 
+
+// Purely use for testing, delete later
 void test() {
 	FileIO fileIO;
-	LinkedList<University> test = fileIO.readFile();
+	LinkedList<University>* test = fileIO.readFile();
+	test->displayAll();
 }

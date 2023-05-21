@@ -44,19 +44,15 @@ protected:
 	int scoreScaled;
 
 public:
-	// Pointer to previous and next address
-	University* prevAddress;
-	University* nextAddress;
-
-
 	// Constructor
 	University() {
 		// Delete this constructor later coz no use, declare for no error temporary.
 	}
 
-	University(string tmpName, string locationCode, string tmpLocation, int data[]) {
+	University(string tmpName, string tmpLocationCode, string tmpLocation, float data[]) {
 		institution = tmpName;
 		location = tmpLocation;
+		locationCode = tmpLocationCode;
 		rank = data[0];
 		ArScore = data[1];
 		ArRank = data[2];
@@ -67,31 +63,46 @@ public:
 		CpfScore = data[7];
 		CpfRank = data[8];
 		IfrScore = data[9];
-		IfrRank = data[9];
-		IsrScore = data[10];
-		IsrRank = data[11];
-		IrnScore = data[12];
-		IrnRank = data[13];
-		GerScore = data[14];
-		GerRank = data[15];
-		scoreScaled = data[16];
+		IfrRank = data[10];
+		IsrScore = data[11];
+		IsrRank = data[12];
+		IrnScore = data[13];
+		IrnRank = data[14];
+		GerScore = data[15];
+		GerRank = data[16];
+		scoreScaled = data[17];
 	}
 
-	
-	// Display Available University
-	template<class T>
-	void displayAllUniversity(T data) {
-		// To Complete
-		return;
+
+	// Display University Information
+	void display() {
+		cout << "Rank: " << getRank() << endl;
+		cout << "Intitution Name: " << getInstitution() << endl;
+		cout << "Location :" << getLocation() << " (" << getLocationCode() << ")" << endl;
+		cout << "Academic Reputation (rank): " << getArScore() << " (" << getArRank() << ")" << endl;
+		cout << "Employer Reputation (rank): " << getErScore() << " (" << getErRank() << ")" << endl;
+		cout << "Faculty / Student Ratio (rank): " << getFsrScore() << " (" << getFsrRank() << ")" << endl;
+		cout << "Citations Per Faculty (rank): " << getCpfScore() << " (" << getCpfRank() << ")" << endl;
+		cout << "Internation Faculty Ratio (rank): " << getIfrScore() << " (" << getIfrRank() << ")" << endl;
+		cout << "Internation Student Ratio (rank): " << getIsrScore() << " (" << getIsrRank() << ")" << endl;
+		cout << "International Research Network (rank): " << getIrnScore() << " (" << getIrnRank() << ")" << endl;
+		cout << "Employment Outcome (rank): " << getGerScore() << " (" << getGerRank() << ")" << endl;
+		cout << "Score Scaled: " << scoreScaled << endl << endl;
 	}
 
-	// Sort University (2 algorithm needed)
+	/*
+		Sort University (2 algorithm needed), parameter not fix yet depend design.
+		@param data - Data to be sorted
+		@return Sorted data
+	*/
 	University* sortUniversity(University* data) {
 		// To complete
 		return new University();
 	}
 
-	// Compare two university
+	/*
+		Compare two university. Param not fix yet can change
+	*/
 	University* compareUniversity(int university[]) {
 		// To complete
 		return new University();

@@ -16,8 +16,12 @@ public:
 	string fileName = "2023 QS World University Rankings.csv";
 	string filePath = resourcePath + fileName;
 
-	// Read CSV file and store data into doubly linked list
-	LinkedList<University> readFile() {
+
+	/*
+		Read CSV file and store data into doubly linked list
+		@return Doubly linked list contain of all institution records.
+	*/
+	LinkedList<University>* readFile() {
 		ifstream file(filePath);
 
 		// Print error message if file not founds
@@ -31,7 +35,7 @@ public:
 
 		// Ignore first line
 		getline(file, line);
-		int numericData[17];
+		float numericData[18];
 
 		while (getline(file, line)) {
 			string institutionName = "";
@@ -75,6 +79,6 @@ public:
 			list->insertToEndList(tmp);
 			delete tmp;
 		}
-		return *list;
+		return list;
 	}
 };
