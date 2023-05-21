@@ -3,6 +3,7 @@
 #include <iostream>
 using namespace std;
 
+// Prevent typo and easier manage data
 enum class FeedbackStatus
 {
 	OPEN,
@@ -28,10 +29,17 @@ public:
 		status = FeedbackStatus::OPEN;
 	}
 
-	// Multi-level linked list for continous replies
+	/*
+		Multi-level linked list for continous replies
+		@param tmpID - Ticket ID
+		@param tmpUID - userID who replied
+		@param tmpComment - Comment
+		@return Pointer of new feedback node
+	*/
 	Feedback* createNewReply(int tmpID, int tmpUID, string tmpComment) {
 		return new Feedback(tmpID, tmpUID, tmpComment);
 	}
+
 
 	// Getter
 	int getID() {
@@ -49,6 +57,7 @@ public:
 	Feedback* getReply() {
 		return reply;
 	}
+
 
 	// Setter
 	void setID(int tmp) {

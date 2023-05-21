@@ -36,10 +36,12 @@ public:
 		lastLogDate->setToday();
 	}
 
+
 	// Check login date if inactive
 	bool checkInactiveStatus() {
 		return lastLogDate->isExpired();
 	}
+
 
 	// Getter Function
 	int getPostcode() {
