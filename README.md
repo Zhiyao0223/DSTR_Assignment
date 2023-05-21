@@ -3,13 +3,13 @@
 This is a university rating system created in command line interface (CLI) using C++ language and OOP concepts.
 
 Data Structure Design
-Main
+**Main**
 main.cpp
 
-Resources
+**Resources**
 2023 QS World University Ranking.csv
 
-Header
+**Header**
 Admin.h
 Customer.h
 Date.h
