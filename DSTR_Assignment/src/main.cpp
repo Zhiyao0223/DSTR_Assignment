@@ -115,7 +115,9 @@ void custPlatform() {
 
 // Purely use for testing, delete later
 void test() {
-	FileIO fileIO;
-	LinkedList<University>* test = fileIO.readFile();
-	test->displayAll();
+	//Test Binary Search
+	FileIO file;
+	LinkedList<University>* uniList = file.readFile();
+	
+	
 }
