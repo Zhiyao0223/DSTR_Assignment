@@ -4,69 +4,65 @@
 #include "FileIO.h"
 #include "University.h"
 #include "LinkedList.h"
+#include "Validation.h"
+#include "Util.h"
 
 using namespace std;
 
 void test();
-
+void custPlatform();
+void adminPlatform();
 
 
 int main() {
 	//test();
 
-	//Store data
-	Customer cust;
-	Admin admin;
-
-	int option = 0;
+	Validation validator;
+	Util util;
+	string option;
 
 	// Print welcome message, draft only for now
-	cout << "Welcome" << endl;
-	cout << "1. Customer" << endl;
-	cout << "2. Admin" << endl;
+	while (true) {
+		cout << "Welcome to XXX System" << endl;
+		cout << "---------------------------------------" << endl;
 
-	cin >> option;
+		cout << "Please select your role:" << endl;
+		cout << "1. Customer" << endl;
+		cout << "2. Admin" << endl;
+		cout << "3. Exit" << endl;
+		cout << "Option: ";
 
-	// Main Menu
-	while (option != 6) {
-		cout << "1. A" << endl;
-		cout << "2. B" << endl;
-		cout << "3. C" << endl;
-		cout << "4. D" << endl;
-		cout << "5. F" << endl;
-		cout << "6. Exit" << endl;
+		getline(cin, option);
 
-		
-		switch (option) {
+		try {
+			switch (stoi(option)) {
 			case 1:
+				custPlatform();
 				break;
 			case 2:
+				adminPlatform();
 				break;
 			case 3:
-				break;
-			case 4:
-				break;
-			case 5:
-				break;
-			case 6:
-				break;
+				cout << "Thanks for using the system" << endl;
+				return  0;
 			default:
-				cout << "Please enter only the option available." << endl;
+				cout << "Please enter only the option available." << endl << endl;
+			}
+		}
+		catch (exception) {
+			cout << "Please enter only the option available." << endl << endl;
 		}
 	}
-	cout << "Thanks for using the system" << endl;
-
-	return  0;
 }
 
 
 void adminPlatform() {
-
+	Admin admin;
 }
 
 
 void custPlatform() {
-
+	Customer cust;
 }
 
 
