@@ -17,4 +17,8 @@ public:
 		: User(UID, username, email, password, phoneNo) {
 
 	}
+
+	Admin* login(string tmpUsername, string tmpPass) {
+
+	}
 };

@@ -269,6 +269,23 @@ public:
 		return (size == 0);
 	}
 
+	string** extractUsernameAndPass() {
+		string[size][2] list = { 0 };
+
+		node<T>* current = head;
+		T* classData;
+		int counter = 0;
+
+		while (current != NULL) {
+			classData = current->data;
+
+			list[counter][0] = classData->getUsername();
+			list[counter]
+			
+
+			current = current->nextAddress;
+		}
+	}
 
 
 

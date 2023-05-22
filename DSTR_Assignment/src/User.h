@@ -10,6 +10,7 @@ protected:
 	string email;
 	string password;
 	string phoneNumber;
+	bool loginStatus;
 
 public:
 	User() {
@@ -24,6 +25,9 @@ public:
 		this->password = password;
 		this->phoneNumber = phoneNo;
 	}
+
+	virtual User* login(string tmpUsername, string tmpPass) = 0;
+	virtual void logOut() = 0;
 	
 
 
@@ -48,6 +52,10 @@ public:
 		return phoneNumber;
 	}
 
+	bool getLoginStatus() {
+		return loginStatus;
+	}
+
 	// Setter function
 	void setUID(int tmpUID) {
 		ID = tmpUID;
@@ -67,5 +75,9 @@ public:
 
 	void setPhoneNo(string tmpPhone) {
 		phoneNumber = tmpPhone;
+	}
+
+	void setLoginStatus(bool status) {
+		loginStatus = status;
 	}
 };
