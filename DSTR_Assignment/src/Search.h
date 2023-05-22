@@ -32,7 +32,7 @@ LinkedList<T>* binarySearch(LinkedList<T>* list, string key, int index) {
 
         if (slow->data[index] == key) {
             result = new LinkedList<T>();
-            result->insertAtEnd(slow->data);
+            result->insertToEndList(slow->data);
             return result;
         }
         else if (slow->data[index] < key) {
