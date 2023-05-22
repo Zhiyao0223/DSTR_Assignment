@@ -83,7 +83,7 @@ public:
         @param test - string
         @return True if input match username format
     */
-    bool isName(string test) {
+    bool isUsername(string test) {
         regex format("^[a-zA-Z ]{3,50}$");
         return regex_match(test, format);
     }
