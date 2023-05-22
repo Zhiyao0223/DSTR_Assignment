@@ -60,6 +60,16 @@ int main() {
 }
 
 
+void adminPlatform() {
+
+}
+
+
+void custPlatform() {
+
+}
+
+
 // Purely use for testing, delete later
 void test() {
 	FileIO fileIO;
