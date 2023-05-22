@@ -17,8 +17,16 @@ public:
 		: User(UID, username, email, password, phoneNo) {
 
 	}
+<<<<<<< HEAD
 
 	Admin* login(string tmpUsername, string tmpPass) {
+=======
+	
+	//Functions
+	//Generate Report
+	void generateReport() {
+		
+>>>>>>> Sheerwin
 
 	}
 };
