@@ -269,9 +269,8 @@ public:
 		return (size == 0);
 	}
 
-	string** extractUsernameAndPass() {
-		string[size][2] list = { 0 };
-
+	T* lookUpProfile(string tmpName, string tmpPass) {
+		Util util;
 		node<T>* current = head;
 		T* classData;
 		int counter = 0;
@@ -279,22 +278,23 @@ public:
 		while (current != NULL) {
 			classData = current->data;
 
-			list[counter][0] = classData->getUsername();
-			list[counter]
-			
-
+			if (classData->getUsername() == tmpName && classData->getPassword() == tmpPass) {
+				return classData;
+			}
 			current = current->nextAddress;
 		}
+		return NULL;
 	}
 
+	// Get last UID in linked list and add one to its, in progress
+	int getNewUID() {
+		int tmp = 0;
+		node<T>* dataNode = head;
 
-
-	//// Getter Function
-	//node<T>* getFirstElement() {
-	//	return front;
-	//}
-
-	//node<T>* getLastElement() {
-	//	return rear;
-	//}
+		while (data != NULL) {
+			tmp = dataNode->data->getUID();
+			dataNode = dataNode->nextAddress;
+		}
+		return tmp + 1;
+	}
 };

@@ -30,7 +30,7 @@ public:
 			exit(1);
 		}
 
-		LinkedList<University>* list = new LinkedList<University>;
+		LinkedList<University>* list = new LinkedList<University>();
 		string line;
 
 		// Ignore first line
@@ -80,5 +80,15 @@ public:
 			delete tmp;
 		}
 		return list;
+	}
+
+	// On progress
+	template <class T>
+	bool writeFile(LinkedList<T>* data) {
+		// Write data to file
+		ofstream file(filePath);
+
+		// Print error message if file not founds
+		cout << "File not found." << endl;
 	}
 };

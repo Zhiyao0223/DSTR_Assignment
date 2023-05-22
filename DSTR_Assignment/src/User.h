@@ -1,7 +1,9 @@
 #pragma once
 
 #include <iostream>
+#include "LinkedList.h"
 using namespace std;
+
 
 class User {
 protected:
@@ -26,9 +28,15 @@ public:
 		this->phoneNumber = phoneNo;
 	}
 
-	virtual User* login(string tmpUsername, string tmpPass) = 0;
-	virtual void logOut() = 0;
 	
+	// Logout Function
+	void logOut() {
+		Util util;
+
+		cout << getUsername() << " logging out." << endl;
+		util.sleep(1);
+		util.cleanScreen();
+	}
 
 
 	// Getter Function

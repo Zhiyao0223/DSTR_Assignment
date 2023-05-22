@@ -3,12 +3,14 @@
 #include <iostream>
 #include "User.h"
 #include "Date.h"
+#include "LinkedList.h"
 using namespace std;
 
 
+// Customer class
 class Customer : public User{
 protected:
-	int postcode;
+	string postcode;
 	string address;
 	string state;
 	string country;
@@ -16,18 +18,19 @@ protected:
 public:
 	// Constructor
 	Customer() : User() {
-		postcode = NULL;
+		postcode = nullptr;
 		address = state = country = "";
 		lastLogDate = new Date();
 	}
 
-	Customer(int UID, string username, string email, string password, string phoneNo, int postCode, string address, string state, string country, Date* tmpDate) 
+	Customer(int UID, string username, string email, string password, string phoneNo, string postCode, string address, string state, string country) 
 		: User(UID, username, email, password, phoneNo){
+		Date date;
 		this->postcode = postCode;
 		this->address = address;
 		this->state = state;
 		this->country = country;
-		this->lastLogDate = tmpDate;
+		updateLogDate();
 	}
 
 
@@ -43,8 +46,22 @@ public:
 	}
 
 
+	// Login function
+	bool login(LinkedList<Customer>* list, string tmpUsername, string tmpPass) {
+		/*string** dataArray = list->extractUsernameAndPassword();*/
+
+		//for (int i = 0; i < list->size; i++) {
+		//	if (dataArray[i][0] == tmpUsername && dataArray[i][1] == tmpPass) {
+		//		updateLogDate();
+		//		return true;
+		//	}
+		//}
+		return false;
+	}
+
+
 	// Getter Function
-	int getPostcode() {
+	string getPostcode() {
 		return postcode;
 	}
 
@@ -65,7 +82,7 @@ public:
 
 	// Setter Function
 	void setPostcode(string data) {
-		postcode = stoi(data);
+		postcode = data;
 	}
 
 	void setAddress(string data) {
