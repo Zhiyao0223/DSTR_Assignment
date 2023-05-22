@@ -17,4 +17,11 @@ public:
 		: User(UID, username, email, password, phoneNo) {
 
 	}
+	
+	//Functions
+	//Generate Report
+	void generateReport() {
+		
+
+	}
 };
