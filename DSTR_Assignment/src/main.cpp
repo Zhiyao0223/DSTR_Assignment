@@ -160,7 +160,7 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList)
 					//cust.searchUniversity();
 					break;
 				case 3:
-					//cust.fav
+					currentCust->displayFav(favList);
 					break;
 				case 4:
 					//cust.feedback();
@@ -183,7 +183,7 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList)
 					currentCust->viewUniversity(favList);
 					break;
 				case 2:
-					//cust.searchUni();
+					//currentCust->searchUni();
 					break;
 				case 3:
 					tmp = tmp->login(custList);
@@ -219,13 +219,15 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList)
 
 
 /*
-	Setup user for testing purpose
+	Setup dummy data for testing purpose
 	Cust: ali, 123
 	Admin: admin1, 123
 */ 
 void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList) {
 	int custNewId = custList->getNewUID();
 	int adminNewId = adminList->getNewUID();
+	int favNewId = favList->getNewUID();
+	int feedbackNewId = feedbackList->getNewUID();
 
 	custList->insertToEndList(new Customer(custNewId, "ali", "ali1@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda1, Shah Alam", "Selangor", "Malaysia"));
 	custList->insertToEndList(new Customer(custNewId+1, "abu", "ali2@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda2, Shah Alam", "Selangor", "Malaysia"));
@@ -235,13 +237,20 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 
 	adminList->insertToEndList(new Admin(adminNewId, "admin1", "admin1@gmail.com", "123", "01112345678"));
 	adminList->insertToEndList(new Admin(adminNewId + 1, "admin1", "admin1@gmail.com", "123", "01112345678"));
+
+	favList->insertToEndList(new Favorite(favNewId, 1, 2));
+	favList->insertToEndList(new Favorite(favNewId+1, 1, 9));
+	favList->insertToEndList(new Favorite(favNewId+2, 2, 23));
+	favList->insertToEndList(new Favorite(favNewId+3, 2, 25));
+	favList->insertToEndList(new Favorite(favNewId+4, 2, 2));
+	favList->insertToEndList(new Favorite(favNewId+5, 3, 212));
+	favList->insertToEndList(new Favorite(favNewId+6, 3, 2));
+	favList->insertToEndList(new Favorite(favNewId+7, 4, 5));
+	favList->insertToEndList(new Favorite(favNewId+8, 4, 2));
+	favList->insertToEndList(new Favorite(favNewId+9, 4, 21));
 }
 
 // Purely use for testing, delete later
 void test() {
-	//Test Binary Search
-	FileIO file;
-	LinkedList<University>* uniList = file.readFile();
-	
-	
+		
 }

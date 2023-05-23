@@ -224,17 +224,17 @@ public:
 		@return Deleted data in class format
 	*/
 	T deleteFromSpecificLocation(int index) {
-		if (isEmpty) {
+		if (isEmpty()) {
 			cout << "No item in the list." << endl;
-			return NULL;
+			return T();
 		} else if (index >= size) {
 			cout << "Error: Invalid request for adding data to specific location." << endl;
-			return NULL;
+			return T();
 		}
 
 		int counter = 0;
 		node<T>* current = head;
-		T data = NULL;
+		T data = T();
 
 		while (current != NULL) {
 			if (counter == index) {
