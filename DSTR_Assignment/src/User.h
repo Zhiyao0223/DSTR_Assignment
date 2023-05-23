@@ -33,7 +33,7 @@ public:
 	// Logout Function
 	void logOut() {
 		setLoginStatus(false);
-		cout << getUsername() << " logging out." << endl;
+		cout << this->getUsername() << " logging out." << endl;
 		Util::sleepClean(1);
 	}
 

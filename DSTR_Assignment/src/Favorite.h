@@ -16,6 +16,10 @@ public:
 		insitution = tmpInstitution;
 	}
 
+	Favorite() {
+		ID = UID = insitution = NULL;
+	}
+
 	// Getter Function
 	int getID() {
 		return ID;

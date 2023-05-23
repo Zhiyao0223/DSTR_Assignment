@@ -49,14 +49,15 @@ public:
 
 
 	// Display info by pages
-	void displayAll() {
+	node<T>* displayAll() {
 		node<T>* tmp = head;
 		T test;
-		int counter = 0, option = 0;
+		string option = "";
+		int counter = 0;
 		const int MAX_ITEM_PER_PAGE = 5;
 
 		while (tmp != NULL) {
-			if (counter < 5) {
+			if (counter < MAX_ITEM_PER_PAGE) {
 				test = tmp->data;
 				test.display();
 				tmp = tmp->nextAddress;
@@ -64,22 +65,36 @@ public:
 			}
 			else {
 				cout << endl << "Wish to proceed?" << endl;
-				cout << "1. Previous Page" << endl;
-				cout << "2. Next Page" << endl;
-				cout << "3. Return" << endl;
+				cout << "[1] Add University to Favourite" << endl;
+				cout << "[2] Previous Page" << endl;
+				cout << "[3] Next Page" << endl;
+				cout << "[4] Return" << endl;
 				cout << "Option: ";
 
-				try {
-					cin >> option;
-				}
-				catch (exception) {
-					cerr << "Invalid option. Returning..." << endl;
-					Util::sleep(2);
-					return;
-				}
+				getline(cin, option);
 
+				// Set to selected record
+				if (option == "1") {
+					cout << endl <<"Please enter the index number of university you wish to add: ";
+					getline(cin, option);
+					cout << endl;
+
+					if (option < "1" || option > to_string(counter)) {
+						cerr << "Invalid option. Returning..." << endl;
+						Util::sleep(1);
+						return NULL;
+					}
+
+					node <T>* newPointer = setToPreviousElement(tmp, counter - stoi(option) + 1);
+
+					if (newPointer == NULL) {
+						cout << "Error in extracting university details" << endl;
+						return NULL;
+					}
+					else return newPointer;
+				}
 				// Set to previous five records
-				if (option == 1) {
+				else if (option == "2") {
 					node<T>* newPointer = setToPreviousElement(tmp, 2 * MAX_ITEM_PER_PAGE);
 
 					if (newPointer == NULL) {
@@ -89,21 +104,22 @@ public:
 					else tmp = newPointer;
 				}
 				// Set to next five records
-				else if (option == 2) {
+				else if (option == "3") {
 					// Do nothing
 				}
 				// Return to previous page
-				else if (option == 3) {
-					return;
+				else if (option == "4") {
+					return NULL;
 				}
 				// Also return to previous page if invalid numeric input
 				else {
 					cerr << "Invalid option. Returning..." << endl;
 					Util::sleep(2);
-					return;
+					return NULL;
 				}
 				counter = 0;
 				Util::sleepClean(2);
+				return NULL;
 			}
 
 

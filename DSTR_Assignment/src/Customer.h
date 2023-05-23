@@ -3,6 +3,9 @@
 #include <iostream>
 #include "User.h"
 #include "Date.h"
+#include "FileIO.h"
+#include "Favorite.h"
+#include "Util.h"
 #include "LinkedList.h"
 #include "Validation.h"
 using namespace std;
@@ -46,11 +49,16 @@ public:
 	// Login function
 	Customer* login(LinkedList<Customer>* list) {
 		string tmpUsername, tmpPass;
-
+		
+		cout << "* Enter 0 at \"Username\" to register" << endl << endl;
 		cout << "Username: ";
 		getline(cin, tmpUsername);
+
+		// Cancel login
+		if (tmpUsername == "0") return registration(list);
+
 		cout << "Password: ";
-		getline(cin, tmpPass);
+		tmpPass = Util::getPassword();
 
 		// Check if username and password match
 		return list->lookUpProfile(tmpUsername, tmpPass);
@@ -302,7 +310,52 @@ public:
 		cout << "Country: " << country << endl;
 	}
 
-	// Search
+
+	// View University
+	void viewUniversity(LinkedList<Favorite>* favList) {
+		FileIO fileIO;
+		LinkedList<University>* uniList = fileIO.readFile();
+
+		while (true) {
+			node<University>* selectedUni = uniList->displayAll();
+
+			if (selectedUni != NULL) {
+				if (Validation::isEmpty(getUsername())) {
+					cout << "Please login before proceed." << endl;
+					Util::sleep(1);
+					return;
+				}
+				else {
+					Util::cleanScreen();
+					selectedUni->data.display();
+
+					cout << "Please select your action:" << endl;
+					cout << "[1] Add to Wishlist" << endl;
+					cout << "[2] Back" << endl;
+					cout << "Option: ";
+
+					string index;
+					getline(cin, index);
+
+					if(index == "1") {
+						int favUID = favList->getNewUID();
+						//favList->insertToEndList(new Favorite());
+						favList->insertToEndList(new Favorite(favUID, this->getUID(), selectedUni->data.getRank()));
+						cout << endl << selectedUni->data.getInstitution() << " added to wishlist." << endl;
+						Util::sleep(1);
+					}
+					else if (index == "2") {
+								break;
+							}
+					else {
+						cout << "Invalid option." << endl;
+						Util::sleep(1);
+					}
+				}
+			}
+			else break;
+		}
+	}
 
 
 	// Getter Function

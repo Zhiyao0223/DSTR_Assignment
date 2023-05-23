@@ -53,12 +53,6 @@ public:
 		return tmpPass;
 	}
 
-	// Retrieve university data from dataset
-	LinkedList<University>* getUniversityList() {
-		FileIO file;
-		return file.readFile();
-	}
-
 	// Delete inactive user, in progress
 	//void deleteInactiveUser(LinkedList<Customer>* user){
 	//	node<Customer>* tmp = user->head;

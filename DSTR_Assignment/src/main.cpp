@@ -12,7 +12,7 @@
 using namespace std;
 
 void test();
-void custPlatform(LinkedList<Customer>* custList);
+void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList);
 void adminPlatform(Admin* currentAdmin);
 void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList);
 
@@ -48,7 +48,7 @@ int main() {
 		try {
 			switch (stoi(option)) {
 			case 1:
-				custPlatform(custList);
+				custPlatform(custList, favList);
 				break;
 			case 2:
 				admin = admin->login(adminList);
@@ -132,7 +132,7 @@ void adminPlatform(Admin* currentAdmin) {
 
 
 // Customer Platform
-void custPlatform(LinkedList<Customer>* custList) {
+void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList) {
 	Customer* currentCust = new Customer();
 	
 	bool isLogin = false;
@@ -154,7 +154,7 @@ void custPlatform(LinkedList<Customer>* custList) {
 				// Registered user menu
 				switch (stoi(option)) {
 				case 1:
-					//cust.viewUniversity();
+					currentCust->viewUniversity(favList);
 					break;
 				case 2:
 					//cust.searchUniversity();
@@ -169,6 +169,7 @@ void custPlatform(LinkedList<Customer>* custList) {
 					currentCust->displayProfileMenu();
 					break;
 				case 6:
+					currentCust->logOut();
 					return;
 				default:
 					cout << "Please enter only the option available." << endl << endl;
@@ -179,7 +180,7 @@ void custPlatform(LinkedList<Customer>* custList) {
 				Customer* tmp = new Customer();
 				switch (stoi(option)) {
 				case 1:
-					currentCust->viewUniversity();
+					currentCust->viewUniversity(favList);
 					break;
 				case 2:
 					//cust.searchUni();
@@ -202,7 +203,6 @@ void custPlatform(LinkedList<Customer>* custList) {
 					}
 					break;
 				case 5:
-					currentCust->logOut();
 					return;
 				default:
 					cout << "Please enter only the option available." << endl << endl;
