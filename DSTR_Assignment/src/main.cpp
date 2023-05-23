@@ -10,15 +10,21 @@
 using namespace std;
 
 void test();
-void custPlatform();
-void adminPlatform();
+void custPlatform(LinkedList<Customer>* custList);
+void adminPlatform(Admin* currentAdmin);
+void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList);
 
 
 int main() {
 	//test();
+	
+	Admin* admin = new Admin();
+	Customer* cust = new Customer();
+	LinkedList<Admin>* adminList = new LinkedList<Admin>();
+	LinkedList<Customer>* custList = new LinkedList<Customer>();
 
-	Validation validator;
-	Util util;
+	setupUser(custList, adminList);
+
 	string option;
 
 	// Print welcome message, draft only for now
@@ -33,14 +39,20 @@ int main() {
 		cout << "Option: ";
 
 		getline(cin, option);
+		cout << endl;
 
 		try {
 			switch (stoi(option)) {
 			case 1:
-				custPlatform();
+				custPlatform(custList);
 				break;
 			case 2:
-				adminPlatform();
+				admin = admin->login(adminList);
+				if (admin == nullptr) {
+					cout << "Invalid username or password" << endl;
+				} else {
+					adminPlatform(admin);
+				}
 				break;
 			case 3:
 				cout << "Thanks for using the system" << endl;
@@ -52,23 +64,167 @@ int main() {
 		catch (exception) {
 			cout << "Please enter only the option available." << endl << endl;
 		}
+		Util::sleepClean(1);
 	}
 }
 
 
-void adminPlatform() {
-	Admin admin;
+// Admin Platform
+void adminPlatform(Admin* currentAdmin) {
+	Util::cleanScreen();
+
+	//Admin Menu
+	while (true) {
+		cout << "Welcome to Admin Platform" << endl;
+		cout << "---------------------------------------" << endl;
+
+		cout << "Please select your action:" << endl;
+		cout << "[1] Add University" << endl;
+		cout << "[2] Edit University" << endl;
+		cout << "[3] Delete University" << endl;
+		cout << "[4] Display University" << endl;
+		cout << "[5] Generate Report" << endl;
+		cout << "[6] Logout" << endl;
+		cout << "Option: ";
+
+		string option;
+		getline(cin, option);
+
+		try {
+			switch (stoi(option)) {
+			case 1:
+				//admin.addUniversity();
+				break;
+			case 2:
+				//admin.editUniversity();
+				break;
+			case 3:
+				//admin.deleteUniversity();
+				break;
+			case 4:
+				//admin.displayUniversity();
+				break;
+			case 5:
+				//admin.generateReport();
+				break;
+			case 6:
+				currentAdmin->logOut();
+				return;
+			default:
+				cout << "Please enter only the option available." << endl << endl;
+			}
+		}
+		catch (exception) {
+			cout << "Please enter only the option available." << endl << endl;
+		}
+	}
+	Util::sleepClean(1);
+	
 }
 
 
-void custPlatform() {
-	Customer cust;
+// Customer Platform
+void custPlatform(LinkedList<Customer>* custList) {
+	Customer* currentCust = new Customer();
+	
+	bool isLogin = false;
+
+	Util::cleanScreen();
+
+	// Custoer Menu
+	while (true) {
+		isLogin = !Validation::isEmpty(currentCust->getUsername());
+
+		isLogin ? currentCust->displayLoginMenu() : currentCust->displayNotLoginMenu();
+
+		string option;
+		getline(cin, option);
+		cout << endl;
+
+		try {
+			if (isLogin) {
+				switch (stoi(option)) {
+				case 1:
+					//cust.viewUniversity();
+					break;
+				case 2:
+					//cust.searchUniversity();
+					break;
+				case 3:
+					//cust.fav
+					break;
+				case 4:
+					//cust.feedback();
+					break;
+				case 5:
+					return;
+				default:
+					cout << "Please enter only the option available." << endl << endl;
+				}
+			}
+			else {
+				Customer* tmp = new Customer();
+				switch (stoi(option)) {
+				case 1:
+					//cust.viewUni();
+					break;
+				case 2:
+					//cust.searchUni();
+					break;
+				case 3:
+					tmp = tmp->login(custList);
+					if (tmp == nullptr) {
+						cout << "Invalid username or password" << endl;
+					}
+					else {
+						cout << endl << tmp->getUsername() << " login successfully" << endl;
+						currentCust = tmp;
+					}
+					break;
+				case 4:
+					//cust.register();
+					break;
+				case 5:
+					currentCust->logOut();
+					return;
+				default:
+					cout << "Please enter only the option available." << endl << endl;
+				}
+			}
+		}
+		catch (exception) {
+			cout << "Please enter only the option available." << endl << endl;
+			Util::sleepClean(2);
+		}
+		Util::sleepClean(1);
+	}
 }
 
+
+/*
+	Setup user for testing purpose
+	Cust: ali, 123
+	Admin: admin1, 123
+*/ 
+void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList) {
+	int custNewId = custList->getNewUID();
+	int adminNewId = adminList->getNewUID();
+
+	custList->insertToEndList(new Customer(custNewId, "ali", "ali1@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda1, Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId+1, "abu", "ali2@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda2, Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId+2, "ah Meng", "ali3@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda3, Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId+3, "aliu", "ali4@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda4, Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId+4, "aliaa", "ali5@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda5, Shah Alam", "Selangor", "Malaysia"));
+
+	adminList->insertToEndList(new Admin(adminNewId, "admin1", "admin1@gmail.com", "123", "01112345678"));
+	adminList->insertToEndList(new Admin(adminNewId + 1, "admin1", "admin1@gmail.com", "123", "01112345678"));
+}
 
 // Purely use for testing, delete later
 void test() {
-	FileIO fileIO;
-	LinkedList<University>* test = fileIO.readFile();
-	test->displayAll();
+	//Test Binary Search
+	FileIO file;
+	LinkedList<University>* uniList = file.readFile();
+	
+	
 }
