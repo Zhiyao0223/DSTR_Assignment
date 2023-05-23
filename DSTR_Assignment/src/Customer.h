@@ -3,12 +3,14 @@
 #include <iostream>
 #include "User.h"
 #include "Date.h"
+#include "LinkedList.h"
 using namespace std;
 
 
+// Customer class
 class Customer : public User{
 protected:
-	int postcode;
+	string postcode;
 	string address;
 	string state;
 	string country;
@@ -16,18 +18,19 @@ protected:
 public:
 	// Constructor
 	Customer() : User() {
-		postcode = NULL;
-		address = state = country = "";
+		postcode = address = state = country = "";
 		lastLogDate = new Date();
 	}
 
-	Customer(int UID, string username, string email, string password, string phoneNo, int postCode, string address, string state, string country, Date* tmpDate) 
+	Customer(int UID, string username, string email, string password, string phoneNo, string postCode, string address, string state, string country) 
 		: User(UID, username, email, password, phoneNo){
+		Date date;
 		this->postcode = postCode;
 		this->address = address;
 		this->state = state;
 		this->country = country;
-		this->lastLogDate = tmpDate;
+		lastLogDate = new Date();
+		updateLogDate();
 	}
 
 
@@ -43,8 +46,52 @@ public:
 	}
 
 
+	// Login function
+	Customer* login(LinkedList<Customer>* list) {
+		string tmpUsername, tmpPass;
+
+		cout << "Username: ";
+		getline(cin, tmpUsername);
+		cout << "Password: ";
+		getline(cin, tmpPass);
+
+		// Check if username and password match
+		return list->lookUpProfile(tmpUsername, tmpPass);
+	}
+
+	void displayNotLoginMenu() {
+		Util::cleanScreen();
+
+		cout << "Welcome to Customer Platform" << endl;
+		cout << "---------------------------------------" << endl;
+
+		cout << "Please select your action:" << endl;
+		cout << "[1] View University" << endl;
+		cout << "[2] Search University" << endl;
+		cout << "[3] Login" << endl;
+		cout << "[4] Register" << endl;
+		cout << "[5] Exit" << endl;
+		cout << "Option: ";
+	}
+
+	void displayLoginMenu() {
+		Util::cleanScreen();
+
+		cout << "Welcome to Customer Platform" << endl;
+		cout << "---------------------------------------" << endl;
+
+		cout << "Please select your action:" << endl;
+		cout << "[1] View University" << endl;
+		cout << "[2] Search University" << endl;
+		cout << "[3] Favorites" << endl;
+		cout << "[4] MoHE Feedback" << endl;
+		cout << "[5] Logout" << endl;
+		cout << "Option: ";
+	}
+
+
 	// Getter Function
-	int getPostcode() {
+	string getPostcode() {
 		return postcode;
 	}
 
@@ -65,7 +112,7 @@ public:
 
 	// Setter Function
 	void setPostcode(string data) {
-		postcode = stoi(data);
+		postcode = data;
 	}
 
 	void setAddress(string data) {

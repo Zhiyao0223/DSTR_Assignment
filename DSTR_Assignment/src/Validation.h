@@ -13,7 +13,7 @@ public:
         @param test - string
         @return True if input is number
     */
-	bool isNumber(string test) {
+	static bool isNumber(string test) {
         try {
             int tmp = stoi(test);
             return true;
@@ -29,7 +29,7 @@ public:
         @param test - string
         @return True if input is double
     */
-    bool isDouble(string test) {
+    static bool isDouble(string test) {
         int tmp = 0;
         
         try {
@@ -47,7 +47,7 @@ public:
         @param test - string
         @return True if input is alphabetic
     */
-    bool isString(string test) {
+    static bool isString(string test) {
         for (char c : test) {
             if (!isalpha(c)) return false;
         }
@@ -72,7 +72,7 @@ public:
         @param test - string
         @return True if input is specific format
     */
-    bool isPhoneNo(string test) {
+    static bool isPhoneNo(string test) {
         regex format("^[0-9]{10,11}$");
         return regex_match(test, format);
     }
@@ -83,7 +83,7 @@ public:
         @param test - string
         @return True if input match username format
     */
-    bool isUsername(string test) {
+    static bool isUsername(string test) {
         regex format("^[a-zA-Z ]{3,50}$");
         return regex_match(test, format);
     }
@@ -94,7 +94,7 @@ public:
         @param test - string
         @return True if input has only space character or is NULL
     */
-    bool isEmpty(string test) {
+    static bool isEmpty(string test) {
         return test.empty();
     }
 
@@ -104,7 +104,7 @@ public:
         @param test - string
         @return True if input has backslash
     */
-    bool hasBackSlash(string test) {
+    static bool hasBackSlash(string test) {
         return test.find('\ "');
     }
 };

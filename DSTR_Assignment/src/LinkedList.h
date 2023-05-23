@@ -26,7 +26,7 @@ public:
 
 
 	node<T>* createNewNode(T* data) {
-		node<T>* newNode = new node<T>;
+		node<T>* newNode = new node<T>();
 		newNode->data = *data;
 		newNode->nextAddress = newNode->prevAddress = NULL;
 		return newNode;
@@ -51,7 +51,6 @@ public:
 	// Display info by pages
 	void displayAll() {
 		node<T>* tmp = head;
-		Util util;
 		T test;
 		int counter = 0, option = 0;
 		const int MAX_ITEM_PER_PAGE = 5;
@@ -75,7 +74,7 @@ public:
 				}
 				catch (exception) {
 					cerr << "Invalid option. Returning..." << endl;
-					util.sleep(2);
+					Util::sleep(2);
 					return;
 				}
 
@@ -100,11 +99,11 @@ public:
 				// Also return to previous page if invalid numeric input
 				else {
 					cerr << "Invalid option. Returning..." << endl;
-					util.sleep(2);
+					Util::sleep(2);
 					return;
 				}
 				counter = 0;
-				util.cleanScreen();
+				Util::sleepClean(2);
 			}
 
 
@@ -269,15 +268,31 @@ public:
 		return (size == 0);
 	}
 
+	T* lookUpProfile(string tmpName, string tmpPass) {
+		node<T>* current = head;
+		T* classData;
+		int counter = 0;
 
+		while (current != NULL) {
+			classData = &current->data;
 
+			if (classData->getUsername() == tmpName && classData->getPassword() == tmpPass) {
+				return classData;
+			}
+			current = current->nextAddress;
+		}
+		return NULL;
+	}
 
-	//// Getter Function
-	//node<T>* getFirstElement() {
-	//	return front;
-	//}
+	// Get last UID in linked list and add one to its, in progress
+	int getNewUID() {
+		int tmp = 0;
+		node<T>* dataNode = head;
 
-	//node<T>* getLastElement() {
-	//	return rear;
-	//}
+		while (dataNode != NULL) {
+			tmp = dataNode->data.getUID();
+			dataNode = dataNode->nextAddress;
+		}
+		return tmp + 1;
+	}
 };

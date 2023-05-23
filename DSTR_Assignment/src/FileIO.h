@@ -11,7 +11,6 @@ using namespace std;
 
 class FileIO {
 public:
-	Validation validator;
 	string resourcePath = "resources/";
 	string fileName = "2023 QS World University Rankings.csv";
 	string filePath = resourcePath + fileName;
@@ -30,7 +29,7 @@ public:
 			exit(1);
 		}
 
-		LinkedList<University>* list = new LinkedList<University>;
+		LinkedList<University>* list = new LinkedList<University>();
 		string line;
 
 		// Ignore first line
@@ -47,7 +46,7 @@ public:
 			int commaCounter = 0, arrayCounter = 0;
 
 			while (getline(ss, field, ',')) {
-				if (validator.isEmpty(field)) {
+				if (Validation::isEmpty(field)) {
 					field = "-";
 				}
 				else if (field.front() == '\"' && field.back() != '\"') {
@@ -56,7 +55,7 @@ public:
 					while (getline(ss, nextSentence, ',')) {
 						field += nextSentence;
 
-						if (!validator.isEmpty(nextSentence) && nextSentence.back() == '\"') {
+						if (!Validation::isEmpty(nextSentence) && nextSentence.back() == '\"') {
 							institutionName = field;
 							break;
 						}
@@ -80,5 +79,15 @@ public:
 			delete tmp;
 		}
 		return list;
+	}
+
+	// On progress
+	template <class T>
+	bool writeFile(LinkedList<T>* data) {
+		// Write data to file
+		ofstream file(filePath);
+
+		// Print error message if file not founds
+		cout << "File not found." << endl;
 	}
 };

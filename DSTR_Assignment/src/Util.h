@@ -12,13 +12,19 @@ using namespace std;
 class Util {
 public:
 	// Clean screen
-	void cleanScreen() {
+	static void cleanScreen() {
 		system("cls");
 	}
 
 	// Freeze system
-	void sleep(int second) {
+	static void sleep(int second) {
 		this_thread::sleep_for(chrono::seconds(second));
+	}
+
+	// Freeze and sleep screen
+	static void sleepClean(int second) {
+		sleep(second);
+		cleanScreen();
 	}
 
 	// Get last UID in linked list and add one to its, in progress
