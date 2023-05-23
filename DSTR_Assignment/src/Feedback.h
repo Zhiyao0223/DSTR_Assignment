@@ -12,7 +12,6 @@ enum class FeedbackStatus
 	CLOSED
 };
 
-
 class Feedback {
 protected:
 	int ID;
@@ -40,7 +39,6 @@ public:
 		return new Feedback(tmpID, tmpUID, tmpComment);
 	}
 
-
 	// Getter
 	int getID() {
 		return ID;
@@ -57,7 +55,6 @@ public:
 	Feedback* getReply() {
 		return reply;
 	}
-
 
 	// Setter
 	void setID(int tmp) {

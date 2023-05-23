@@ -11,7 +11,6 @@ struct node {
 	node<T>* nextAddress;
 };
 
-
 template <class T>
 class LinkedList {
 public:
@@ -24,7 +23,6 @@ public:
 		head = tail = newNode;
 	}
 
-
 	node<T>* createNewNode(T* data) {
 		node<T>* newNode = new node<T>();
 		newNode->data = *data;
@@ -35,7 +33,7 @@ public:
 	/*
 		Set to previous element according to index
 		@param data - Class node
-		@param counter - Number of element to move forward  
+		@param counter - Number of element to move forward
 		@return New pointer location of the node
 	*/
 	node<T>* setToPreviousElement(node<T>* data, int counter) {
@@ -47,16 +45,17 @@ public:
 		return data;
 	}
 
-
 	// Display info by pages
-	void displayAll() {
+	node<T>* displayAll() {
 		node<T>* tmp = head;
 		T test;
-		int counter = 0, option = 0;
+		string option = "";
+		int counter = 0;
 		const int MAX_ITEM_PER_PAGE = 5;
 
 		while (tmp != NULL) {
-			if (counter < 5) {
+			if (counter < MAX_ITEM_PER_PAGE) {
+				cout << endl << "[" << counter + 1 << "]" << endl;
 				test = tmp->data;
 				test.display();
 				tmp = tmp->nextAddress;
@@ -64,22 +63,36 @@ public:
 			}
 			else {
 				cout << endl << "Wish to proceed?" << endl;
-				cout << "1. Previous Page" << endl;
-				cout << "2. Next Page" << endl;
-				cout << "3. Return" << endl;
+				cout << "[1] Add University to Favourite" << endl;
+				cout << "[2] Previous Page" << endl;
+				cout << "[3] Next Page" << endl;
+				cout << "[4] Return" << endl;
 				cout << "Option: ";
 
-				try {
-					cin >> option;
-				}
-				catch (exception) {
-					cerr << "Invalid option. Returning..." << endl;
-					Util::sleep(2);
-					return;
-				}
+				getline(cin, option);
 
+				// Set to selected record
+				if (option == "1") {
+					cout << endl <<"Please enter the index number of university you wish to add: ";
+					getline(cin, option);
+					cout << endl;
+
+					if (option < "1" || option > to_string(counter)) {
+						cerr << "Invalid option. Returning..." << endl;
+						Util::sleep(1);
+						return NULL;
+					}
+
+					node <T>* newPointer = setToPreviousElement(tmp, counter - stoi(option) + 1);
+
+					if (newPointer == NULL) {
+						cout << "Error in extracting university details" << endl;
+						return NULL;
+					}
+					else return newPointer;
+				}
 				// Set to previous five records
-				if (option == 1) {
+				else if (option == "2") {
 					node<T>* newPointer = setToPreviousElement(tmp, 2 * MAX_ITEM_PER_PAGE);
 
 					if (newPointer == NULL) {
@@ -89,27 +102,23 @@ public:
 					else tmp = newPointer;
 				}
 				// Set to next five records
-				else if (option == 2) {
+				else if (option == "3") {
 					// Do nothing
 				}
 				// Return to previous page
-				else if (option == 3) {
-					return;
+				else if (option == "4") {
+					return NULL;
 				}
 				// Also return to previous page if invalid numeric input
 				else {
 					cerr << "Invalid option. Returning..." << endl;
 					Util::sleep(2);
-					return;
+					return NULL;
 				}
 				counter = 0;
-				Util::sleepClean(2);
 			}
-
-
 		}
 	}
-
 
 	/*
 		Insert class data to head of linked list
@@ -129,7 +138,6 @@ public:
 		size++;
 	}
 
-	
 	/*
 		Insert node to specific location in linked list
 		@param index - Index location of new node
@@ -160,7 +168,6 @@ public:
 		return false;
 	}
 
-
 	/*
 		Insert node to end of list
 		@param data - Inserted data
@@ -178,7 +185,6 @@ public:
 		}
 		size++;
 	}
-
 
 	/*
 		Delete node from head of linked list
@@ -198,9 +204,7 @@ public:
 		size--;
 
 		return data;
-		
 	}
-
 
 	/*
 		Delete node from specific location of linked list
@@ -208,27 +212,27 @@ public:
 		@return Deleted data in class format
 	*/
 	T deleteFromSpecificLocation(int index) {
-		if (isEmpty) {
+		if (isEmpty()) {
 			cout << "No item in the list." << endl;
-			return NULL;
+			return T();
 		} else if (index >= size) {
 			cout << "Error: Invalid request for adding data to specific location." << endl;
-			return NULL;
+			return T();
 		}
 
 		int counter = 0;
 		node<T>* current = head;
-		T data = NULL;
+		T data = T();
 
 		while (current != NULL) {
 			if (counter == index) {
 				data = current->data;
-				
+
 				node<T>* prev = current->prevAddress;
 				prev->nextAddress = current->nextAddress;
 				node<T>* next = current->nextAddress;
 				next->prevAddress = prev;
-				
+
 				delete current;
 
 				return data;
@@ -237,7 +241,6 @@ public:
 			counter++;
 		}
 	}
-
 
 	/*
 		Delete node from end of linked list
@@ -259,7 +262,6 @@ public:
 		return data;
 	}
 
-
 	/*
 		Check if list is empty
 		@return True if list is empty
@@ -268,6 +270,7 @@ public:
 		return (size == 0);
 	}
 
+	// Check for user login status
 	T* lookUpProfile(string tmpName, string tmpPass) {
 		node<T>* current = head;
 		T* classData;
