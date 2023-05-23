@@ -61,7 +61,7 @@ public:
         @param test - string
         @return True if input is specific format
     */
-    bool isEmail(string test) {
+    static bool isEmail(string test) {
         regex format("^[a-zA-Z0-9_+&*-]+(?:\\.[a-zA-Z0-9_+&*-]+)*@(?:[a-zA-Z0-9-]+\\.)+[a-zA-Z]{2,7}$");
         return regex_match(test, format);
     }
@@ -84,7 +84,7 @@ public:
         @return True if input match username format
     */
     static bool isUsername(string test) {
-        regex format("^[a-zA-Z ]{3,50}$");
+        regex format("^[a-zA-Z_]{3,50}$");
         return regex_match(test, format);
     }
 

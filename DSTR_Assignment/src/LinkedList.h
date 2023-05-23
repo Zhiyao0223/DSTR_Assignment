@@ -268,6 +268,8 @@ public:
 		return (size == 0);
 	}
 
+
+	// Check for user login status
 	T* lookUpProfile(string tmpName, string tmpPass) {
 		node<T>* current = head;
 		T* classData;

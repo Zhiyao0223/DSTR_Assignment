@@ -27,7 +27,7 @@ public:
 		cout << "Username: ";
 		getline(cin, tmpUsername);
 		cout << "Password: ";
-		getline(cin, tmpPass);
+		tmpPass = Util::getPassword();
 
 		// Check if username and password match
 		return list->lookUpProfile(tmpUsername, tmpPass);

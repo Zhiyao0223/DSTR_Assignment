@@ -4,11 +4,11 @@
 #include "User.h"
 #include "Date.h"
 #include "LinkedList.h"
+#include "Validation.h"
 using namespace std;
 
-
 // Customer class
-class Customer : public User{
+class Customer : public User {
 protected:
 	string postcode;
 	string address;
@@ -22,8 +22,8 @@ public:
 		lastLogDate = new Date();
 	}
 
-	Customer(int UID, string username, string email, string password, string phoneNo, string postCode, string address, string state, string country) 
-		: User(UID, username, email, password, phoneNo){
+	Customer(int UID, string username, string email, string password, string phoneNo, string postCode, string address, string state, string country)
+		: User(UID, username, email, password, phoneNo) {
 		Date date;
 		this->postcode = postCode;
 		this->address = address;
@@ -33,18 +33,15 @@ public:
 		updateLogDate();
 	}
 
-
 	// Update latest login date
 	void updateLogDate() {
 		lastLogDate->setToday();
 	}
 
-
 	// Check login date if inactive
 	bool checkInactiveStatus() {
 		return lastLogDate->isExpired();
 	}
-
 
 	// Login function
 	Customer* login(LinkedList<Customer>* list) {
@@ -85,9 +82,227 @@ public:
 		cout << "[2] Search University" << endl;
 		cout << "[3] Favorites" << endl;
 		cout << "[4] MoHE Feedback" << endl;
-		cout << "[5] Logout" << endl;
+		cout << "[5] Profile" << endl;
+		cout << "[6] Logout" << endl;
 		cout << "Option: ";
 	}
+
+	Customer* registration(LinkedList<Customer>* custList) {
+		string tmpUsername, tmpEmail, tmpPass, confirmPass, tmpPhoneNo, tmpPostcode, tmpAddress, tmpState, tmpCountry;
+
+		while (true) {
+			Util::cleanScreen();
+
+			cout << "Registration" << endl;
+			cout << "---------------------------------------" << endl;
+			cout << "Enter -1 if you want to cancel registration" << endl << endl;
+
+			cout << "Username: ";
+			getline(cin, tmpUsername);
+
+			if (!Validation::isUsername(tmpUsername)) {
+				cout << "Username could only accept alphabet, number and underscore." << endl;
+				Util::sleep(1);
+				continue;
+			}
+			else if (tmpUsername == "-1") return NULL;
+
+			cout << "Password: ";
+			tmpPass = Util::getPassword();
+
+			cout << "Confirm Password: ";
+			confirmPass = Util::getPassword();
+
+			if (tmpPass != confirmPass) {
+				cout << "Different password detected." << endl;
+				Util::sleep(1);
+				continue;
+			}
+			else if (tmpUsername == "-1") return NULL;
+
+			cout << "Email: ";
+			getline(cin, tmpEmail);
+
+			if (!Validation::isEmail(tmpEmail)) {
+				cout << "Invalid email format." << endl;
+				Util::sleep(1);
+				continue;
+			}
+			else if (tmpUsername == "-1") return NULL;
+
+			cout << "Phone Number: ";
+			getline(cin, tmpPhoneNo);
+
+			if (!Validation::isPhoneNo(tmpPhoneNo)) {
+				cout << "Invalid phone number format." << endl;
+				Util::sleep(1);
+				continue;
+			}
+			else if (tmpUsername == "-1") return NULL;
+
+			cout << "Postcode: ";
+			getline(cin, tmpPostcode);
+
+			if (Validation::isEmpty(tmpPostcode)) {
+				cout << "Postcode field cannot empty." << endl;
+				Util::sleep(1);
+				continue;
+			}
+			else if (tmpUsername == "-1") return NULL;
+
+			cout << "Address: ";
+			getline(cin, tmpAddress);
+
+			if (Validation::isEmpty(tmpAddress)) {
+				cout << "Address field cannot empty" << endl;
+				Util::sleep(1);
+				continue;
+			}
+			else if (tmpUsername == "-1") return NULL;
+
+			cout << "State: ";
+			getline(cin, tmpState);
+
+			if (Validation::isEmpty(tmpState)) {
+				cout << "State field cannot empty" << endl;
+				Util::sleep(1);
+				continue;
+			}
+			else if (tmpUsername == "-1") return NULL;
+
+			cout << "Country: ";
+			getline(cin, tmpCountry);
+
+			if (Validation::isEmpty(tmpCountry)) {
+				cout << "Country field cannot empty" << endl;
+				Util::sleep(1);
+				continue;
+			}
+			else if (tmpUsername == "-1") return NULL;
+
+			break;
+		}
+
+		Customer* newCust = new Customer(custList->getNewUID(), tmpUsername, tmpEmail, tmpPass, tmpPhoneNo, tmpPostcode, tmpAddress, tmpState, tmpCountry);
+		custList->insertToEndList(newCust);
+
+		return newCust;
+	}
+
+	// Profile Menu
+	void profileMenu() {
+		string tmp;
+
+		while (true) {
+			displayProfileMenu();
+
+			getline(cin, tmp);
+			try {
+				switch (stoi(tmp)) {
+				case 1:
+					editProfile();
+				case 2:
+					break;
+				default:
+					cout << "Invalid option." << endl;
+					cout << "Returning to previous page" << endl;
+					Util::sleep(1);
+					break;
+				}
+			}
+			catch (exception) {
+				cout << "Invalid option." << endl;
+				cout << "Returning to previous page" << endl;
+				Util::sleep(1);
+			}
+		}
+	}
+
+	// Display profile menu
+	void displayProfileMenu() {
+		Util::cleanScreen();
+
+		cout << "Profile" << endl;
+		cout << "---------------------------------------" << endl;
+		toString();
+
+		cout << "Please select your action:" << endl;
+		cout << "[1] Edit Profile" << endl;
+		cout << "[2] Back" << endl;
+		cout << "Option: ";
+	}
+
+	// Edit Profile
+	void editProfile() {
+		cout << "Edit Profile" << endl;
+		cout << "---------------------------------------" << endl;
+		toString();
+
+		cout << "Please select your action:" << endl;
+		cout << "[1] Edit Email" << endl;
+		cout << "[2] Edit Phone Number" << endl;
+		cout << "[3] Edit Postcode" << endl;
+		cout << "[4] Edit Address" << endl;
+		cout << "[5] Edit State" << endl;
+		cout << "[6] Edit Country" << endl;
+		cout << "[7] Back" << endl;
+		cout << "Option: ";
+
+		string index, newData;
+		getline(cin, index);
+		cout << endl << "Please enter your new data: ";
+		getline(cin, newData);
+
+		try {
+			switch (stoi(index)) {
+			case 1:
+				setEmail(newData);
+				cout << "Email updated." << endl;
+				break;
+			case 2:
+				setPhoneNo(newData);
+				cout << "Phone Number updated." << endl;
+				break;
+			case 3:
+				setPostcode(newData);
+				cout << "Postcode updated." << endl;
+				break;
+			case 4:
+				setAddress(newData);
+				cout << "Address updated." << endl;
+				break;
+			case 5:
+				setState(newData);
+				cout << "State updated." << endl;
+				break;
+			case 6:
+				setCountry(newData);
+				cout << "Country updated." << endl;
+				break;
+			case 7:
+				break;
+			default:
+				cout << "Invalid option." << endl;
+			}
+		}
+		catch (exception) {
+			cout << "Invalid option." << endl;
+		}
+		Util::sleep(1);
+	}
+
+	// Display individual profile
+	void toString() {
+		cout << "Username: " << username << endl;
+		cout << "Email: " << email << endl;
+		cout << "Phone Number: " << getPhoneNo() << endl;
+		cout << "Postcode: " << postcode << endl;
+		cout << "Address: " << address << endl;
+		cout << "State: " << state << endl;
+		cout << "Country: " << country << endl;
+	}
+
+	// Search
 
 
 	// Getter Function
