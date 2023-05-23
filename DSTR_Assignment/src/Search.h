@@ -7,7 +7,7 @@
 #include "LinkedList.h"
 using namespace std;
 
-//binary search
+// Binary search
 template <class T>
 LinkedList<T>* binarySearch(LinkedList<T>* list, string key, int index) {
 	LinkedList<T>* result = new LinkedList<T>();

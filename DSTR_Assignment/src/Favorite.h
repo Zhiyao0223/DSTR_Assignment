@@ -16,7 +16,6 @@ public:
 		insitution = tmpInstitution;
 	}
 
-
 	// Getter Function
 	int getID() {
 		return ID;

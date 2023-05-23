@@ -1,6 +1,8 @@
 #include <iostream>
 #include "Customer.h"
 #include "Admin.h"
+#include "Favorite.h"
+#include "Feedback.h"
 #include "FileIO.h"
 #include "University.h"
 #include "LinkedList.h"
@@ -12,7 +14,7 @@ using namespace std;
 void test();
 void custPlatform(LinkedList<Customer>* custList);
 void adminPlatform(Admin* currentAdmin);
-void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList);
+void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList);
 
 
 int main() {
@@ -22,8 +24,10 @@ int main() {
 	Customer* cust = new Customer();
 	LinkedList<Admin>* adminList = new LinkedList<Admin>();
 	LinkedList<Customer>* custList = new LinkedList<Customer>();
+	LinkedList<Favorite>* favList = new LinkedList<Favorite>();
+	LinkedList<Feedback>* feedbackList = new LinkedList<Feedback>();
 
-	setupUser(custList, adminList);
+	setupUser(custList, adminList, favList, feedbackList);
 
 	string option;
 
@@ -84,7 +88,8 @@ void adminPlatform(Admin* currentAdmin) {
 		cout << "[3] Delete University" << endl;
 		cout << "[4] Display University" << endl;
 		cout << "[5] Generate Report" << endl;
-		cout << "[6] Logout" << endl;
+		cout << "[6] Profile" << endl;
+		cout << "[7] Logout" << endl;
 		cout << "Option: ";
 
 		string option;
@@ -108,6 +113,9 @@ void adminPlatform(Admin* currentAdmin) {
 				//admin.generateReport();
 				break;
 			case 6:
+				//admin.viewProfile();
+				break;
+			case 7:
 				currentAdmin->logOut();
 				return;
 			default:
@@ -131,7 +139,7 @@ void custPlatform(LinkedList<Customer>* custList) {
 
 	Util::cleanScreen();
 
-	// Custoer Menu
+	// Customer Menu
 	while (true) {
 		isLogin = !Validation::isEmpty(currentCust->getUsername());
 
@@ -143,6 +151,7 @@ void custPlatform(LinkedList<Customer>* custList) {
 
 		try {
 			if (isLogin) {
+				// Registered user menu
 				switch (stoi(option)) {
 				case 1:
 					//cust.viewUniversity();
@@ -157,16 +166,20 @@ void custPlatform(LinkedList<Customer>* custList) {
 					//cust.feedback();
 					break;
 				case 5:
+					currentCust->displayProfileMenu();
+					break;
+				case 6:
 					return;
 				default:
 					cout << "Please enter only the option available." << endl << endl;
 				}
 			}
 			else {
+				// Guest user menu
 				Customer* tmp = new Customer();
 				switch (stoi(option)) {
 				case 1:
-					//cust.viewUni();
+					currentCust->viewUniversity();
 					break;
 				case 2:
 					//cust.searchUni();
@@ -182,7 +195,11 @@ void custPlatform(LinkedList<Customer>* custList) {
 					}
 					break;
 				case 4:
-					//cust.register();
+					tmp = tmp->registration(custList);
+					if (tmp != nullptr) {
+						cout << endl << tmp->getUsername() << " register successfully" << endl;
+						currentCust = tmp;
+					}
 					break;
 				case 5:
 					currentCust->logOut();
@@ -206,7 +223,7 @@ void custPlatform(LinkedList<Customer>* custList) {
 	Cust: ali, 123
 	Admin: admin1, 123
 */ 
-void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList) {
+void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList) {
 	int custNewId = custList->getNewUID();
 	int adminNewId = adminList->getNewUID();
 
