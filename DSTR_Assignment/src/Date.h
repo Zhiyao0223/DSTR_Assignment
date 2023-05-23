@@ -18,7 +18,7 @@ public:
 
 	// Constructor
 	Date() {
-		year = month = day = NULL;
+		year = month = day = -1;
 	}
 
 	Date(string tmpDate) {

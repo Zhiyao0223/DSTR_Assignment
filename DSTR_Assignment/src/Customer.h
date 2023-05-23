@@ -18,8 +18,7 @@ protected:
 public:
 	// Constructor
 	Customer() : User() {
-		postcode = nullptr;
-		address = state = country = "";
+		postcode = address = state = country = "";
 		lastLogDate = new Date();
 	}
 
@@ -30,6 +29,7 @@ public:
 		this->address = address;
 		this->state = state;
 		this->country = country;
+		lastLogDate = new Date();
 		updateLogDate();
 	}
 
@@ -47,16 +47,46 @@ public:
 
 
 	// Login function
-	bool login(LinkedList<Customer>* list, string tmpUsername, string tmpPass) {
-		/*string** dataArray = list->extractUsernameAndPassword();*/
+	Customer* login(LinkedList<Customer>* list) {
+		string tmpUsername, tmpPass;
 
-		//for (int i = 0; i < list->size; i++) {
-		//	if (dataArray[i][0] == tmpUsername && dataArray[i][1] == tmpPass) {
-		//		updateLogDate();
-		//		return true;
-		//	}
-		//}
-		return false;
+		cout << "Username: ";
+		getline(cin, tmpUsername);
+		cout << "Password: ";
+		getline(cin, tmpPass);
+
+		// Check if username and password match
+		return list->lookUpProfile(tmpUsername, tmpPass);
+	}
+
+	void displayNotLoginMenu() {
+		Util::cleanScreen();
+
+		cout << "Welcome to Customer Platform" << endl;
+		cout << "---------------------------------------" << endl;
+
+		cout << "Please select your action:" << endl;
+		cout << "[1] View University" << endl;
+		cout << "[2] Search University" << endl;
+		cout << "[3] Login" << endl;
+		cout << "[4] Register" << endl;
+		cout << "[5] Exit" << endl;
+		cout << "Option: ";
+	}
+
+	void displayLoginMenu() {
+		Util::cleanScreen();
+
+		cout << "Welcome to Customer Platform" << endl;
+		cout << "---------------------------------------" << endl;
+
+		cout << "Please select your action:" << endl;
+		cout << "[1] View University" << endl;
+		cout << "[2] Search University" << endl;
+		cout << "[3] Favorites" << endl;
+		cout << "[4] MoHE Feedback" << endl;
+		cout << "[5] Logout" << endl;
+		cout << "Option: ";
 	}
 
 

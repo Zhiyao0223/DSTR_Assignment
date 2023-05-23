@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "LinkedList.h"
+#include "Util.h"
 using namespace std;
 
 
@@ -31,11 +32,9 @@ public:
 	
 	// Logout Function
 	void logOut() {
-		Util util;
-
+		setLoginStatus(false);
 		cout << getUsername() << " logging out." << endl;
-		util.sleep(1);
-		util.cleanScreen();
+		Util::sleepClean(1);
 	}
 
 
