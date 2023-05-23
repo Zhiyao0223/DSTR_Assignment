@@ -11,7 +11,6 @@ struct node {
 	node<T>* nextAddress;
 };
 
-
 template <class T>
 class LinkedList {
 public:
@@ -24,7 +23,6 @@ public:
 		head = tail = newNode;
 	}
 
-
 	node<T>* createNewNode(T* data) {
 		node<T>* newNode = new node<T>();
 		newNode->data = *data;
@@ -35,7 +33,7 @@ public:
 	/*
 		Set to previous element according to index
 		@param data - Class node
-		@param counter - Number of element to move forward  
+		@param counter - Number of element to move forward
 		@return New pointer location of the node
 	*/
 	node<T>* setToPreviousElement(node<T>* data, int counter) {
@@ -47,7 +45,6 @@ public:
 		return data;
 	}
 
-
 	// Display info by pages
 	node<T>* displayAll() {
 		node<T>* tmp = head;
@@ -58,6 +55,7 @@ public:
 
 		while (tmp != NULL) {
 			if (counter < MAX_ITEM_PER_PAGE) {
+				cout << endl << "[" << counter + 1 << "]" << endl;
 				test = tmp->data;
 				test.display();
 				tmp = tmp->nextAddress;
@@ -118,14 +116,9 @@ public:
 					return NULL;
 				}
 				counter = 0;
-				Util::sleepClean(2);
-				return NULL;
 			}
-
-
 		}
 	}
-
 
 	/*
 		Insert class data to head of linked list
@@ -145,7 +138,6 @@ public:
 		size++;
 	}
 
-	
 	/*
 		Insert node to specific location in linked list
 		@param index - Index location of new node
@@ -176,7 +168,6 @@ public:
 		return false;
 	}
 
-
 	/*
 		Insert node to end of list
 		@param data - Inserted data
@@ -194,7 +185,6 @@ public:
 		}
 		size++;
 	}
-
 
 	/*
 		Delete node from head of linked list
@@ -214,9 +204,7 @@ public:
 		size--;
 
 		return data;
-		
 	}
-
 
 	/*
 		Delete node from specific location of linked list
@@ -239,12 +227,12 @@ public:
 		while (current != NULL) {
 			if (counter == index) {
 				data = current->data;
-				
+
 				node<T>* prev = current->prevAddress;
 				prev->nextAddress = current->nextAddress;
 				node<T>* next = current->nextAddress;
 				next->prevAddress = prev;
-				
+
 				delete current;
 
 				return data;
@@ -253,7 +241,6 @@ public:
 			counter++;
 		}
 	}
-
 
 	/*
 		Delete node from end of linked list
@@ -275,7 +262,6 @@ public:
 		return data;
 	}
 
-
 	/*
 		Check if list is empty
 		@return True if list is empty
@@ -283,7 +269,6 @@ public:
 	bool isEmpty() {
 		return (size == 0);
 	}
-
 
 	// Check for user login status
 	T* lookUpProfile(string tmpName, string tmpPass) {

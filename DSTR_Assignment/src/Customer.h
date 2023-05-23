@@ -49,7 +49,7 @@ public:
 	// Login function
 	Customer* login(LinkedList<Customer>* list) {
 		string tmpUsername, tmpPass;
-		
+
 		cout << "* Enter 0 at \"Username\" to register" << endl << endl;
 		cout << "Username: ";
 		getline(cin, tmpUsername);
@@ -310,7 +310,6 @@ public:
 		cout << "Country: " << country << endl;
 	}
 
-
 	// View University
 	void viewUniversity(LinkedList<Favorite>* favList) {
 		FileIO fileIO;
@@ -337,7 +336,7 @@ public:
 					string index;
 					getline(cin, index);
 
-					if(index == "1") {
+					if (index == "1") {
 						int favUID = favList->getNewUID();
 						favList->insertToEndList(new Favorite(favUID, this->getUID(), selectedUni->data.getRank()));
 						cout << endl << selectedUni->data.getInstitution() << " added to wishlist." << endl;
@@ -372,10 +371,10 @@ public:
 			tmpClass = tmp->data;
 
 			if (tmpClass.getUID() == this->getUID()) {
-				favUniList->insertToEndList(tmpClass.getUniversity(this->getUID()));
+				favUniList->insertToEndList(tmpClass.getUniversity(tmpClass.getInstitutionRank()));
 
 				cout << "[" << favSize << "] " << endl;
-				University* uni = tmpClass.getUniversity(this->getUID());
+				University* uni = tmpClass.getUniversity(tmpClass.getInstitutionRank());
 				uni->display();
 				favSize++;
 			}
@@ -398,7 +397,7 @@ public:
 
 			if (selection == "1") {
 				cout << endl << "Please enter the index number you wish to remove: ";
-				
+
 				string removeUniIndex;
 				getline(cin, removeUniIndex);
 
@@ -418,15 +417,19 @@ public:
 							tmpClass = tmp->data;
 
 							if (tmpClass.getInstitutionRank() == uniRank) {
-								Favorite tmp = favList->deleteFromSpecificLocation(counter);
-								
+								Favorite tmp;
+
+								if (counter == 0) tmp = favList->deleteFromFrontList(); // Delete from front
+								else if (counter == favList->size - 1) tmp = favList->deleteFromEndList(); // Delete from end
+								else favList->deleteFromSpecificLocation(counter); // Delete from specific location
+
 								if (Validation::isEmpty(to_string(tmp.getID()))) {
 									cout << "Error: Unable to remove from wishlist." << endl;
 									Util::sleep(1);
 									return;
 								}
 
-								cout << endl << tmpClass.getUniversity(this->getUID())->getInstitution() << " removed from wishlist." << endl;
+								cout << endl << tmpClass.getUniversity(tmpClass.getInstitutionRank())->getInstitution() << " removed from wishlist." << endl;
 								Util::sleep(1);
 								break;
 							}
@@ -453,7 +456,6 @@ public:
 			}
 		}
 	}
-
 
 	// Getter Function
 	string getPostcode() {

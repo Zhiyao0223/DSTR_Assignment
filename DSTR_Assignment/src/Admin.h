@@ -5,7 +5,6 @@
 #include "LinkedList.h"
 using namespace std;
 
-
 // Admin class
 class Admin : public User {
 protected:
@@ -16,10 +15,8 @@ public:
 
 	Admin(int UID, string username, string email, string password, string phoneNo)
 		: User(UID, username, email, password, phoneNo) {
-
 	}
 
-	
 	// Login
 	Admin* login(LinkedList<Admin>* list) {
 		string tmpUsername, tmpPass;
@@ -32,7 +29,6 @@ public:
 		// Check if username and password match
 		return list->lookUpProfile(tmpUsername, tmpPass);
 	}
-
 
 	//Generate Report
 	void generateReport() {}

@@ -5,7 +5,6 @@
 #include "Util.h"
 using namespace std;
 
-
 class User {
 protected:
 	int ID;
@@ -29,14 +28,12 @@ public:
 		this->phoneNumber = phoneNo;
 	}
 
-	
 	// Logout Function
 	void logOut() {
 		setLoginStatus(false);
 		cout << this->getUsername() << " logging out." << endl;
 		Util::sleepClean(1);
 	}
-
 
 	// Getter Function
 	int getUID() {

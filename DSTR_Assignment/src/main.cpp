@@ -16,10 +16,9 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList)
 void adminPlatform(Admin* currentAdmin);
 void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList);
 
-
 int main() {
 	//test();
-	
+
 	Admin* admin = new Admin();
 	Customer* cust = new Customer();
 	LinkedList<Admin>* adminList = new LinkedList<Admin>();
@@ -54,7 +53,8 @@ int main() {
 				admin = admin->login(adminList);
 				if (admin == nullptr) {
 					cout << "Invalid username or password" << endl;
-				} else {
+				}
+				else {
 					adminPlatform(admin);
 				}
 				break;
@@ -71,7 +71,6 @@ int main() {
 		Util::sleepClean(1);
 	}
 }
-
 
 // Admin Platform
 void adminPlatform(Admin* currentAdmin) {
@@ -127,14 +126,12 @@ void adminPlatform(Admin* currentAdmin) {
 		}
 	}
 	Util::sleepClean(1);
-	
 }
-
 
 // Customer Platform
 void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList) {
 	Customer* currentCust = new Customer();
-	
+
 	bool isLogin = false;
 
 	Util::cleanScreen();
@@ -213,16 +210,15 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList)
 			cout << "Please enter only the option available." << endl << endl;
 			Util::sleepClean(2);
 		}
-		Util::sleepClean(1);
+		Util::cleanScreen();
 	}
 }
-
 
 /*
 	Setup dummy data for testing purpose
 	Cust: ali, 123
 	Admin: admin1, 123
-*/ 
+*/
 void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList) {
 	int custNewId = custList->getNewUID();
 	int adminNewId = adminList->getNewUID();
@@ -230,27 +226,26 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	int feedbackNewId = feedbackList->getNewUID();
 
 	custList->insertToEndList(new Customer(custNewId, "ali", "ali1@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda1, Shah Alam", "Selangor", "Malaysia"));
-	custList->insertToEndList(new Customer(custNewId+1, "abu", "ali2@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda2, Shah Alam", "Selangor", "Malaysia"));
-	custList->insertToEndList(new Customer(custNewId+2, "ah Meng", "ali3@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda3, Shah Alam", "Selangor", "Malaysia"));
-	custList->insertToEndList(new Customer(custNewId+3, "aliu", "ali4@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda4, Shah Alam", "Selangor", "Malaysia"));
-	custList->insertToEndList(new Customer(custNewId+4, "aliaa", "ali5@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda5, Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId + 1, "abu", "ali2@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda2, Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId + 2, "ah Meng", "ali3@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda3, Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId + 3, "aliu", "ali4@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda4, Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId + 4, "aliaa", "ali5@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda5, Shah Alam", "Selangor", "Malaysia"));
 
 	adminList->insertToEndList(new Admin(adminNewId, "admin1", "admin1@gmail.com", "123", "01112345678"));
 	adminList->insertToEndList(new Admin(adminNewId + 1, "admin1", "admin1@gmail.com", "123", "01112345678"));
 
 	favList->insertToEndList(new Favorite(favNewId, 1, 2));
-	favList->insertToEndList(new Favorite(favNewId+1, 1, 9));
-	favList->insertToEndList(new Favorite(favNewId+2, 2, 23));
-	favList->insertToEndList(new Favorite(favNewId+3, 2, 25));
-	favList->insertToEndList(new Favorite(favNewId+4, 2, 2));
-	favList->insertToEndList(new Favorite(favNewId+5, 3, 212));
-	favList->insertToEndList(new Favorite(favNewId+6, 3, 2));
-	favList->insertToEndList(new Favorite(favNewId+7, 4, 5));
-	favList->insertToEndList(new Favorite(favNewId+8, 4, 2));
-	favList->insertToEndList(new Favorite(favNewId+9, 4, 21));
+	favList->insertToEndList(new Favorite(favNewId + 1, 1, 9));
+	favList->insertToEndList(new Favorite(favNewId + 2, 2, 23));
+	favList->insertToEndList(new Favorite(favNewId + 3, 2, 25));
+	favList->insertToEndList(new Favorite(favNewId + 4, 2, 2));
+	favList->insertToEndList(new Favorite(favNewId + 5, 3, 212));
+	favList->insertToEndList(new Favorite(favNewId + 6, 3, 2));
+	favList->insertToEndList(new Favorite(favNewId + 7, 4, 5));
+	favList->insertToEndList(new Favorite(favNewId + 8, 4, 2));
+	favList->insertToEndList(new Favorite(favNewId + 9, 4, 21));
 }
 
 // Purely use for testing, delete later
 void test() {
-		
 }

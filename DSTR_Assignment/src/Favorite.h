@@ -20,7 +20,6 @@ public:
 		ID = UID = insitution = NULL;
 	}
 
-
 	// Get specific university from list
 	University* getUniversity(int id) {
 		FileIO file;
@@ -33,7 +32,6 @@ public:
 		}
 		return NULL;
 	}
-
 
 	// Getter Function
 	int getID() {

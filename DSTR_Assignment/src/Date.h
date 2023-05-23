@@ -10,7 +10,7 @@ using namespace std;
 
 class Date {
 	const int maxInactiveMonth = 3;
-	
+
 public:
 	int year;
 	int month;
@@ -41,12 +41,10 @@ public:
 		year = tmpYear;
 	}
 
-
 	// Return date in string
 	string toString() {
 		return to_string(day) + "/" + to_string(month) + "/" + to_string(year);
 	}
-
 
 	// Get today date
 	tm getToday() {
@@ -55,7 +53,6 @@ public:
 		localtime_s(&localTime, &currentTime);
 		return localTime;
 	}
-
 
 	// Update login date to today
 	void setToday() {
@@ -66,7 +63,6 @@ public:
 		month = localTime.tm_mon + 1;      // Months since January (0-11)
 		day = localTime.tm_mday;           // Day of the month (1-31)
 	}
-
 
 	// Check if account is expired
 	// Reference: https://stackoverflow.com/a/13788001
