@@ -7,6 +7,7 @@
 #include "LinkedList.h"
 using namespace std;
 
+// Binary search
 template <class T>
 //Needed to be sorted first, the code not include any sorting algorithm
 LinkedList<T>* binarySearch(LinkedList<T>* list, string key, int index) {
