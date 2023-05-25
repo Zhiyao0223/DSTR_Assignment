@@ -1,26 +1,21 @@
 #pragma once
 
 #include <iostream>
+#include <fstream>
+#include <sstream>
+#include <string>
+#include <limits>
 #include "User.h"
-<<<<<<< HEAD
 #include "Util.h"
 #include "Validation.h"
-#include <limits>
-#include "LinkedList.h"
-#include "University.h"
-	====== =
 #include "Admin.h"
 #include "Customer.h"
 #include "Favorite.h"
 #include "Feedback.h"
 #include "LinkedList.h"
 #include "University.h"
-#include <fstream>
-#include <sstream>
-#include <string>
 
-	>>>>>> > c72e370f0dc74bb3f9b532d360555059213aabe0
-	using namespace std;
+using namespace std;
 
 // Admin class
 class Admin : public User {
