@@ -7,17 +7,18 @@
 using namespace std;
 
 template <class T>
-void selectionSort(LinkedList<T>* list, string key, int index) {
-    FileIO file;
-    LinkedList<University>* uniList = file.readFile();
-    node<T>* current = list->head;
+void selectionSort(LinkedList<T>* uniList) {
+    //FileIO file;
+    //LinkedList<University>* uniList = file.readFile();
+    node<T>* current = uniList->head;
+    
 
     while(current != nullptr) {
         node<T>* minNode = current;
         node<T>* nextNode = current->nextAddress;
 
         while (nextNode != nullptr) {
-            if (nextNode->nextAddress < minNode->data) {
+            if (nextNode->data < minNode->data) {
                 minNode = nextNode;
             }
             nextNode = nextNode->nextAddress;
