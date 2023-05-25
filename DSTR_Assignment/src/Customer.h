@@ -341,7 +341,10 @@ public:
 		cout << "Country: " << country << endl;
 	}
 
-	// View University
+	/*
+		Display University
+		@para favList: Favorite List
+	*/
 	void viewUniversity(LinkedList<Favorite>* favList) {
 		FileIO fileIO;
 		LinkedList<University>* uniList = fileIO.readFile();
@@ -386,6 +389,10 @@ public:
 		}
 	}
 
+	/*
+		Display Favorite
+		@param favList - Favorite List
+	*/
 	void displayFav(LinkedList<Favorite>* favList) {
 		// Display all favorite
 		Util::cleanScreen();
@@ -490,6 +497,8 @@ public:
 
 	// View Feedback
 	void displayFeedback(LinkedList<Feedback>* feedbackList) {
+		cout << "Feedback" << endl;
+		cout << "---------------------------------------" << endl;
 
 	}
 

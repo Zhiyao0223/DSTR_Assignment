@@ -20,6 +20,7 @@ public:
 		ID = UID = insitution = NULL;
 	}
 
+	// Return specified column value
 	template <typename T>
 	T getColumn(int index) {
 		/*

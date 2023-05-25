@@ -43,6 +43,8 @@ protected:
 	int scoreScaled;
 
 public:
+	int dataCount;
+
 	// Constructor
 	University() {
 		// Delete this constructor later coz no use, declare for no error temporary.
@@ -70,6 +72,7 @@ public:
 		GerScore = data[15];
 		GerRank = data[16];
 		scoreScaled = data[17];
+		dataCount = 21;
 	}
 
 	template <typename T>
@@ -179,7 +182,46 @@ public:
 		return new University();
 	}
 
+	string* toStringArray() {
+		return new string[21]{ to_string(rank),institution, locationCode, location, to_string(ArScore), to_string(ArRank),
+			to_string(ErScore), to_string(ErRank), to_string(FsrScore), to_string(FsrRank), to_string(CpfScore), 
+			to_string(CpfRank), to_string(IfrScore), to_string(IfrRank), to_string(IsrScore), to_string(IsrRank),
+			to_string(IrnScore), to_string(IrnRank), to_string(GerScore), to_string(GerRank), to_string(scoreScaled) };
+	}
+
+	/*
+	*	Set object value from string array. Used in converting 2D array to linked list
+	*	@param dataArr - linked list data in array format
+	*/
+	void setColumnValue(string* dataArr) {
+		this->setRank(stoi(dataArr[0]));
+		this->setInstitution(dataArr[1]);
+		this->setLocationCode(dataArr[2]);
+		this->setLocation(dataArr[3]);
+		this->setArScore(stoi(dataArr[4]));
+		this->setArRank(stoi(dataArr[5]));
+		this->setErScore(stoi(dataArr[6]));
+		this->setErRank(stoi(dataArr[7]));
+		this->setFsrScore(stoi(dataArr[8]));
+		this->setFsrRank(stoi(dataArr[9]));
+		this->setCpfScore(stoi(dataArr[10]));
+		this->setCpfRank(stoi(dataArr[11]));
+		this->setIfrScore(stoi(dataArr[12]));
+		this->setIfrRank(stoi(dataArr[13]));
+		this->setIsrScore(stoi(dataArr[14]));
+		this->setIsrRank(stoi(dataArr[15]));
+		this->setIrnScore(stoi(dataArr[16]));
+		this->setIrnRank(stoi(dataArr[17]));
+		this->setGerScore(stoi(dataArr[18]));
+		this->setGerRank(stoi(dataArr[19]));
+		this->setScoreScaled(stoi(dataArr[20]));
+	}
+
 	// Getter Functions
+	int getDataCount() {
+		return dataCount;
+	}
+
 	int getRank() {
 		return rank;
 	}

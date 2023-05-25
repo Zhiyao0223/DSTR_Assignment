@@ -28,6 +28,9 @@ public:
 		status = FeedbackStatus::OPEN;
 	}
 
+	/*
+		Return specific column value indexed
+	*/
 	template <typename T>
 	T getColumn(int index) {
 		/*
@@ -57,15 +60,22 @@ public:
 		return new Feedback(tmpID, tmpUID, tmpComment);
 	}
 
+	/*
+		Display feedback. IN PROGRESS 
+	*/
 	void custDisplay() {
 		cout << "Ticket ID: " << ID << endl
 			<< "UID:" << UID << endl
 			<< "Status: " <<  enumToString(status) << endl
 			<< "Comment" << endl
 			<< "" << endl;
-
 	}
 
+	/*
+		Convert enum to string
+		@param tmpStatus - enum FeedbackStatus
+		@return value of enum
+	*/
 	string enumToString(FeedbackStatus tmpStatus) {
 		switch(tmpStatus) {
 		case FeedbackStatus::OPEN:

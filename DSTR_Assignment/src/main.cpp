@@ -5,6 +5,7 @@
 #include "Feedback.h"
 #include "FileIO.h"
 #include "University.h"
+#include "Sort.h"
 #include "LinkedList.h"
 #include "Validation.h"
 #include "Util.h"
@@ -17,59 +18,59 @@ void adminPlatform(Admin* currentAdmin);
 void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList);
 
 int main() {
-	//test();
+	test();
 
-	Admin* admin = new Admin();
-	Customer* cust = new Customer();
-	LinkedList<Admin>* adminList = new LinkedList<Admin>();
-	LinkedList<Customer>* custList = new LinkedList<Customer>();
-	LinkedList<Favorite>* favList = new LinkedList<Favorite>();
-	LinkedList<Feedback>* feedbackList = new LinkedList<Feedback>();
+	//Admin* admin = new Admin();
+	//Customer* cust = new Customer();
+	//LinkedList<Admin>* adminList = new LinkedList<Admin>();
+	//LinkedList<Customer>* custList = new LinkedList<Customer>();
+	//LinkedList<Favorite>* favList = new LinkedList<Favorite>();
+	//LinkedList<Feedback>* feedbackList = new LinkedList<Feedback>();
 
-	setupUser(custList, adminList, favList, feedbackList);
+	//setupUser(custList, adminList, favList, feedbackList);
 
-	string option;
+	//string option;
 
-	// Print welcome message, draft only for now
-	while (true) {
-		cout << "Welcome to XXX System" << endl;
-		cout << "---------------------------------------" << endl;
+	//// Print welcome message, draft only for now
+	//while (true) {
+	//	cout << "Welcome to XXX System" << endl;
+	//	cout << "---------------------------------------" << endl;
 
-		cout << "Please select your role:" << endl;
-		cout << "1. Customer" << endl;
-		cout << "2. Admin" << endl;
-		cout << "3. Exit" << endl;
-		cout << "Option: ";
+	//	cout << "Please select your role:" << endl;
+	//	cout << "1. Customer" << endl;
+	//	cout << "2. Admin" << endl;
+	//	cout << "3. Exit" << endl;
+	//	cout << "Option: ";
 
-		getline(cin, option);
-		cout << endl;
+	//	getline(cin, option);
+	//	cout << endl;
 
-		try {
-			switch (stoi(option)) {
-			case 1:
-				custPlatform(custList, favList, feedbackList);
-				break;
-			case 2:
-				admin = admin->login(adminList);
-				if (admin == nullptr) {
-					cout << "Invalid username or password" << endl;
-				}
-				else {
-					adminPlatform(admin);
-				}
-				break;
-			case 3:
-				cout << "Thanks for using the system" << endl;
-				return  0;
-			default:
-				cout << "Please enter only the option available." << endl << endl;
-			}
-		}
-		catch (exception) {
-			cout << "Please enter only the option available." << endl << endl;
-		}
-		Util::sleepClean(1);
-	}
+	//	try {
+	//		switch (stoi(option)) {
+	//		case 1:
+	//			custPlatform(custList, favList, feedbackList);
+	//			break;
+	//		case 2:
+	//			admin = admin->login(adminList);
+	//			if (admin == nullptr) {
+	//				cout << "Invalid username or password" << endl;
+	//			}
+	//			else {
+	//				adminPlatform(admin);
+	//			}
+	//			break;
+	//		case 3:
+	//			cout << "Thanks for using the system" << endl;
+	//			return  0;
+	//		default:
+	//			cout << "Please enter only the option available." << endl << endl;
+	//		}
+	//	}
+	//	catch (exception) {
+	//		cout << "Please enter only the option available." << endl << endl;
+	//	}
+	//	Util::sleepClean(1);
+	//}
 }
 
 // Admin Platform
@@ -232,7 +233,7 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	custList->insertToEndList(new Customer(custNewId + 4, "aliaa", "ali5@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda5, Shah Alam", "Selangor", "Malaysia"));
 
 	adminList->insertToEndList(new Admin(adminNewId, "admin1", "admin1@gmail.com", "123", "01112345678"));
-	adminList->insertToEndList(new Admin(adminNewId + 1, "admin1", "admin1@gmail.com", "123", "01112345678"));
+	adminList->insertToEndList(new Admin(adminNewId + 1, "admin2", "admin2@gmail.com", "123", "01112345678"));
 
 	favList->insertToEndList(new Favorite(favNewId, 1, 2));
 	favList->insertToEndList(new Favorite(favNewId + 1, 1, 9));
@@ -248,4 +249,19 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 
 // Purely use for testing, delete later
 void test() {
+	LinkedList<University>* tmp = new LinkedList<University>();
+
+	FileIO fileIO;
+	LinkedList<University>* uniList = fileIO.readFile();
+	string** arr = uniList->convertTo2DArray();
+
+	int sortColumnIndex = 2;  // Sort based on the second column
+	int dataCount = uniList->head->data.getDataCount();
+	quicksort(arr, 0, uniList->size - 1, sortColumnIndex);
+
+
+	for (int i = 0; i < 20; i++) {
+		cout << arr[i][sortColumnIndex] << " ";
+		cout << std::endl;
+	}
 }

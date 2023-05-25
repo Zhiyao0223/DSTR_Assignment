@@ -23,6 +23,10 @@ public:
 		head = tail = newNode;
 	}
 
+	/*
+		Used to create new node for linked list. Implemented insertion function.
+		@param data - Class data
+	*/
 	node<T>* createNewNode(T* data) {
 		node<T>* newNode = new node<T>();
 		newNode->data = *data;
@@ -31,7 +35,7 @@ public:
 	}
 
 	/*
-		Set to previous element according to index
+		Set to previous element according to index. Used in displayAll() function.
 		@param data - Class node
 		@param counter - Number of element to move forward
 		@return New pointer location of the node
@@ -301,5 +305,72 @@ public:
 			dataNode = dataNode->nextAddress;
 		}
 		return tmp + 1;
+	}
+
+	/*
+		Swap two nodes in linked list
+		@param node1 - First node
+		@param node2 - Second node
+		@return swap status
+	*/
+	bool swapNode(node<T>* node1, node<T>* node2) {
+		if (node1 == NULL || node2 == NULL) {
+			return false;
+		}
+
+		T tmp = node1->data;
+		node1->data = node2->data;
+		node2->data = tmp;
+
+		return true;
+	}
+
+	/*
+		Convert Linked list to array
+		@return 2D string array
+	*/
+	string** convertTo2DArray() {
+		node<T>* current = this->head;
+		int numCols = current->data.getDataCount();
+		int numRows = this->size;
+
+		// Create 2D array
+		int row = 0;
+		string** newData = new string * [numRows];
+		for (int i = 0; i < numRows; i++) {
+			newData[i] = new string[numCols];
+		}
+
+		string* tmpData;
+
+		// Loop through linked list
+		while (current != NULL) {
+			tmpData = current->data.toStringArray();
+
+			// Copy data to 2D array
+			for (int i = 0; i < numCols; i++) {
+				newData[row][i] = tmpData[i];
+			}
+			current = current->nextAddress;
+			row++;
+		}
+		return newData;
+	}
+
+	/*
+		Convert 2D array to linked list
+		@param dataList - 2D string array
+		@param totalRow - Total row of 2D array
+	*/
+	void convertToLinkedList(string** dataList, int totalRow) {
+		node<T>* current = head;
+		int currentRow = 0;
+
+		while (currentRow != totalRow) {
+			T* data = new T();
+			data->setColumnValue(dataList[currentRow]);
+			this->insertToEndList(data);
+			currentRow++;
+		}
 	}
 };

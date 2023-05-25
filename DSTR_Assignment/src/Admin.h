@@ -17,6 +17,7 @@ public:
 		: User(UID, username, email, password, phoneNo) {
 	}
 
+	// Return specified column value
 	template <typename T>
 	T getColumn(int index) {
 		/*
