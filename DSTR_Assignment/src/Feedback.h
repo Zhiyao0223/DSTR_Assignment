@@ -61,12 +61,12 @@ public:
 	}
 
 	/*
-		Display feedback. IN PROGRESS 
+		Display feedback. IN PROGRESS
 	*/
 	void custDisplay() {
 		cout << "Ticket ID: " << ID << endl
 			<< "UID:" << UID << endl
-			<< "Status: " <<  enumToString(status) << endl
+			<< "Status: " << enumToString(status) << endl
 			<< "Comment" << endl
 			<< "" << endl;
 	}
@@ -77,7 +77,7 @@ public:
 		@return value of enum
 	*/
 	string enumToString(FeedbackStatus tmpStatus) {
-		switch(tmpStatus) {
+		switch (tmpStatus) {
 		case FeedbackStatus::OPEN:
 			return "OPEN";
 		case FeedbackStatus::IN_PROGRESS:

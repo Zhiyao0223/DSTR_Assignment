@@ -77,7 +77,7 @@ public:
 
 				// Set to selected record
 				if (option == "1") {
-					cout << endl <<"Please enter the index number of university you wish to add: ";
+					cout << endl << "Please enter the index number of university you wish to add: ";
 					getline(cin, option);
 					cout << endl;
 
@@ -219,12 +219,15 @@ public:
 		if (isEmpty()) {
 			cout << "No item in the list." << endl;
 			return T();
-		} else if (index >= size) {
+		}
+		else if (index >= size) {
 			cout << "Error: Invalid request for adding data to specific location." << endl;
 			return T();
-		} else if (index == 0) {
+		}
+		else if (index == 0) {
 			return deleteFromFrontList();
-		} else if (index == size - 1) {
+		}
+		else if (index == size - 1) {
 			return deleteFromEndList();
 		}
 

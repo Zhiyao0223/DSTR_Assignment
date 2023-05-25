@@ -184,7 +184,7 @@ public:
 
 	string* toStringArray() {
 		return new string[21]{ to_string(rank),institution, locationCode, location, to_string(ArScore), to_string(ArRank),
-			to_string(ErScore), to_string(ErRank), to_string(FsrScore), to_string(FsrRank), to_string(CpfScore), 
+			to_string(ErScore), to_string(ErRank), to_string(FsrScore), to_string(FsrRank), to_string(CpfScore),
 			to_string(CpfRank), to_string(IfrScore), to_string(IfrRank), to_string(IsrScore), to_string(IsrRank),
 			to_string(IrnScore), to_string(IrnRank), to_string(GerScore), to_string(GerRank), to_string(scoreScaled) };
 	}

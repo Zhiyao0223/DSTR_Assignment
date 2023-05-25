@@ -499,7 +499,6 @@ public:
 	void displayFeedback(LinkedList<Feedback>* feedbackList) {
 		cout << "Feedback" << endl;
 		cout << "---------------------------------------" << endl;
-
 	}
 
 	// Getter Function
