@@ -3,14 +3,13 @@
 #include <iostream>
 using namespace std;
 
-
 class University {
 protected:
 	/*
 		rank - primary key
 		institution - university name
 		location - country of university
-		AR - academic reputation 
+		AR - academic reputation
 		ER - employer reputation
 		FSR - faculty / student ratio
 		CPF - citations per faculty
@@ -73,7 +72,6 @@ public:
 		scoreScaled = data[17];
 	}
 
-
 	// Display University Information
 	void display() {
 		cout << "Rank: " << getRank() << endl;
@@ -108,13 +106,12 @@ public:
 		return new University();
 	}
 
-
 	// Getter Functions
 	int getRank() {
 		return rank;
 	}
 
-	string getInstitution(){
+	string getInstitution() {
 		return institution;
 	}
 
@@ -178,7 +175,7 @@ public:
 		return IrnScore;
 	}
 
-	int getIrnRank(){
+	int getIrnRank() {
 		return IrnRank;
 	}
 

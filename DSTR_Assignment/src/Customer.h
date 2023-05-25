@@ -3,6 +3,9 @@
 #include <iostream>
 #include "User.h"
 #include "Date.h"
+#include "FileIO.h"
+#include "Favorite.h"
+#include "Util.h"
 #include "LinkedList.h"
 #include "Validation.h"
 using namespace std;
@@ -47,10 +50,15 @@ public:
 	Customer* login(LinkedList<Customer>* list) {
 		string tmpUsername, tmpPass;
 
+		cout << "* Enter 0 at \"Username\" to register" << endl << endl;
 		cout << "Username: ";
 		getline(cin, tmpUsername);
+
+		// Cancel login
+		if (tmpUsername == "0") return registration(list);
+
 		cout << "Password: ";
-		getline(cin, tmpPass);
+		tmpPass = Util::getPassword();
 
 		// Check if username and password match
 		return list->lookUpProfile(tmpUsername, tmpPass);
@@ -302,8 +310,152 @@ public:
 		cout << "Country: " << country << endl;
 	}
 
-	// Search
+	// View University
+	void viewUniversity(LinkedList<Favorite>* favList) {
+		FileIO fileIO;
+		LinkedList<University>* uniList = fileIO.readFile();
 
+		while (true) {
+			node<University>* selectedUni = uniList->displayAll();
+
+			if (selectedUni != NULL) {
+				if (Validation::isEmpty(getUsername())) {
+					cout << "Please login before proceed." << endl;
+					Util::sleep(1);
+					return;
+				}
+				else {
+					Util::cleanScreen();
+					selectedUni->data.display();
+
+					cout << "Please select your action:" << endl;
+					cout << "[1] Add to Wishlist" << endl;
+					cout << "[2] Back" << endl;
+					cout << "Option: ";
+
+					string index;
+					getline(cin, index);
+
+					if (index == "1") {
+						int favUID = favList->getNewUID();
+						favList->insertToEndList(new Favorite(favUID, this->getUID(), selectedUni->data.getRank()));
+						cout << endl << selectedUni->data.getInstitution() << " added to wishlist." << endl;
+						Util::sleep(1);
+					}
+					else if (index == "2") {
+						break;
+					}
+					else {
+						cout << "Invalid option." << endl;
+						Util::sleep(1);
+					}
+				}
+			}
+			else break;
+		}
+	}
+
+	void displayFav(LinkedList<Favorite>* favList) {
+		// Display all favorite
+		Util::cleanScreen();
+
+		cout << "Favorite" << endl;
+		cout << "---------------------------------------" << endl;
+
+		LinkedList<University>* favUniList = new LinkedList<University>();
+		node<Favorite>* tmp = favList->head;
+		int favSize = 1;
+		Favorite tmpClass;
+
+		while (tmp != NULL) {
+			tmpClass = tmp->data;
+
+			if (tmpClass.getUID() == this->getUID()) {
+				favUniList->insertToEndList(tmpClass.getUniversity(tmpClass.getInstitutionRank()));
+
+				cout << "[" << favSize << "] " << endl;
+				University* uni = tmpClass.getUniversity(tmpClass.getInstitutionRank());
+				uni->display();
+				favSize++;
+			}
+			tmp = tmp->nextAddress;
+		}
+
+		// No favorite
+		if (favSize == 1) {
+			cout << "No favorite at the moment." << endl;
+			Util::sleep(1);
+		}
+		else {
+			cout << "Please select your action:" << endl;
+			cout << "[1] Remove from Wishlist" << endl;
+			cout << "[2] Back" << endl;
+			cout << "Option: ";
+
+			string selection;
+			getline(cin, selection);
+
+			if (selection == "1") {
+				cout << endl << "Please enter the index number you wish to remove: ";
+
+				string removeUniIndex;
+				getline(cin, removeUniIndex);
+
+				try {
+					int indexInt = stoi(removeUniIndex);
+					if (indexInt > 0 && indexInt < favSize) {
+						tmp = favList->head;
+						node<University>* tmpUni = favUniList->head;
+						int counter = 0;
+
+						for (int i = 0; i < indexInt - 1; i++) {
+							tmpUni = tmpUni->nextAddress;
+						}
+
+						int uniRank = tmpUni->data.getRank();
+						while (tmp != NULL) {
+							tmpClass = tmp->data;
+
+							if (tmpClass.getInstitutionRank() == uniRank) {
+								Favorite tmp;
+
+								if (counter == 0) tmp = favList->deleteFromFrontList(); // Delete from front
+								else if (counter == favList->size - 1) tmp = favList->deleteFromEndList(); // Delete from end
+								else favList->deleteFromSpecificLocation(counter); // Delete from specific location
+
+								if (Validation::isEmpty(to_string(tmp.getID()))) {
+									cout << "Error: Unable to remove from wishlist." << endl;
+									Util::sleep(1);
+									return;
+								}
+
+								cout << endl << tmpClass.getUniversity(tmpClass.getInstitutionRank())->getInstitution() << " removed from wishlist." << endl;
+								Util::sleep(1);
+								break;
+							}
+							counter++;
+							tmp = tmp->nextAddress;
+						}
+					}
+					else {
+						cout << "Invalid option." << endl;
+						Util::sleep(1);
+					}
+				}
+				catch (exception) {
+					cout << "Invalid option." << endl;
+					Util::sleep(1);
+				}
+			}
+			else if (selection == "2") {
+				return;
+			}
+			else {
+				cout << "Invalid option." << endl;
+				Util::sleep(1);
+			}
+		}
+	}
 
 	// Getter Function
 	string getPostcode() {

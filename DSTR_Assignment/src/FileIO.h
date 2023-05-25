@@ -15,7 +15,6 @@ public:
 	string fileName = "2023 QS World University Rankings.csv";
 	string filePath = resourcePath + fileName;
 
-
 	/*
 		Read CSV file and store data into doubly linked list
 		@return Doubly linked list contain of all institution records.

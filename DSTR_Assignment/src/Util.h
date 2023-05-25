@@ -9,7 +9,6 @@
 #include "Customer.h"
 using namespace std;
 
-
 // All extra features throw here
 class Util {
 public:
@@ -51,12 +50,6 @@ public:
 		cout << endl;
 
 		return tmpPass;
-	}
-
-	// Retrieve university data from dataset
-	LinkedList<University>* getUniversityList() {
-		FileIO file;
-		return file.readFile();
 	}
 
 	// Delete inactive user, in progress
