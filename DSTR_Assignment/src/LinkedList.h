@@ -218,6 +218,10 @@ public:
 		} else if (index >= size) {
 			cout << "Error: Invalid request for adding data to specific location." << endl;
 			return T();
+		} else if (index == 0) {
+			return deleteFromFrontList();
+		} else if (index == size - 1) {
+			return deleteFromEndList();
 		}
 
 		int counter = 0;
