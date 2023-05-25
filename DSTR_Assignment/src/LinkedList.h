@@ -191,9 +191,9 @@ public:
 		@return Deleted data in class format
 	*/
 	T deleteFromFrontList() {
-		if (isEmpty) {
+		if (isEmpty()) {
 			cout << "No item in the list." << endl;
-			return NULL;
+			return T();
 		}
 
 		node<T>* temp = head;
@@ -247,9 +247,9 @@ public:
 		@return Deleted data in class format
 	*/
 	T deleteFromEndList() {
-		if (isEmpty) {
+		if (isEmpty()) {
 			cout << "No item in the list." << endl;
-			return NULL;
+			return T();
 		}
 
 		node<T>* temp = tail;
