@@ -41,6 +41,21 @@ public:
 	}
 
 	/*
+		Check if string contains only float value
+		@param test - string
+		@return True if input is float
+	*/
+	static bool isFloat(string test) {
+		try {
+			float tmp = stof(test);
+			return true;
+		}
+		catch (exception) {
+			return false;
+		}
+	}
+
+	/*
 		Check if string contains alphabet only
 		@param test - string
 		@return True if input is alphabetic
