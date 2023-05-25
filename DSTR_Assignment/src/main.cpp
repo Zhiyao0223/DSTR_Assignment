@@ -47,7 +47,7 @@ int main() {
 		try {
 			switch (stoi(option)) {
 			case 1:
-				custPlatform(custList, favList);
+				custPlatform(custList, favList, feedbackList);
 				break;
 			case 2:
 				admin = admin->login(adminList);

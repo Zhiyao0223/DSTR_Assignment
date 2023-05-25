@@ -17,6 +17,25 @@ public:
 		: User(UID, username, email, password, phoneNo) {
 	}
 
+	template <typename T>
+	T getColumn(int index) {
+		/*
+		*	Column Index:
+		*	0 - UID
+		*	1 - Username
+		*	2 - Email
+		*/
+		switch (index) {
+		case 0:
+			return getUID();
+		case 1:
+			return getUsername();
+		case 2:
+			return getEmail();
+		}
+	}
+
+
 	// Login
 	Admin* login(LinkedList<Admin>* list) {
 		string tmpUsername, tmpPass;

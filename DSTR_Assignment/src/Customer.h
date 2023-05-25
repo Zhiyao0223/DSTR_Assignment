@@ -4,6 +4,7 @@
 #include "User.h"
 #include "Date.h"
 #include "FileIO.h"
+#include "Feedback.h"
 #include "Favorite.h"
 #include "Util.h"
 #include "LinkedList.h"
@@ -34,6 +35,36 @@ public:
 		this->country = country;
 		lastLogDate = new Date();
 		updateLogDate();
+	}
+
+	template <typename T>
+	T getColumn(int index) {
+		/*
+		*	Column Index:
+		*	0 - UID
+		*	1 - Username
+		*	2 - Email
+		*	3 - PostCode
+		*	4 - Address
+		*	5 - State
+		*	6 - Country
+		*/
+		switch (index) {
+		case 0:
+			return getUID();
+		case 1:
+			return getUsername();
+		case 2:
+			return getEmail();
+		case 3:
+			return postcode;
+		case 4:
+			return address;
+		case 5:
+			return state;
+		case 6:
+			return country;
+		}
 	}
 
 	// Update latest login date

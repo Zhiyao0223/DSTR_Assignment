@@ -28,6 +28,24 @@ public:
 		status = FeedbackStatus::OPEN;
 	}
 
+	template <typename T>
+	T getColumn(int index) {
+		/*
+		*	Column Index:
+		*	0 - ID
+		*	1 - UID
+		*	2 - status
+		*/
+		switch (index) {
+		case 0:
+			return ID;
+		case 1:
+			return UID;
+		case 2:
+			return enumToString(status);
+		}
+	}
+
 	/*
 		Multi-level linked list for continous replies
 		@param tmpID - Ticket ID
@@ -41,10 +59,24 @@ public:
 
 	void custDisplay() {
 		cout << "Ticket ID: " << ID << endl
-			<< "Status: " <<   << endl
 			<< "UID:" << UID << endl
+			<< "Status: " <<  enumToString(status) << endl
+			<< "Comment" << endl
 			<< "" << endl;
 
+	}
+
+	string enumToString(FeedbackStatus tmpStatus) {
+		switch(tmpStatus) {
+		case FeedbackStatus::OPEN:
+			return "OPEN";
+		case FeedbackStatus::IN_PROGRESS:
+			return "IN_PROGRESS";
+		case FeedbackStatus::RESOLVED:
+			return "RESOLVED";
+		case FeedbackStatus::CLOSED:
+			return "CLOSED";
+		}
 	}
 
 	// Getter
@@ -62,6 +94,10 @@ public:
 
 	Feedback* getReply() {
 		return reply;
+	}
+
+	string getStatus() {
+		return enumToString(status);
 	}
 
 	// Setter

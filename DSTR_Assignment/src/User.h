@@ -28,6 +28,9 @@ public:
 		this->phoneNumber = phoneNo;
 	}
 
+	//template <typename T>
+	//virtual T getColumn<T>(int colIndex) = 0;
+
 	// Logout Function
 	void logOut() {
 		setLoginStatus(false);
