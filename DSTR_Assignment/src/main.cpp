@@ -248,4 +248,6 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 
 // Purely use for testing, delete later
 void test() {
+	
+	
 }

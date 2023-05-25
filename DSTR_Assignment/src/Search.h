@@ -7,42 +7,80 @@
 #include "LinkedList.h"
 using namespace std;
 
-// Binary search
+//Binary Search (Modified Version)
 template <class T>
-//Needed to be sorted first, the code not include any sorting algorithm
-LinkedList<T>* binarySearch(LinkedList<T>* list, string key, int index) {
+LinkedList<T>* binarySearch(LinkedList<T>* list, string key, int columnIndex) {
     if (list == nullptr || list->head == nullptr) {
         return nullptr;  // Empty list, return nullptr
     }
 
-    if (index < 0 || index >= list->head->data.size()) {
-        return nullptr;  // Invalid index, return nullptr
-    }
-
     LinkedList<T>* result = nullptr;
-    node<T>* left = list->head;
-    node<T>* right = nullptr;
+    node<T>* start = list->head;
+    node<T>* end = nullptr;
 
-    while (left != right) {
-        node<T>* slow = left;
-        node<T>* fast = left->nextAddress;
-        while (fast != right && fast->nextAddress != right) {
-            slow = slow->nextAddress;
-            fast = fast->nextAddress->nextAddress;
+    while (start != end && start->nextAddress != end) {
+        node<T>* mid = getMiddleNode(start, end);
+        if (mid->data.getColumn(columnIndex) == key) {
+            if (result == nullptr) {
+                result = new LinkedList<T>();
+            }
+            result->insertToEndList(mid->data);
+            // Include the middle node in the subsequent search range
+            searchRange(start, mid, columnIndex, key, result);
+            searchRange(mid->nextAddress, end, columnIndex, key, result);
+            break;  // Found a match, no need to continue searching
         }
-
-        if (slow->data[index] == key) {
-            result = new LinkedList<T>();
-            result->insertToEndList(slow->data);
-            return result;
-        }
-        else if (slow->data[index] < key) {
-            left = slow->nextAddress;
+        else if (mid->data.getColumn(columnIndex) < key) {
+            start = mid->nextAddress;
         }
         else {
-            right = slow;
+            end = mid;
         }
     }
 
     return result;
+}
+
+
+
+template <class T>
+void searchRange(node<T>* start, node<T>* end, int columnIndex, string key, LinkedList<T>* result) {
+    node<T>* left = start;
+    node<T>* right = end;
+
+    while (left != right && left->nextAddress != right) {
+        node<T>* mid = getMiddleNode(left, right);
+        if (mid->data.getColumn(columnIndex) == key) {
+            result->insertToEndList(mid->data);
+            // Include the middle node in the subsequent search range
+            searchRange(start, mid, columnIndex, key, result);
+            searchRange(mid->nextAddress, end, columnIndex, key, result);
+            return;  // Found a match, no need to continue searching
+        }
+        else if (mid->data.getColumn(columnIndex) < key) {
+            left = mid->nextAddress;
+        }
+        else {
+            right = mid;
+        }
+    }
+
+    // Check if the last node matches the key
+    if (left != nullptr && left->data.getColumn(columnIndex) == key) {
+        result->insertToEndList(left->data);
+    }
+}
+
+
+template <class T>
+node<T>* getMiddleNode(node<T>* start, node<T>* end) {
+    node<T>* slow = start;
+    node<T>* fast = start;
+
+    while (fast != end && fast->nextAddress != end) {
+        slow = slow->nextAddress;
+        fast = fast->nextAddress->nextAddress;
+    }
+
+    return slow;
 }
