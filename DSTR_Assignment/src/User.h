@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include "LinkedList.h"
+#include "Util.h"
 using namespace std;
 
 class User {
@@ -10,6 +12,7 @@ protected:
 	string email;
 	string password;
 	string phoneNumber;
+	bool loginStatus;
 
 public:
 	User() {
@@ -24,8 +27,13 @@ public:
 		this->password = password;
 		this->phoneNumber = phoneNo;
 	}
-	
 
+	// Logout Function
+	void logOut() {
+		setLoginStatus(false);
+		cout << this->getUsername() << " logging out." << endl;
+		Util::sleepClean(1);
+	}
 
 	// Getter Function
 	int getUID() {
@@ -48,6 +56,10 @@ public:
 		return phoneNumber;
 	}
 
+	bool getLoginStatus() {
+		return loginStatus;
+	}
+
 	// Setter function
 	void setUID(int tmpUID) {
 		ID = tmpUID;
@@ -67,5 +79,9 @@ public:
 
 	void setPhoneNo(string tmpPhone) {
 		phoneNumber = tmpPhone;
+	}
+
+	void setLoginStatus(bool status) {
+		loginStatus = status;
 	}
 };

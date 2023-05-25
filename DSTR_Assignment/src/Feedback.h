@@ -12,7 +12,6 @@ enum class FeedbackStatus
 	CLOSED
 };
 
-
 class Feedback {
 protected:
 	int ID;
@@ -30,6 +29,27 @@ public:
 	}
 
 	/*
+		Return specific column value indexed
+	*/
+	template <typename T>
+	T getColumn(int index) {
+		/*
+		*	Column Index:
+		*	0 - ID
+		*	1 - UID
+		*	2 - status
+		*/
+		switch (index) {
+		case 0:
+			return ID;
+		case 1:
+			return UID;
+		case 2:
+			return enumToString(status);
+		}
+	}
+
+	/*
 		Multi-level linked list for continous replies
 		@param tmpID - Ticket ID
 		@param tmpUID - userID who replied
@@ -40,6 +60,34 @@ public:
 		return new Feedback(tmpID, tmpUID, tmpComment);
 	}
 
+	/*
+		Display feedback. IN PROGRESS
+	*/
+	void custDisplay() {
+		cout << "Ticket ID: " << ID << endl
+			<< "UID:" << UID << endl
+			<< "Status: " << enumToString(status) << endl
+			<< "Comment" << endl
+			<< "" << endl;
+	}
+
+	/*
+		Convert enum to string
+		@param tmpStatus - enum FeedbackStatus
+		@return value of enum
+	*/
+	string enumToString(FeedbackStatus tmpStatus) {
+		switch (tmpStatus) {
+		case FeedbackStatus::OPEN:
+			return "OPEN";
+		case FeedbackStatus::IN_PROGRESS:
+			return "IN_PROGRESS";
+		case FeedbackStatus::RESOLVED:
+			return "RESOLVED";
+		case FeedbackStatus::CLOSED:
+			return "CLOSED";
+		}
+	}
 
 	// Getter
 	int getID() {
@@ -58,6 +106,9 @@ public:
 		return reply;
 	}
 
+	string getStatus() {
+		return enumToString(status);
+	}
 
 	// Setter
 	void setID(int tmp) {

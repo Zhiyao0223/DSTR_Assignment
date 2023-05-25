@@ -16,6 +16,41 @@ public:
 		insitution = tmpInstitution;
 	}
 
+	Favorite() {
+		ID = UID = insitution = NULL;
+	}
+
+	// Return specified column value
+	template <typename T>
+	T getColumn(int index) {
+		/*
+		*	Column Index:
+		*	0 - ID
+		*	1 - UID
+		*	2 - institution
+		*/
+		switch (index) {
+		case 0:
+			return ID;
+		case 1:
+			return UID;
+		case 2:
+			return insitution;
+		}
+	}
+
+	// Get specific university from list
+	University* getUniversity(int id) {
+		FileIO file;
+		LinkedList<University>* uniList = file.readFile();
+		node<University>* tmp = uniList->head;
+
+		while (tmp != NULL) {
+			if (tmp->data.getRank() == id) return &tmp->data;
+			tmp = tmp->nextAddress;
+		}
+		return NULL;
+	}
 
 	// Getter Function
 	int getID() {
