@@ -39,6 +39,14 @@ public:
 		return new Feedback(tmpID, tmpUID, tmpComment);
 	}
 
+	void custDisplay() {
+		cout << "Ticket ID: " << ID << endl
+			<< "Status: " <<   << endl
+			<< "UID:" << UID << endl
+			<< "" << endl;
+
+	}
+
 	// Getter
 	int getID() {
 		return ID;

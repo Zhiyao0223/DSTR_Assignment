@@ -457,6 +457,11 @@ public:
 		}
 	}
 
+	// View Feedback
+	void displayFeedback(LinkedList<Feedback>* feedbackList) {
+
+	}
+
 	// Getter Function
 	string getPostcode() {
 		return postcode;

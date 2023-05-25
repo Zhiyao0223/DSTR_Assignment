@@ -12,7 +12,7 @@
 using namespace std;
 
 void test();
-void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList);
+void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList);
 void adminPlatform(Admin* currentAdmin);
 void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList);
 
@@ -129,7 +129,7 @@ void adminPlatform(Admin* currentAdmin) {
 }
 
 // Customer Platform
-void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList) {
+void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList) {
 	Customer* currentCust = new Customer();
 
 	bool isLogin = false;
@@ -160,7 +160,7 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList)
 					currentCust->displayFav(favList);
 					break;
 				case 4:
-					//cust.feedback();
+					currentCust->displayFeedback(feedbackList);
 					break;
 				case 5:
 					currentCust->displayProfileMenu();
