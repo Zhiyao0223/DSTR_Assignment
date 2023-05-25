@@ -6,7 +6,6 @@
 #include <thread>
 #include <string>
 #include "LinkedList.h"
-#include "Customer.h"
 using namespace std;
 
 // All extra features throw here
@@ -52,19 +51,11 @@ public:
 		return tmpPass;
 	}
 
-	// Delete inactive user, in progress
-	//void deleteInactiveUser(LinkedList<Customer>* user){
-	//	node<Customer>* tmp = user->head;
-	//	string date = "";
-	//	int counter = 0;
-
-	//	while (tmp != NULL) {
-	//		if (tmp->data.checkInactiveStatus()) {
-	//			Customer cust = user->deleteFromSpecificLocation(counter);
-	//			cout << "Deleted: " << cust.getUsername() << endl;
-	//		}
-	//		counter++;
-	//		tmp = tmp->nextAddress;
-	//	}
-	//}
+	// Destroy 2d Array, prevent memory leak
+	static void destroy2dArray(int** arr, int row) {
+		for (int i = 0; i < row; i++) {
+			delete[] arr[i];
+		}
+		delete[] arr;
+	}
 };
