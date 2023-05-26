@@ -8,9 +8,11 @@
 #include "Feedback.h"
 #include "LinkedList.h"
 #include "University.h"
+#include "Util.h"
 #include <fstream>
 #include <sstream>
 #include <string>
+#include "FileIO.h"
 
 using namespace std;
 
@@ -160,4 +162,68 @@ public:
         outputFile4.close(); // Close the input file
 
     }
+};
+
+void modifyUser(LinkedList<Customer>* editUser) {
+   
+
+    // Display the list of users
+    cout << "Customer List:" << endl;
+    cout << "---------------------------------------" << endl;
+    node<Customer>* currentNode = editUser->head;
+    while (currentNode != nullptr) {
+        cout << "ID: " << currentNode->data.getUID() << endl;
+        cout << "Username: " << currentNode->data.getUsername() << endl;
+        cout << "Email: " << currentNode->data.getEmail() << endl;
+        cout << "Phone: " << currentNode->data.getPhoneNo() << endl;
+        cout << "Password: " << currentNode->data.getPassword() << endl;
+        cout << "Postcode: " << currentNode->data.getPostcode() << endl;
+        cout << "Address: " << currentNode->data.getAddress() << endl;
+        cout << "State: " << currentNode->data.getState() << endl;
+        cout << "Country: " << currentNode->data.getCountry() << endl;
+        cout << "---------------------------------------" << endl;
+
+        currentNode = currentNode->nextAddress;
+    }
+
+    // Ask for user selection
+    string index;
+    while (true) {
+        try {
+            cout << "Enter the index of the user you want to modify: ";
+            getline(cin, index);
+            stoi(index);
+            break;
+        }
+        catch (exception) {
+        }
+    }
+
+    Util::cleanScreen();
+
+    // Get the user from the linked list based on UID
+    Customer* selectedUser = nullptr;
+    node<Customer>* editNode = editUser->head;
+    while (editNode != nullptr) {
+        if (editNode->data.getUID() == stoi(index)) {
+            selectedUser = &(editNode->data);
+            break;
+        }
+        editNode = editNode->nextAddress;
+    }
+
+    if (selectedUser) {
+        // Edit the profile of the selected user
+        if (selectedUser->editProfile()) {
+            selectedUser->toString();
+        }
+    }
+    else {
+        cout << "User with UID " << index << " not found." << endl;
+        Util::sleepClean(1);
+        modifyUser(editUser);
+
+
+    }
+
 };

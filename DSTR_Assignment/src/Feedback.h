@@ -56,6 +56,23 @@ public:
 		return reply;
 	}
 
+	string enumToString(FeedbackStatus status) {
+		switch (status) {
+		case FeedbackStatus::OPEN:
+			return "OPEN";
+		case FeedbackStatus::IN_PROGRESS:
+			return "IN_PROGRESS";
+		case FeedbackStatus::RESOLVED:
+			return "RESOLVED";
+		case FeedbackStatus::CLOSED:
+			return "CLOSED";
+		}
+	}
+
+	string getStatus() {
+		return enumToString(status);
+	}
+
 	// Setter
 	void setID(int tmp) {
 		ID = tmp;
