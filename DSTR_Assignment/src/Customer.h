@@ -684,13 +684,8 @@ public:
 	void setLastLogDate(Date* data) {
 		lastLogDate = data;
 	}
-<<<<<<< HEAD
-};
-
-=======
 
 	void setAccountStatus(AccountStatus data) {
 		status = data;
 	}
 };
->>>>>>> a83d5256e068cd3782fef301ba3f1e000abf0aba

@@ -48,43 +48,6 @@ int main() {
 		getline(cin, option);
 		cout << endl;
 
-<<<<<<< HEAD
-	//	try {
-	//		switch (stoi(option)) {
-	//		case 1:
-<<<<<<< HEAD
-	//			custPlatform(custList, favList);
-=======
-	//			custPlatform(custList, favList, feedbackList);
->>>>>>> c18921a2c56370e79068bad5f1bcebf2e6964260
-	//			break;
-	//		case 2:
-	//			admin = admin->login(adminList);
-	//			if (admin == nullptr) {
-	//				cout << "Invalid username or password" << endl;
-	//			}
-	//			else {
-	//				adminPlatform(admin);
-	//			}
-	//			break;
-	//		case 3:
-	//			cout << "Thanks for using the system" << endl;
-	//			return  0;
-	//		default:
-	//			cout << "Please enter only the option available." << endl << endl;
-	//		}
-	//	}
-	//	catch (exception) {
-	//		cout << "Please enter only the option available." << endl << endl;
-	//	}
-	//	Util::sleepClean(1);
-	//}
-<<<<<<< HEAD
-
-	
-=======
->>>>>>> c18921a2c56370e79068bad5f1bcebf2e6964260
-=======
 		try {
 			switch (stoi(option)) {
 			case 1:
@@ -111,7 +74,32 @@ int main() {
 		}
 		Util::sleepClean(1);
 	}
->>>>>>> a83d5256e068cd3782fef301ba3f1e000abf0aba
+
+	try {
+		switch (stoi(option)) {
+		case 1:
+			custPlatform(custList, favList, feedbackList, uniList);
+			break;
+		case 2:
+			admin = admin->login(adminList);
+			if (admin == nullptr) {
+				cout << "Invalid username or password" << endl;
+			}
+			else {
+				adminPlatform(admin);
+			}
+			break;
+		case 3:
+			cout << "Thanks for using the system" << endl;
+			return  0;
+		default:
+			cout << "Please enter only the option available." << endl << endl;
+		}
+	}
+	catch (exception) {
+		cout << "Please enter only the option available." << endl << endl;
+	}
+	Util::sleepClean(1);
 }
 
 // Admin Platform
@@ -316,12 +304,10 @@ void test() {
 	LinkedList<Customer>* custList = new LinkedList<Customer>();
 	LinkedList<Favorite>* favList = new LinkedList<Favorite>();
 	LinkedList<Feedback>* feedbackList = new LinkedList<Feedback>();
-
-	setupUser(custList, adminList, favList, feedbackList);
-
-	<<<<<< < HEAD
-		FileIO file;
+	FileIO file;
 	LinkedList<University>* uniList = file.readFile();
+
+	setupUser(custList, adminList, favList, feedbackList, uniList);
 
 	Admin admin;
 	Customer customer;

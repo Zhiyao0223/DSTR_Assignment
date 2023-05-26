@@ -92,8 +92,8 @@ public:
 			<< "UID:" << "\t\t" << ": " << UID << endl
 			<< "Status: " << "\t" << ": " << FeedbackStatusToString(status) << endl
 			<< "Title" << "\t\t" << ": " << title << endl << endl
-			<< "#-------- Comment ---------#" << endl << endl 
-			<< UserRoleToString(role) << " [" << date->toString() << "] :" << endl 
+			<< "#-------- Comment ---------#" << endl << endl
+			<< UserRoleToString(role) << " [" << date->toString() << "] :" << endl
 			<< comment << endl << endl;
 
 		Feedback* currentReply = this->reply;
