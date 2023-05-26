@@ -119,6 +119,27 @@ public:
 	void editUniversity() {
 	}
 
+	//Display Register User
+	void displayRegisterUser(LinkedList<Customer>* cusList) {
+
+		//If the list is empty
+		if (cusList->head == nullptr) {
+			cout << "No user registered yet." << endl;
+			return;
+		}
+
+		//Display the list
+		cout << "UID\tUsername\tEmail\t\t\tPhone No." << endl;
+		node<Customer>* current = cusList->head;
+		while (current != nullptr) {
+			Customer tmp = current->data;
+			cout << tmp.getUID() << "\t" << tmp.getUsername() << "\t\t" << tmp.getEmail() << "\t" << tmp.getPhoneNo() << endl;
+			cout << "-----------------------------------------------------------------" << endl;
+			current = current->nextAddress;
+		}
+
+	}
+
 	//Generate Report
 	void generateReport(LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList, LinkedList<Favorite>* favList) {
 		ofstream outputFile1("university.csv"); // Open the input CSV file
