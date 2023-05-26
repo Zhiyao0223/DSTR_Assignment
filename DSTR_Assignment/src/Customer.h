@@ -367,6 +367,12 @@ public:
 		cout << "Country: " << country << endl;
 	}
 
+	// Return string of data for csv export
+	string toDataString() {
+		return to_string(getUID()) + "," + username + "," + email + "," + password + "," 
+				+ getPhoneNo() + "," + getPostcode() + "," + address + "," + state + "," + country;
+	}
+
 	/*
 		Display University
 		@para favList: Favorite List
@@ -527,16 +533,39 @@ public:
 		node<Feedback>* current = feedbackList->head;
 		int ticketCounter = 1;
 
+		
+
 		Util::cleanScreen();
 		cout << "Feedback" << endl;
 		cout << "---------------------------------------" << endl << endl;
 
 		while (current != NULL) {
 			if (current->data.getUID() == this->getUID()) {
+				//if (!Validation::isEmpty(current->data.getReply())) {
+				//	stringstream ss(feedbackList->head->data.getReply());
+				//	int arrSize = 0;
+				//	string token;
+				//	while (getline(ss, token, ',')) {
+				//		arrSize++;
+				//	}
+
+				//	int* arr = new int[arrSize];
+
+				//	ss.clear();
+				//	ss.seekg(0);
+
+				//	int index = 0;
+				//	while (getline(ss, token, ',')) {
+				//		arr[index] = std::stoi(token);
+				//		index++;
+				//	}
+				//}
+
 				if (ticketCounter == 1) {
 					cout << "Ticket ID" << "\t" << "Latest Date" << "\t" << "Status" << endl;
 				}
 
+				
 				cout << "   [" << ticketCounter << "] " << "\t\t"
 					<< current->data.getDate() << "\t"
 					<< current->data.getStatus() << endl;
@@ -595,7 +624,7 @@ public:
 					while (current != NULL) {
 						if (current->data.getUID() == this->getUID()) {
 							if (counter == indexInt - 1) {
-								current->data.display();
+								current->data.display(feedbackList);
 								break;
 							}
 							counter++;

@@ -256,6 +256,39 @@ public:
 		cout << "User deleted successfully!" << endl;
 	}
 
+	// Return string of data for csv export
+	string toDataString() {
+		return to_string(this->getUID()) + "," + this->getUsername() + "," + this->getEmail() + "," 
+				+ this->getPassword() + "," + this->getPhoneNo();
+	}
+
+	/*
+		Eliminate duplicate code when generating report
+		@param filename: name of the file to export
+		@param header: header of the file
+		@param dataList: data list to export
+	*/
+	template <class T>
+	void exportData(string filename, string header, LinkedList<T>* dataList) {
+		ofstream outputFile(filename);
+
+		if (outputFile.is_open()) {
+			outputFile << header << '\n';
+
+			node<T>* current = dataList->head;
+			while (current != nullptr) {
+				string dataString = current->data;
+				outputFile << dataString << '\n';
+				current = current->nextAddress;
+			}
+
+			outputFile.close();
+		}
+		else {
+			std::cout << "Error opening the output file: " << filename << endl;
+		}
+	}
+
 	/*
 		Generate CSV reports upon system close. Include university, customer, feedback, and favorite.
 		@param uniList: Universities list
@@ -263,9 +296,11 @@ public:
 		@param feedbackList: Feedbacks list
 		@param favList: Favorites list
 	*/
-	void generateReport(LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList, LinkedList<Favorite>* favList) {
+	void generateReport(LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Feedback>* feedbackList, LinkedList<Favorite>* favList) {
 		// Open the input CSV file
-		ofstream outputFile1("university.csv"); 
+		
+		
+		ofstream outputFile1("output/university.csv"); 
 
 		outputFile1 << "Rank, Institution, Location Code, Location, AR Score, AR Rank, ER Score, ER Rank, FSR Score, FSR Rank, CPF Score, CPF Rank, IFR Score, IFR Rank, ISR Score, ISR Rank, IRN Score, IRN Rank, GER Score, GER Rank, Score Scaled\n";
 		if (outputFile1.is_open()) {
@@ -308,7 +343,7 @@ public:
 		outputFile1.close(); 
 
 		// Open the input CSV file
-		ofstream outputFile2("customer.csv");
+		ofstream outputFile2("output/customer.csv");
 
 		outputFile2 << "Username, Email, PhoneNo, Postcode, Address, State, Country\n";
 		if (outputFile2.is_open()) {
@@ -337,7 +372,7 @@ public:
 		outputFile2.close(); 
 
 		// Open the input CSV file
-		ofstream outputFile3("favorite.csv"); 
+		ofstream outputFile3("output/favorite.csv"); 
 
 		outputFile3 << "ID, UID, insitution\n";
 		if (outputFile3.is_open()) {
@@ -362,7 +397,7 @@ public:
 		outputFile3.close(); 
 
 		// Open the input CSV file
-		ofstream outputFile4("feedback.csv"); 
+		ofstream outputFile4("output/feedback.csv"); 
 
 		outputFile4 << "ID, UID, comment, reply, status, role, date\n";
 		if (outputFile4.is_open()) {
@@ -543,4 +578,53 @@ public:
 			cout << endl;
 		}
 	};
+
+	/*
+		Function to calculate the time complexity of search operation
+		@param list - Searched List
+		@param searchOp - Search Operation
+	*/
+	template <class T, typename SearchOperation>
+	void countTimeComplexitySearch(LinkedList<T>* list, SearchOperation searchOp) {
+		auto startTime = std::chrono::steady_clock::now();
+
+		// Perform the search operation
+		searchOp(list);
+
+		auto endTime = chrono::steady_clock::now();
+		auto duration = chrono::duration_cast<chrono::microseconds>(endTime - startTime);
+
+		std::cout << "Search Time Complexity: " << duration.count() << " microseconds" << std::endl;
+	}
+
+	/*
+		Function to calculate the time complexity of sort operation
+		@param list - Unsorted List
+		@param sortOp - Sort Operation
+	*/
+	template <class T, typename SortOperation>
+	void countTimeComplexitySort(LinkedList<T>* list, SortOperation sortOp) {
+		auto startTime = chrono::steady_clock::now();
+
+		// Perform the sort operation
+		sortOp(list);
+
+		auto endTime = chrono::steady_clock::now();
+		auto duration = chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
+
+		cout << "Sort Time Complexity: " << duration.count() << " microseconds" << std::endl;
+	}
+
+	/*
+		Function to compare the time complexity of search and sort operations
+		@param list - List to be searched and sorted
+		@param searchOp - Search Operation
+		@param sortOp - Sort Operation
+	*/
+	template <class T, typename SearchOperation, typename SortOperation>
+	void compareTimeComplexity(LinkedList<T>* list, SearchOperation searchOp, SortOperation sortOp) {
+		countTimeComplexitySearch(list, searchOp);
+		countTimeComplexitySort(list, sortOp);
+	}
+
 };

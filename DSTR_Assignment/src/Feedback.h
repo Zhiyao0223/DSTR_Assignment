@@ -56,22 +56,28 @@ public:
 	/*
 		Return specific column value indexed
 	*/
-	template <typename T>
-	T getColumn(int index) {
-		/*
-		*	Column Index:
-		*	0 - ID
-		*	1 - UID
-		*	2 - status
-		*/
-		switch (index) {
-		case 0:
-			return ID;
-		case 1:
-			return UID;
-		case 2:
-			return FeedbackStatusToString(status);
-		}
+	//template <typename T>
+	//T getColumn(int index) {
+	//	/*
+	//	*	Column Index:
+	//	*	0 - ID
+	//	*	1 - UID
+	//	*	2 - status
+	//	*/
+	//	switch (index) {
+	//	case 0:
+	//		return ID;
+	//	case 1:
+	//		return UID;
+	//	case 2:
+	//		return FeedbackStatusToString(status);
+	//	}
+	//}
+
+	// Return string of data for csv export
+	string toDataString() {
+		return to_string(ID) + "," + to_string(UID) + "," + title + "," + comment + "," 
+			+ enumToString(status) + "," + date->toString();
 	}
 
 	/*
@@ -92,7 +98,7 @@ public:
 	/*
 		Display feedback in detail
 	*/
-	void display() {
+	void display(LinkedList<Feedback>* feedbackList) {
 		Util::cleanScreen();
 
 		cout << "Ticket ID" << "\t" << ": " << ID << endl
@@ -119,6 +125,8 @@ public:
 			<< "Option: ";
 
 		string option, tmpComment;
+		int newUID = feedbackList->getNewUID();
+		Feedback* newNode = new Feedback();
 		cin >> option;
 
 		if (option == "1") {
@@ -126,11 +134,14 @@ public:
 			cin.ignore();
 			getline(cin, tmpComment);
 
+			newNode = createNewReply(newUID, this->UID, this->title, tmpComment);
+			feedbackList->insertToEndList(newNode);
+
 			if (tmp == NULL) {
-				this->reply = createNewReply(ID, this->UID, this->title, tmpComment);
+				this->reply = &(feedbackList->tail->data);
 			}
 			else {
-				tmp->reply = createNewReply(ID, this->UID, this->title, tmpComment);
+				tmp->reply = &(feedbackList->tail->data);
 			}
 
 			this->setStatus(FeedbackStatus::IN_PROGRESS);
@@ -194,8 +205,15 @@ public:
 		return comment;
 	}
 
-	Feedback* getReply() {
-		return reply;
+	string getReply() {
+		Feedback* tmp = reply;
+		string replyID = to_string(reply->getID());
+		while(tmp != NULL) {
+			tmp = tmp->reply;
+			replyID += "," + to_string(tmp->getID());
+		}
+
+		return replyID;
 	}
 
 	string enumToString(FeedbackStatus status) {

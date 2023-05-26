@@ -34,7 +34,7 @@ int main() {
 	string programName = "Awesome CLI Program";
 	string welcomeMsg = "This system is a university rating platform.\n"
 						"Get ready to explore the world of command-line magic\n";
-	string thankYouMsg = "Thank you for using the Awesome CLI Program!\n"
+	string thankYouMsg = "Thank you for using this University Rating System!\n"
 						"We appreciate your time and hope you found it useful.\n"
 						"If you have any feedback or suggestions, please let us know.\n"
 						"Have a fantastic day!";
@@ -75,7 +75,8 @@ int main() {
 				}
 				break;
 			case 3:
-				cout << thankYouMsg << endl;
+				admin->generateReport(uniList, custList, adminList, feedbackList, favList);
+				cout << endl << thankYouMsg << endl;
 				return  0;
 			default:
 				cout << "Invalid Option." << endl;
