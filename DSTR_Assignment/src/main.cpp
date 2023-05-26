@@ -13,7 +13,7 @@
 using namespace std;
 
 void test();
-void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList);
+void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>* uniList);
 void adminPlatform(Admin* currentAdmin);
 void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>* uniList);
 
@@ -50,7 +50,7 @@ int main() {
 		try {
 			switch (stoi(option)) {
 			case 1:
-				custPlatform(custList, favList, feedbackList);
+				custPlatform(custList, favList, feedbackList, uniList);
 				break;
 			case 2:
 				admin = admin->login(adminList);
@@ -250,6 +250,22 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	favList->insertToEndList(new Favorite(favNewId + 7, 4, 5));
 	favList->insertToEndList(new Favorite(favNewId + 8, 4, 2));
 	favList->insertToEndList(new Favorite(favNewId + 9, 4, 21));
+
+	feedbackList->insertToEndList(new Feedback(feedbackNewId, 1, "Title", "haha"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 1, 1, "Title", "9"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 2, 2, "Title", "12"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 3, 2, "Title", "12"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 4, 2, "Title", "12"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 5, 3, "Title", "212"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 6, 3, "Title", "2"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 7, 4, "Title", "25"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 8, 4, "Title", "2"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 9, 4, "Title", "21"));
+	feedbackList->head->data.setReply(feedbackNewId, 4, "Reply", "1111");
+
+	Feedback* tmp = feedbackList->head->data.getReply();
+	tmp->setRole(UserRole::ADMIN);
+
 }
 
 // Purely use for testing, delete later
