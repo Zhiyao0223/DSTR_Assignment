@@ -433,4 +433,40 @@ public:
 		}
 	}
 
+	//countTimeComplexity
+	// Function to calculate the time complexity of search operation
+	template <class T, typename SearchOperation>
+	void countTimeComplexitySearch(LinkedList<T>* list, SearchOperation searchOp) {
+		auto startTime = std::chrono::steady_clock::now();
+
+		// Perform the search operation
+		searchOp(list);
+
+		auto endTime = std::chrono::steady_clock::now();
+		auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
+
+		std::cout << "Search Time Complexity: " << duration.count() << " microseconds" << std::endl;
+	}
+
+	// Function to calculate the time complexity of sort operation
+	template <class T, typename SortOperation>
+	void countTimeComplexitySort(LinkedList<T>* list, SortOperation sortOp) {
+		auto startTime = std::chrono::steady_clock::now();
+
+		// Perform the sort operation
+		sortOp(list);
+
+		auto endTime = std::chrono::steady_clock::now();
+		auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
+
+		std::cout << "Sort Time Complexity: " << duration.count() << " microseconds" << std::endl;
+	}
+
+	// Function to compare the time complexity of search and sort operations
+	template <class T, typename SearchOperation, typename SortOperation>
+	void compareTimeComplexity(LinkedList<T>* list, SearchOperation searchOp, SortOperation sortOp) {
+		countTimeComplexitySearch(list, searchOp);
+		countTimeComplexitySort(list, sortOp);
+	}
+
 };
