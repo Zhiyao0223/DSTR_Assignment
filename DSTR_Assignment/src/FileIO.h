@@ -48,6 +48,9 @@ public:
 				if (Validation::isEmpty(field)) {
 					field = "-";
 				}
+				else if (field[0] == ' ') {
+					institutionName = field.substr(1);
+				}
 				else if (field.front() == '\"' && field.back() != '\"') {
 					string nextSentence;
 
@@ -55,10 +58,14 @@ public:
 						field += nextSentence;
 
 						if (!Validation::isEmpty(nextSentence) && nextSentence.back() == '\"') {
-							institutionName = field;
+							institutionName = field.substr(1, field.length() - 2);
 							break;
 						}
 					}
+				}
+				else if (field.front() == '\"' && field.back() == '\"') {
+					field.erase(remove(field.begin(), field.end(), '\"'), field.end());
+					institutionName = field;
 				}
 				else if (commaCounter > 0 && commaCounter < 4) {
 					if (commaCounter == 1) institutionName = field;

@@ -153,7 +153,6 @@ public:
 				Util::sleep(1);
 				continue;
 			}
-			
 
 			cout << "Password: ";
 			tmpPass = Util::getPassword();
@@ -303,8 +302,8 @@ public:
 			getline(cin, index);
 			try {
 				stoi(index);
-
-			} catch (exception) {
+			}
+			catch (exception) {
 				cout << "Invalid option." << endl;
 			}
 
@@ -368,6 +367,12 @@ public:
 		cout << "Country: " << country << endl;
 	}
 
+	// Return string of data for csv export
+	string toDataString() {
+		return to_string(getUID()) + "," + username + "," + email + "," + password + "," 
+				+ getPhoneNo() + "," + getPostcode() + "," + address + "," + state + "," + country;
+	}
+
 	/*
 		Display University
 		@para favList: Favorite List
@@ -377,7 +382,7 @@ public:
 		LinkedList<University>* uniList = fileIO.readFile();
 
 		while (true) {
-			node<University>* selectedUni = uniList->displayAll();
+			node<University>* selectedUni = uniList->displayAllUniversity();
 
 			if (selectedUni != NULL) {
 				if (Validation::isEmpty(getUsername())) {
@@ -528,19 +533,42 @@ public:
 		node<Feedback>* current = feedbackList->head;
 		int ticketCounter = 1;
 
+		
+
 		Util::cleanScreen();
 		cout << "Feedback" << endl;
 		cout << "---------------------------------------" << endl << endl;
 
 		while (current != NULL) {
 			if (current->data.getUID() == this->getUID()) {
+				//if (!Validation::isEmpty(current->data.getReply())) {
+				//	stringstream ss(feedbackList->head->data.getReply());
+				//	int arrSize = 0;
+				//	string token;
+				//	while (getline(ss, token, ',')) {
+				//		arrSize++;
+				//	}
+
+				//	int* arr = new int[arrSize];
+
+				//	ss.clear();
+				//	ss.seekg(0);
+
+				//	int index = 0;
+				//	while (getline(ss, token, ',')) {
+				//		arr[index] = std::stoi(token);
+				//		index++;
+				//	}
+				//}
+
 				if (ticketCounter == 1) {
 					cout << "Ticket ID" << "\t" << "Latest Date" << "\t" << "Status" << endl;
 				}
 
-				cout << "   [" << ticketCounter << "] " << "\t\t" 
-					<< current->data.getDate() << "\t" 
-					<<  current->data.getStatus() << endl;
+				
+				cout << "   [" << ticketCounter << "] " << "\t\t"
+					<< current->data.getDate() << "\t"
+					<< current->data.getStatus() << endl;
 
 				ticketCounter++;
 			}
@@ -596,7 +624,7 @@ public:
 					while (current != NULL) {
 						if (current->data.getUID() == this->getUID()) {
 							if (counter == indexInt - 1) {
-								current->data.displayDetail();
+								current->data.display(feedbackList);
 								break;
 							}
 							counter++;
@@ -639,6 +667,13 @@ public:
 		default:
 			return "UNKNOWN";
 		}
+	}
+
+	/*
+        Search university. IN PROGRESS
+	*/
+	void searchUniversity() {
+
 	}
 
 	// Getter Function

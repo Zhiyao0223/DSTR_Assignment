@@ -30,6 +30,8 @@ protected:
 	Date* date;
 
 public:
+	int dataCount;
+
 	Feedback() {
 		ID = UID = NULL;
 		reply = NULL;
@@ -48,27 +50,34 @@ public:
 		role = UserRole::REGISTERED_USER;
 		date = new Date();
 		setDate();
+		dataCount = 6;
 	}
 
 	/*
 		Return specific column value indexed
 	*/
-	template <typename T>
-	T getColumn(int index) {
-		/*
-		*	Column Index:
-		*	0 - ID
-		*	1 - UID
-		*	2 - status
-		*/
-		switch (index) {
-		case 0:
-			return ID;
-		case 1:
-			return UID;
-		case 2:
-			return FeedbackStatusToString(status);
-		}
+	//template <typename T>
+	//T getColumn(int index) {
+	//	/*
+	//	*	Column Index:
+	//	*	0 - ID
+	//	*	1 - UID
+	//	*	2 - status
+	//	*/
+	//	switch (index) {
+	//	case 0:
+	//		return ID;
+	//	case 1:
+	//		return UID;
+	//	case 2:
+	//		return FeedbackStatusToString(status);
+	//	}
+	//}
+
+	// Return string of data for csv export
+	string toDataString() {
+		return to_string(ID) + "," + to_string(UID) + "," + title + "," + comment + "," 
+			+ enumToString(status) + "," + date->toString();
 	}
 
 	/*
@@ -82,10 +91,14 @@ public:
 		return new Feedback(tmpID, tmpUID, tmpTitle, tmpComment);
 	}
 
+	string* toStringArray() {
+		return new string[6]{to_string(getID()), to_string(getUID()), getTitle(), getComment(), getStatus(), getDate()};
+	}
+
 	/*
 		Display feedback in detail
 	*/
-	void displayDetail() {
+	void display(LinkedList<Feedback>* feedbackList) {
 		Util::cleanScreen();
 
 		cout << "Ticket ID" << "\t" << ": " << ID << endl
@@ -112,6 +125,8 @@ public:
 			<< "Option: ";
 
 		string option, tmpComment;
+		int newUID = feedbackList->getNewUID();
+		Feedback* newNode = new Feedback();
 		cin >> option;
 
 		if (option == "1") {
@@ -119,11 +134,14 @@ public:
 			cin.ignore();
 			getline(cin, tmpComment);
 
+			newNode = createNewReply(newUID, this->UID, this->title, tmpComment);
+			feedbackList->insertToEndList(newNode);
+
 			if (tmp == NULL) {
-				this->reply = createNewReply(ID, this->UID, this->title, tmpComment);
+				this->reply = &(feedbackList->tail->data);
 			}
 			else {
-				tmp->reply = createNewReply(ID, this->UID, this->title, tmpComment);
+				tmp->reply = &(feedbackList->tail->data);
 			}
 
 			this->setStatus(FeedbackStatus::IN_PROGRESS);
@@ -171,16 +189,31 @@ public:
 		return ID;
 	}
 
+	int getDataCount() {
+		return dataCount;
+	}
+
 	int getUID() {
 		return UID;
+	}
+
+	string getTitle() {
+		return title;
 	}
 
 	string getComment() {
 		return comment;
 	}
 
-	Feedback* getReply() {
-		return reply;
+	string getReply() {
+		Feedback* tmp = reply;
+		string replyID = to_string(reply->getID());
+		while(tmp != NULL) {
+			tmp = tmp->reply;
+			replyID += "," + to_string(tmp->getID());
+		}
+
+		return replyID;
 	}
 
 	string enumToString(FeedbackStatus status) {
@@ -217,6 +250,10 @@ public:
 		UID = tmp;
 	}
 
+	void setTitle(string tmp) {
+		title = tmp;
+	}
+
 	void setComment(string tmp) {
 		comment = tmp;
 	}
@@ -235,5 +272,24 @@ public:
 
 	void setDate() {
 		date->setToday();
+	}
+
+	void setSpecificDate(string tmpDate) {
+		this->date = new Date(tmpDate);
+	}
+
+	void setColumnValue(string* dataArr) {
+		setID(stoi(dataArr[0]));
+		setUID(stoi(dataArr[1]));
+		setTitle(dataArr[2]);
+		setComment(dataArr[3]);
+		
+		
+		if (dataArr[4] == "OPEN") setStatus(FeedbackStatus::OPEN);
+		else if (dataArr[4] == "IN_PROGRESS") setStatus(FeedbackStatus::IN_PROGRESS);
+		else if (dataArr[4] == "RESOLVED") setStatus(FeedbackStatus::RESOLVED);
+		else if (dataArr[4] == "CLOSED") setStatus(FeedbackStatus::CLOSED);
+
+		setSpecificDate(dataArr[5]);
 	}
 };
