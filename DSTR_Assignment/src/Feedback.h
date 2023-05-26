@@ -92,8 +92,8 @@ public:
 			<< "UID:" << "\t\t" << ": " << UID << endl
 			<< "Status: " << "\t" << ": " << FeedbackStatusToString(status) << endl
 			<< "Title" << "\t\t" << ": " << title << endl << endl
-			<< "#-------- Comment ---------#" << endl << endl 
-			<< UserRoleToString(role) << " [" << date->toString() << "] :" << endl 
+			<< "#-------- Comment ---------#" << endl << endl
+			<< UserRoleToString(role) << " [" << date->toString() << "] :" << endl
 			<< comment << endl << endl;
 
 		Feedback* currentReply = this->reply;
@@ -181,6 +181,19 @@ public:
 
 	Feedback* getReply() {
 		return reply;
+	}
+
+	string enumToString(FeedbackStatus status) {
+		switch (status) {
+		case FeedbackStatus::OPEN:
+			return "OPEN";
+		case FeedbackStatus::IN_PROGRESS:
+			return "IN_PROGRESS";
+		case FeedbackStatus::RESOLVED:
+			return "RESOLVED";
+		case FeedbackStatus::CLOSED:
+			return "CLOSED";
+		}
 	}
 
 	string getStatus() {

@@ -281,23 +281,40 @@ public:
 	}
 
 	// Edit Profile
-	void editProfile() {
-		cout << "Edit Profile" << endl;
-		cout << "---------------------------------------" << endl;
-		toString();
-
-		cout << "Please select your action:" << endl;
-		cout << "[1] Edit Email" << endl;
-		cout << "[2] Edit Phone Number" << endl;
-		cout << "[3] Edit Postcode" << endl;
-		cout << "[4] Edit Address" << endl;
-		cout << "[5] Edit State" << endl;
-		cout << "[6] Edit Country" << endl;
-		cout << "[7] Back" << endl;
-		cout << "Option: ";
+	bool editProfile() {
+		//Util::cleanScreen();
 
 		string index, newData;
-		getline(cin, index);
+		while (true) {
+			cout << "Edit Profile" << endl;
+			cout << "---------------------------------------" << endl;
+			toString();
+
+			cout << "Please select your action:" << endl;
+			cout << "[1] Edit Email" << endl;
+			cout << "[2] Edit Phone Number" << endl;
+			cout << "[3] Edit Postcode" << endl;
+			cout << "[4] Edit Address" << endl;
+			cout << "[5] Edit State" << endl;
+			cout << "[6] Edit Country" << endl;
+			cout << "[7] Back" << endl;
+			cout << "Option: ";
+
+			getline(cin, index);
+			try {
+				stoi(index);
+
+			} catch (exception) {
+				cout << "Invalid option." << endl;
+			}
+
+			if (stoi(index) < 0 || stoi(index) > 7) {
+				cout << "Invalid option." << endl;
+			}
+			else if (stoi(index) == 7) return false;
+			break;
+		}
+
 		cout << endl << "Please enter your new data: ";
 		getline(cin, newData);
 
@@ -337,6 +354,7 @@ public:
 			cout << "Invalid option." << endl;
 		}
 		Util::sleep(1);
+		return true;
 	}
 
 	// Display individual profile

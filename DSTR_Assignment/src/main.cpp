@@ -9,6 +9,7 @@
 #include "LinkedList.h"
 #include "Validation.h"
 #include "Util.h"
+#include "Sort.h"
 
 using namespace std;
 
@@ -73,6 +74,32 @@ int main() {
 		}
 		Util::sleepClean(1);
 	}
+
+	try {
+		switch (stoi(option)) {
+		case 1:
+			custPlatform(custList, favList, feedbackList, uniList);
+			break;
+		case 2:
+			admin = admin->login(adminList);
+			if (admin == nullptr) {
+				cout << "Invalid username or password" << endl;
+			}
+			else {
+				adminPlatform(admin);
+			}
+			break;
+		case 3:
+			cout << "Thanks for using the system" << endl;
+			return  0;
+		default:
+			cout << "Please enter only the option available." << endl << endl;
+		}
+	}
+	catch (exception) {
+		cout << "Please enter only the option available." << endl << endl;
+	}
+	Util::sleepClean(1);
 }
 
 // Admin Platform
@@ -269,22 +296,33 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 }
 
 // Purely use for testing, delete later
+
+
 void test() {
-	LinkedList<University>* tmp = new LinkedList<University>();
+	Customer* cust = new Customer();
+	LinkedList<Admin>* adminList = new LinkedList<Admin>();
+	LinkedList<Customer>* custList = new LinkedList<Customer>();
+	LinkedList<Favorite>* favList = new LinkedList<Favorite>();
+	LinkedList<Feedback>* feedbackList = new LinkedList<Feedback>();
+	FileIO file;
+	LinkedList<University>* uniList = file.readFile();
 
-	FileIO fileIO;
-	LinkedList<University>* uniList = fileIO.readFile();
-	string** arr = uniList->convertTo2DArray();
+	setupUser(custList, adminList, favList, feedbackList, uniList);
 
-	int sortColumnIndex = 5;  // Sort based on the second column
-	int dataCount = uniList->head->data.getDataCount();
-	quicksort(arr, 0, uniList->size - 1, sortColumnIndex, false);
+	Admin admin;
+	Customer customer;
+	// Populate the linked list with data
 
 
-	for (int i = 0; i < 20; i++) {
-		cout << arr[i][sortColumnIndex] << " ";
-		cout << std::endl;
-	}
+
+
+	//Edit User
+	//LinkedList<Customer> editUser;  // Create an instance of the LinkedList<Customer> class
+
+
+
+	modifyUser(custList);  // Call the modifyUser function and pass the address of the userList object
+
 }
 
 // Update Inactive Account to Status 'INACTIVE'
@@ -303,5 +341,4 @@ static void updateUserStatus(LinkedList<Customer>* custList) {
 		tmp = tmp->nextAddress;
 	}
 }
-	
 	
