@@ -11,6 +11,13 @@
 #include "Validation.h"
 using namespace std;
 
+enum class AccountStatus {
+	ACTIVE,
+	BLOCKED,
+	FREEZE,
+	INACTIVE
+};
+
 // Customer class
 class Customer : public User {
 protected:
@@ -19,6 +26,7 @@ protected:
 	string state;
 	string country;
 	Date* lastLogDate;
+	AccountStatus status;
 public:
 	// Constructor
 	Customer() : User() {
@@ -501,6 +509,24 @@ public:
 		cout << "---------------------------------------" << endl;
 	}
 
+	/*
+		Convert account status enum to string
+	*/
+	string accountStatusToString(AccountStatus tmpStatus) {
+		switch (tmpStatus) {
+		case AccountStatus::ACTIVE:
+			return "ACTIVE";
+		case AccountStatus::INACTIVE:
+			return "INACTIVE";
+		case AccountStatus::BLOCKED:
+			return "BLOCKED";
+		case AccountStatus::FREEZE:
+			return "FREEZE";
+		default:
+			return "UNKNOWN";
+		}
+	}
+
 	// Getter Function
 	string getPostcode() {
 		return postcode;
@@ -521,6 +547,10 @@ public:
 		return lastLogDate->toString();
 	}
 
+	string getAccountStatus() {
+		return accountStatusToString(this->status);
+	}
+
 	// Setter Function
 	void setPostcode(string data) {
 		postcode = data;
@@ -539,5 +569,9 @@ public:
 	}
 	void setLastLogDate(Date* data) {
 		lastLogDate = data;
+	}
+
+	void setAccountStatus(AccountStatus data) {
+		status = data;
 	}
 };
