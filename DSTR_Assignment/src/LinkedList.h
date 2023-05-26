@@ -267,6 +267,7 @@ public:
 		T data = temp->data;
 
 		tail = tail->prevAddress;
+		tail->nextAddress = NULL;
 		delete temp;
 		size--;
 
