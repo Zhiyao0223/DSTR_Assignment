@@ -13,9 +13,10 @@
 using namespace std;
 
 void test();
-void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList);
-void adminPlatform(Admin* currentAdmin);
+void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>* uniList);
+void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedList<University>* uniList);
 void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>* uniList);
+
 
 int main() {
 	//test();
@@ -50,7 +51,7 @@ int main() {
 		try {
 			switch (stoi(option)) {
 			case 1:
-				custPlatform(custList, favList, feedbackList);
+				custPlatform(custList, favList, feedbackList, uniList);
 				break;
 			case 2:
 				admin = admin->login(adminList);
@@ -58,7 +59,7 @@ int main() {
 					cout << "Invalid username or password" << endl;
 				}
 				else {
-					adminPlatform(admin);
+					adminPlatform(admin, favList, uniList);
 				}
 				break;
 			case 3:
@@ -76,7 +77,7 @@ int main() {
 }
 
 // Admin Platform
-void adminPlatform(Admin* currentAdmin) {
+void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedList<University>* uniList){
 	Util::cleanScreen();
 
 	//Admin Menu
@@ -112,7 +113,7 @@ void adminPlatform(Admin* currentAdmin) {
 				//admin.displayUniversity();
 				break;
 			case 5:
-				//admin.generateReport();
+				currentAdmin->summarizeTop10Preferred(favList);
 				break;
 			case 6:
 				//admin.viewProfile();
@@ -250,25 +251,16 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	favList->insertToEndList(new Favorite(favNewId + 7, 4, 5));
 	favList->insertToEndList(new Favorite(favNewId + 8, 4, 2));
 	favList->insertToEndList(new Favorite(favNewId + 9, 4, 21));
+	favList->insertToEndList(new Favorite(favNewId + 10, 5, 2));
+	favList->insertToEndList(new Favorite(favNewId + 11, 5, 21));
+	favList->insertToEndList(new Favorite(favNewId + 12, 5, 2));
 }
 
 // Purely use for testing, delete later
 void test() {
-	LinkedList<University>* tmp = new LinkedList<University>();
-
-	FileIO fileIO;
-	LinkedList<University>* uniList = fileIO.readFile();
-	string** arr = uniList->convertTo2DArray();
-
-	int sortColumnIndex = 5;  // Sort based on the second column
-	int dataCount = uniList->head->data.getDataCount();
-	quicksort(arr, 0, uniList->size - 1, sortColumnIndex, false);
-
-
-	for (int i = 0; i < 20; i++) {
-		cout << arr[i][sortColumnIndex] << " ";
-		cout << std::endl;
-	}
+	
+	
+	
 }
 
 // Update Inactive Account to Status 'INACTIVE'
