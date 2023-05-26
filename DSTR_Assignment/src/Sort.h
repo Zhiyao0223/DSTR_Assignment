@@ -38,10 +38,6 @@ void selectionSort(LinkedList<T>* uniList) {
 */
 // Comparison function to determine the order of two strings
 bool compareStrings(string& a, string& b, bool isAsc) {
-	// Remove quotes if they exist
-	if (Validation::hasQuote(a)) a.substr(1);
-	if (Validation::hasQuote(b)) b.substr(1);
-
 	// Sort in numerical order if both strings are numbers
 	if (Validation::isNumber(a) && Validation::isNumber(b)) {
 		// Sort in numerical order

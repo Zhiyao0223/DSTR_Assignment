@@ -115,8 +115,4 @@ public:
 	static bool hasBackSlash(string test) {
 		return test.find('\ "');
 	}
-
-	static bool hasQuote(string test) {
-		return test.find('"');
-	}
 };
