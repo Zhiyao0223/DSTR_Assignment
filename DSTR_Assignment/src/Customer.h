@@ -11,6 +11,13 @@
 #include "Validation.h"
 using namespace std;
 
+enum class AccountStatus {
+	ACTIVE,
+	BLOCKED,
+	FREEZE,
+	INACTIVE
+};
+
 // Customer class
 class Customer : public User {
 protected:
@@ -19,6 +26,7 @@ protected:
 	string state;
 	string country;
 	Date* lastLogDate;
+	AccountStatus status;
 public:
 	// Constructor
 	Customer() : User() {
@@ -139,12 +147,13 @@ public:
 			cout << "Username: ";
 			getline(cin, tmpUsername);
 
-			if (!Validation::isUsername(tmpUsername)) {
+			if (tmpUsername == "-1") return NULL;
+			else if (!Validation::isUsername(tmpUsername)) {
 				cout << "Username could only accept alphabet, number and underscore." << endl;
 				Util::sleep(1);
 				continue;
 			}
-			else if (tmpUsername == "-1") return NULL;
+			
 
 			cout << "Password: ";
 			tmpPass = Util::getPassword();
@@ -497,8 +506,121 @@ public:
 
 	// View Feedback
 	void displayFeedback(LinkedList<Feedback>* feedbackList) {
+		LinkedList<Feedback>* currentUserFeedbackList = new LinkedList<Feedback>();
+		node<Feedback>* current = feedbackList->head;
+		int ticketCounter = 1;
+
+		Util::cleanScreen();
 		cout << "Feedback" << endl;
-		cout << "---------------------------------------" << endl;
+		cout << "---------------------------------------" << endl << endl;
+
+		while (current != NULL) {
+			if (current->data.getUID() == this->getUID()) {
+				if (ticketCounter == 1) {
+					cout << "Ticket ID" << "\t" << "Latest Date" << "\t" << "Status" << endl;
+				}
+
+				cout << "   [" << ticketCounter << "] " << "\t\t" 
+					<< current->data.getDate() << "\t" 
+					<<  current->data.getStatus() << endl;
+
+				ticketCounter++;
+			}
+			current = current->nextAddress;
+		}
+		cout << endl;
+
+		if (ticketCounter == 1) {
+			cout << "No ticket at the moment." << endl;
+
+			cout << "Please select your action:" << endl;
+			cout << "[1] Create Ticket" << endl;
+			cout << "[2] Back" << endl;
+			cout << "Option: ";
+		}
+		else {
+			cout << "Please select your action:" << endl;
+			cout << "[1] Create Ticket" << endl;
+			cout << "[2] Check Ticket Details" << endl;
+			cout << "[3] Back" << endl;
+			cout << "Option: ";
+		}
+
+		string selection;
+		getline(cin, selection);
+
+		if (selection == "1") {
+			Util::cleanScreen();
+			cout << "Create Ticket" << endl;
+			cout << "---------------------------------------" << endl << endl;
+
+			string title, description;
+			cout << "Title: ";
+			getline(cin, title);
+			cout << "Description: ";
+			getline(cin, description);
+
+			feedbackList->insertToEndList(new Feedback(feedbackList->getNewUID(), this->getUID(), title, description));
+
+			cout << endl << "Ticket created." << endl;
+			Util::sleep(1);
+		}
+		else if (selection == "2" && ticketCounter != 1) {
+			cout << endl << "Please enter the index number you wish to view: ";
+			cin >> selection;
+
+			try {
+				int indexInt = stoi(selection);
+				if (indexInt > 0 && indexInt < ticketCounter) {
+					current = feedbackList->head;
+					int counter = 0;
+
+					while (current != NULL) {
+						if (current->data.getUID() == this->getUID()) {
+							if (counter == indexInt - 1) {
+								current->data.displayDetail();
+								break;
+							}
+							counter++;
+						}
+						current = current->nextAddress;
+					}
+				}
+				else {
+					cout << "Invalid option." << endl;
+					Util::sleep(1);
+				}
+			}
+			catch (exception) {
+				cout << "Invalid option." << endl;
+				Util::sleep(1);
+			}
+		}
+		else if ((selection == "2" && ticketCounter == 1) || (selection == "3" && ticketCounter != 1)) {
+			return;
+		}
+		else {
+			cout << "Invalid option." << endl;
+			Util::sleepClean(1);
+		}
+	}
+
+	/*
+		Convert account status enum to string
+	*/
+	string accountStatusToString(AccountStatus tmpStatus) {
+		switch (tmpStatus) {
+		case AccountStatus::ACTIVE:
+			return "ACTIVE";
+		case AccountStatus::INACTIVE:
+			return "INACTIVE";
+		case AccountStatus::BLOCKED:
+			return "BLOCKED";
+		case AccountStatus::FREEZE:
+			return "FREEZE";
+		default:
+			return "UNKNOWN";
+		}
 	}
 
 	// Getter Function
@@ -521,6 +643,10 @@ public:
 		return lastLogDate->toString();
 	}
 
+	string getAccountStatus() {
+		return accountStatusToString(this->status);
+	}
+
 	// Setter Function
 	void setPostcode(string data) {
 		postcode = data;
@@ -539,5 +665,9 @@ public:
 	}
 	void setLastLogDate(Date* data) {
 		lastLogDate = data;
+	}
+
+	void setAccountStatus(AccountStatus data) {
+		status = data;
 	}
 };
