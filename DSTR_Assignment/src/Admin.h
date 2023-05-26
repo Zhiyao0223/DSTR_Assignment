@@ -20,40 +20,43 @@ using namespace std;
 
 // Admin class
 class Admin : public User {
-protected:
-
 public:
 	// Constructor
 	Admin() : User() {}
 
 	Admin(int UID, string username, string email, string password, string phoneNo)
-		: User(UID, username, email, password, phoneNo) {
-	}
+		: User(UID, username, email, password, phoneNo) {}
 
 	// Return specified column value
-	template <typename T>
-	T getColumn(int index) {
-		/*
-		*	Column Index:
-		*	0 - UID
-		*	1 - Username
-		*	2 - Email
-		*/
-		switch (index) {
-		case 0:
-			return getUID();
-		case 1:
-			return getUsername();
-		case 2:
-			return getEmail();
-		}
-	}
+	//template <typename T>
+	//T getColumn(int index) {
+	//	/*
+	//	*	Column Index:
+	//	*	0 - UID
+	//	*	1 - Username
+	//	*	2 - Email
+	//	*/
+	//	switch (index) {
+	//	case 0:
+	//		return getUID();
+	//	case 1:
+	//		return getUsername();
+	//	case 2:
+	//		return getEmail();
+	//	}
+	//}
 
-	// Login
+	/*
+		Login
+		@param list - admin list
+		@return Admin* - pointer to the admin object if login successful, nullptr otherwise
+	*/
 	Admin* login(LinkedList<Admin>* list) {
+		// Initialise temporary variables
 		string tmpUsername, tmpPass;
 
-		cout << "Username: ";
+		// Get username and password
+		cout << endl << "Username: ";
 		getline(cin, tmpUsername);
 		cout << "Password: ";
 		tmpPass = Util::getPassword();
@@ -62,9 +65,10 @@ public:
 		return list->lookUpProfile(tmpUsername, tmpPass);
 	}
 
-	//Generate Report
-	void generateReport() {}
-
+	/*
+		Add new university to list
+		@param list - university list
+	*/
 	void addUniversity(LinkedList<University>* list) {
 		string tmpName, tmpLocationCode, tmpLocation;
 		float data[17];
@@ -116,11 +120,10 @@ public:
 		cout << "University added successfully!" << endl;
 	}
 
-	//Edit University
-	void editUniversity(LinkedList<University>* uniList) {
-	}
-
-	// Change INACTIVE Account to FREEZE Account (AKA Delete Inactive Account)
+	/*
+		Change INACTIVE account to FREEZE account (AKA Soft Delete Inactive Account)
+		@param custList: customer list
+	*/ 
 	void changeInactiveToFreeze(LinkedList<Customer>* custList) {
 		node<Customer>* tmp = custList->head;
 
@@ -162,7 +165,10 @@ public:
 		}
 	}
 
-	//Delete FREZEE Account
+	/*
+		Delete all existing freeze function. Havn't apply to any function yet.
+		@param custList: customer list
+	*/
 	void deleteFreezeAccount(LinkedList<Customer>* custList) {
 		node<Customer>* tmp = custList->head;
 		node<Customer>* prev = nullptr;
@@ -188,7 +194,10 @@ public:
 		}
 	}
 
-	//Display Register User
+	/*
+		Display Registered User Detail
+		@param cusList: customer list
+	*/
 	void displayRegisterUser(LinkedList<Customer>* cusList) {
 		//If the list is empty
 		if (cusList->head == nullptr) {
@@ -207,7 +216,11 @@ public:
 		}
 	}
 
-	// Delete Any User Account
+	/*
+		Delete any user account
+		@param currentAdmin: Pointer to current admin node
+		@param cusList: customer list
+	*/
 	void deleteUserAccount(Admin* currentAdmin, LinkedList<Customer>* cusList) {
 		// If the list is empty
 		if (cusList->head == nullptr) {
@@ -243,13 +256,16 @@ public:
 		cout << "User deleted successfully!" << endl;
 	}
 
-	// Delete Inactive User
-	void deleteInactiveUser(LinkedList<Customer>* cusList) {
-	}
-
-	//Generate Report
+	/*
+		Generate CSV reports upon system close. Include university, customer, feedback, and favorite.
+		@param uniList: Universities list
+		@param custList: Customers list
+		@param feedbackList: Feedbacks list
+		@param favList: Favorites list
+	*/
 	void generateReport(LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList, LinkedList<Favorite>* favList) {
-		ofstream outputFile1("university.csv"); // Open the input CSV file
+		// Open the input CSV file
+		ofstream outputFile1("university.csv"); 
 
 		outputFile1 << "Rank, Institution, Location Code, Location, AR Score, AR Rank, ER Score, ER Rank, FSR Score, FSR Rank, CPF Score, CPF Rank, IFR Score, IFR Rank, ISR Score, ISR Rank, IRN Score, IRN Rank, GER Score, GER Rank, Score Scaled\n";
 		if (outputFile1.is_open()) {
@@ -257,40 +273,42 @@ public:
 			while (current != nullptr) {
 				University tmp = current->data;
 
-				// Create a new sheet for attribute1
+				// Write to the CSV file
 				outputFile1 << tmp.getRank() << ", "
-					<< tmp.getInstitution() << ", "
-					<< tmp.getLocationCode() << ", "
-					<< tmp.getLocation() << ", "
-					<< tmp.getArScore() << ", "
-					<< tmp.getArRank() << ", "
-					<< tmp.getErScore() << ", "
-					<< tmp.getErRank() << ", "
-					<< tmp.getFsrScore() << ", "
-					<< tmp.getFsrRank() << ", "
-					<< tmp.getCpfScore() << ", "
-					<< tmp.getCpfRank() << ", "
-					<< tmp.getIfrScore() << ", "
-					<< tmp.getIfrRank() << ", "
-					<< tmp.getIsrScore() << ", "
-					<< tmp.getIsrRank() << ", "
-					<< tmp.getIrnScore() << ", "
-					<< tmp.getIrnRank() << ", "
-					<< tmp.getGerScore() << ", "
-					<< tmp.getGerRank() << ", "
-					<< tmp.getScoreScaled() << "\n";
+							<< tmp.getInstitution() << ", "
+							<< tmp.getLocationCode() << ", "
+							<< tmp.getLocation() << ", "
+							<< tmp.getArScore() << ", "
+							<< tmp.getArRank() << ", "
+							<< tmp.getErScore() << ", "
+							<< tmp.getErRank() << ", "
+							<< tmp.getFsrScore() << ", "
+							<< tmp.getFsrRank() << ", "
+							<< tmp.getCpfScore() << ", "
+							<< tmp.getCpfRank() << ", "
+							<< tmp.getIfrScore() << ", "
+							<< tmp.getIfrRank() << ", "
+							<< tmp.getIsrScore() << ", "
+							<< tmp.getIsrRank() << ", "
+							<< tmp.getIrnScore() << ", "
+							<< tmp.getIrnRank() << ", "
+							<< tmp.getGerScore() << ", "
+							<< tmp.getGerRank() << ", "
+							<< tmp.getScoreScaled() << "\n";
 
 				current = current->nextAddress;
 			}
-			outputFile1.close(); // Close the output file
+			// Close the output file
+			outputFile1.close(); 
 		}
 		else {
-			std::cout << "Error opening the output file for attribute: " << std::endl;
+			cout << "Error opening the output file for attribute: " << endl;
 		}
+		// Close the input file
+		outputFile1.close(); 
 
-		outputFile1.close(); // Close the input file
-
-		ofstream outputFile2("customer.csv"); // Open the input CSV file
+		// Open the input CSV file
+		ofstream outputFile2("customer.csv");
 
 		outputFile2 << "Username, Email, PhoneNo, Postcode, Address, State, Country\n";
 		if (outputFile2.is_open()) {
@@ -298,26 +316,28 @@ public:
 			while (current != nullptr) {
 				Customer tmp = current->data;
 
-				// Create a new sheet for attribute1
+				// Write the data to the file
 				outputFile2 << tmp.getUsername() << ", "
-					<< tmp.getEmail() << ", "
-					<< tmp.getPhoneNo() << ", "
-					<< tmp.getPostcode() << ", "
-					<< tmp.getAddress() << ", "
-					<< tmp.getState() << ", "
-					<< tmp.getCountry() << "\n";
+							<< tmp.getEmail() << ", "
+							<< tmp.getPhoneNo() << ", "
+							<< tmp.getPostcode() << ", "
+							<< tmp.getAddress() << ", "
+							<< tmp.getState() << ", "
+							<< tmp.getCountry() << "\n";
 
 				current = current->nextAddress;
 			}
-			outputFile2.close(); // Close the output file
+			// Close the output file
+			outputFile2.close(); 
 		}
 		else {
-			std::cout << "Error opening the output file for attribute: " << std::endl;
+			cout << "Error opening the output file for attribute: " << endl;
 		}
+		// Close the input file
+		outputFile2.close(); 
 
-		outputFile2.close(); // Close the input file
-
-		ofstream outputFile3("favorite.csv"); // Open the input CSV file
+		// Open the input CSV file
+		ofstream outputFile3("favorite.csv"); 
 
 		outputFile3 << "ID, UID, insitution\n";
 		if (outputFile3.is_open()) {
@@ -325,22 +345,24 @@ public:
 			while (current != nullptr) {
 				Favorite tmp = current->data;
 
-				// Create a new sheet for attribute1
+				// Write into CSV file
 				outputFile3 << tmp.getID() << ", "
-					<< tmp.getUID() << ", "
-					<< tmp.getInstitutionRank() << "\n";
+							<< tmp.getUID() << ", "
+							<< tmp.getInstitutionRank() << "\n";
 
 				current = current->nextAddress;
 			}
-			outputFile3.close(); // Close the output file
+			// Close the output file
+			outputFile3.close(); 
 		}
 		else {
-			std::cout << "Error opening the output file for attribute: " << std::endl;
+			cout << "Error opening the output file for attribute: " << endl;
 		}
+		// Close the input file
+		outputFile3.close(); 
 
-		outputFile3.close(); // Close the input file
-
-		ofstream outputFile4("feedback.csv"); // Open the input CSV file
+		// Open the input CSV file
+		ofstream outputFile4("feedback.csv"); 
 
 		outputFile4 << "ID, UID, comment, reply, status, role, date\n";
 		if (outputFile4.is_open()) {
@@ -348,26 +370,32 @@ public:
 			while (current != nullptr) {
 				Feedback tmp = current->data;
 
-				// Create a new sheet for attribute1
+				// Write into CSV file
 				outputFile4 << tmp.getID() << ", "
-					<< tmp.getUID() << ", "
-					<< tmp.getComment() << ", "
-					<< tmp.getReply() << ", "
-					<< tmp.getStatus() << ", "
-					<< tmp.getRole() << ", "
-					<< tmp.getDate() << "\n";
+							<< tmp.getUID() << ", "
+							<< tmp.getComment() << ", "
+							<< tmp.getReply() << ", "
+							<< tmp.getStatus() << ", "
+							<< tmp.getRole() << ", "
+							<< tmp.getDate() << "\n";
 
 				current = current->nextAddress;
 			}
-			outputFile4.close(); // Close the output file
+			// Close the output file
+			outputFile4.close(); 
 		}
 		else {
-			std::cout << "Error opening the output file for attribute: " << std::endl;
+			cout << "Error opening the output file for attribute: " << endl;
 		}
 
-		outputFile4.close(); // Close the input file
+		// Close the input file
+		outputFile4.close(); 
 	}
 
+	/*
+		Generate summary report for top 10 preferred universities
+		@param favoritesList - favorites list
+	*/
 	void summarizeTop10Preferred(LinkedList<Favorite>* favoritesList) {
 		const int MAX_UNIVERSITIES = 10;
 		int universityIDs[MAX_UNIVERSITIES] = { 0 };
@@ -433,79 +461,86 @@ public:
 		}
 	}
 
+	/*
+		Change user details
+		@param editUser - user list
+	*/
 	void modifyUser(LinkedList<Customer>* editUser) {
 	// Display the list of users
-	cout << "Customer List:" << endl;
-	cout << "---------------------------------------" << endl;
-	node<Customer>* currentNode = editUser->head;
-	while (currentNode != nullptr) {
-		cout << "ID: " << currentNode->data.getUID() << endl;
-		cout << "Username: " << currentNode->data.getUsername() << endl;
-		cout << "Email: " << currentNode->data.getEmail() << endl;
-		cout << "Phone: " << currentNode->data.getPhoneNo() << endl;
-		cout << "Password: " << currentNode->data.getPassword() << endl;
-		cout << "Postcode: " << currentNode->data.getPostcode() << endl;
-		cout << "Address: " << currentNode->data.getAddress() << endl;
-		cout << "State: " << currentNode->data.getState() << endl;
-		cout << "Country: " << currentNode->data.getCountry() << endl;
-		cout << "---------------------------------------" << endl;
+		Util::printBorderLine();
+		cout << "Customer List" << endl;
+		Util::printBorderLine();
 
-		currentNode = currentNode->nextAddress;
-	}
+		node<Customer>* currentNode = editUser->head;
+		while (currentNode != nullptr) {
+			cout << "ID: " << currentNode->data.getUID() << endl;
+			cout << "Username: " << currentNode->data.getUsername() << endl;
+			cout << "Email: " << currentNode->data.getEmail() << endl;
+			cout << "Phone: " << currentNode->data.getPhoneNo() << endl;
+			cout << "Password: " << currentNode->data.getPassword() << endl;
+			cout << "Postcode: " << currentNode->data.getPostcode() << endl;
+			cout << "Address: " << currentNode->data.getAddress() << endl;
+			cout << "State: " << currentNode->data.getState() << endl;
+			cout << "Country: " << currentNode->data.getCountry() << endl;
+			cout << "---------------------------------------" << endl;
 
-	// Ask for user selection
-	string index;
-	while (true) {
-		try {
-			cout << "Enter the index of the user you want to modify: ";
-			getline(cin, index);
-			stoi(index);
-			break;
+			currentNode = currentNode->nextAddress;
 		}
-		catch (exception) {
+
+		// Ask for user selection
+		string index;
+		while (true) {
+			try {
+				cout << "Enter the user index you want to modify: ";
+				getline(cin, index);
+				stoi(index);
+				break;
+			}
+			catch (exception) {
+			}
+		}	
+
+		Util::cleanScreen();
+
+		// Get the user from the linked list based on UID
+		Customer* selectedUser = nullptr;
+		node<Customer>* editNode = editUser->head;
+		while (editNode != nullptr) {
+			if (editNode->data.getUID() == stoi(index)) {
+				selectedUser = &(editNode->data);
+				break;
+			}
+			editNode = editNode->nextAddress;
 		}
-	}
 
-	Util::cleanScreen();
-
-	// Get the user from the linked list based on UID
-	Customer* selectedUser = nullptr;
-	node<Customer>* editNode = editUser->head;
-	while (editNode != nullptr) {
-		if (editNode->data.getUID() == stoi(index)) {
-			selectedUser = &(editNode->data);
-			break;
+		if (selectedUser) {
+			// Edit the profile of the selected user
+			if (selectedUser->editProfile()) {
+				selectedUser->toString();
+			}
 		}
-		editNode = editNode->nextAddress;
-	}
-
-	if (selectedUser) {
-		// Edit the profile of the selected user
-		if (selectedUser->editProfile()) {
-			selectedUser->toString();
+		else {
+			cout << "User with UID " << index << " not found." << endl;
+			Util::sleepClean(1);
+			modifyUser(editUser);
 		}
-	}
-	else {
-		cout << "User with UID " << index << " not found." << endl;
-		Util::sleepClean(1);
-		modifyUser(editUser);
-	}
-};
+	};
 
+	/*
+		Display Feedback sort by latest date
+		@param feedbackList - feedback list
+	*/
 	void displayFeedbackByDate(LinkedList<Feedback>* feedbackList) {
+		LinkedList<Feedback>* newSortedList = new LinkedList<Feedback>();
+		string** arr = feedbackList->convertTo2DArray();
 
-	string** arr = feedbackList->convertTo2DArray();
+		quicksort(arr, 0, feedbackList->size - 1, 5, true);
 
-
-
-	quicksort(arr, 0, feedbackList->size - 1, 5, true);
-	LinkedList<Feedback>* newSortedList = new LinkedList<Feedback>();
-	for (int i = 0; i < 5; i++) {
-		for (int j = 0; j < 6; j++) {
-			cout << arr[i][j] << ", ";
+		for (int i = 0; i < 5; i++) {
+			for (int j = 0; j < 6; j++) {
+				cout << arr[i][j] << ", ";
+			}
+			cout << endl;
 		}
-		cout << endl;
-	}
-	
-};
+	};
 };

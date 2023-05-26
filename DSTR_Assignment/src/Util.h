@@ -58,4 +58,9 @@ public:
 		}
 		delete[] arr;
 	}
+
+	// Print border line for header
+	static void printBorderLine() {
+		cout << "============================" << endl;
+	}
 };

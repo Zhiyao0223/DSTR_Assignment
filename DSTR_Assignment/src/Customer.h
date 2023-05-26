@@ -376,7 +376,7 @@ public:
 		LinkedList<University>* uniList = fileIO.readFile();
 
 		while (true) {
-			node<University>* selectedUni = uniList->displayAll();
+			node<University>* selectedUni = uniList->displayAllUniversity();
 
 			if (selectedUni != NULL) {
 				if (Validation::isEmpty(getUsername())) {
@@ -638,6 +638,13 @@ public:
 		default:
 			return "UNKNOWN";
 		}
+	}
+
+	/*
+        Search university. IN PROGRESS
+	*/
+	void searchUniversity() {
+
 	}
 
 	// Getter Function

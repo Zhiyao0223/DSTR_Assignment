@@ -26,6 +26,7 @@ public:
 	/*
 		Used to create new node for linked list. Implemented insertion function.
 		@param data - Class data
+		@return New node
 	*/
 	node<T>* createNewNode(T* data) {
 		node<T>* newNode = new node<T>();
@@ -50,14 +51,21 @@ public:
 	}
 
 	// Display info by pages
-	node<T>* displayAll() {
+	/*
+		Display linked list elements by pages.
+		@return Pointer to selected node by input index
+	*/
+	node<T>* displayAllUniversity() {
+		// Initialize variables
 		node<T>* tmp = head;
 		T test;
 		string option = "";
 		int counter = 0;
 		const int MAX_ITEM_PER_PAGE = 5;
 
+		// Display all elements in linked list
 		while (tmp != NULL) {
+			// Continue display if elements are less than max limit per page. Prompt if reach max limit.
 			if (counter < MAX_ITEM_PER_PAGE) {
 				cout << endl << "[" << counter + 1 << "]" << endl;
 				test = tmp->data;
@@ -282,12 +290,19 @@ public:
 		return (size == 0);
 	}
 
-	// Check for user login status
+	/*
+		Check for user credential based on input
+		@param tmpName - Input username
+		@param tmpPass - Input password
+		@return Pointer to class data if found, NULL if not found
+	*/
 	T* lookUpProfile(string tmpName, string tmpPass) {
+		// Initialize variables
 		node<T>* current = head;
 		T* classData;
 		int counter = 0;
 
+		// Loop through linked list and compare matched data
 		while (current != NULL) {
 			classData = &current->data;
 
@@ -299,11 +314,13 @@ public:
 		return NULL;
 	}
 
-	// Get last UID in linked list and add one to its, in progress
+	// Get last UID in linked list and add one to it
 	int getNewUID() {
+		// Initialize variables
 		int tmp = 0;
 		node<T>* dataNode = head;
 
+		// Loop through last node in linked list and return its ID + 1
 		while (dataNode != NULL) {
 			tmp = dataNode->data.getUID();
 			dataNode = dataNode->nextAddress;
@@ -317,26 +334,28 @@ public:
 		@param node2 - Second node
 		@return swap status
 	*/
-	bool swapNode(node<T>* node1, node<T>* node2) {
-		if (node1 == NULL || node2 == NULL) {
-			return false;
-		}
+	//bool swapNode(node<T>* node1, node<T>* node2) {
+	//	if (node1 == NULL || node2 == NULL) {
+	//		return false;
+	//	}
 
-		T tmp = node1->data;
-		node1->data = node2->data;
-		node2->data = tmp;
+	//	T tmp = node1->data;
+	//	node1->data = node2->data;
+	//	node2->data = tmp;
 
-		return true;
-	}
+	//	return true;
+	//}
 
 	/*
 		Convert Linked list to array
 		@return 2D string array
 	*/
 	string** convertTo2DArray() {
+		// Initialize variables
 		node<T>* current = this->head;
 		int numCols = current->data.getDataCount();
 		int numRows = this->size;
+		string* tmpData;
 
 		// Create 2D array
 		int row = 0;
@@ -344,8 +363,6 @@ public:
 		for (int i = 0; i < numRows; i++) {
 			newData[i] = new string[numCols];
 		}
-
-		string* tmpData;
 
 		// Loop through linked list
 		while (current != NULL) {
@@ -367,9 +384,11 @@ public:
 		@param totalRow - Total row of 2D array
 	*/
 	void convertToLinkedList(string** dataList, int totalRow) {
+		// Initialize variables
 		node<T>* current = head;
 		int currentRow = 0;
 
+		// Loop through 2D array and add data to linked list
 		while (currentRow != totalRow) {
 			T* data = new T();
 			data->setColumnValue(dataList[currentRow]);
