@@ -286,3 +286,22 @@ void test() {
 		cout << std::endl;
 	}
 }
+
+// Update Inactive Account to Status 'INACTIVE'
+static void updateUserStatus(LinkedList<Customer>* custList) {
+	
+	// Check by using checkInactiveStatus function
+	// If true, update the status to 'INACTIVE'
+	// Else, do nothing
+	
+	node <Customer>* tmp = custList->head;
+
+	while (tmp != nullptr) {
+		if (tmp->data.checkInactiveStatus()) {
+			tmp->data.setAccountStatus(AccountStatus::INACTIVE);
+		}
+		tmp = tmp->nextAddress;
+	}
+}
+	
+	

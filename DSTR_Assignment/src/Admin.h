@@ -116,7 +116,76 @@ public:
 	}
 
 	//Edit University
-	void editUniversity() {
+	void editUniversity(LinkedList<University>* uniList) {
+
+	}
+
+	// Change INACTIVE Account to FREEZE Account (AKA Delete Inactive Account) 
+	void changeInactiveToFreeze(LinkedList<Customer>* custList) {
+		node<Customer>* tmp = custList->head;
+
+		// Display inactive accounts
+		cout << "Inactive Accounts:\n";
+		while (tmp != nullptr) {
+			if (tmp->data.getAccountStatus() == tmp->data.accountStatusToString(AccountStatus::INACTIVE)) {
+				cout << "Customer ID: " << tmp->data.getUID() << endl;
+			}
+			tmp = tmp->nextAddress;
+		}
+
+		int choice;
+		cout << "\nEnter your choice:\n";
+		cout << "1. Select and Delete an INACTIVE account\n";
+		cout << "2. Delete all INACTIVE account\n";
+		cin >> choice;
+
+		// Change status based on user choice
+		tmp = custList->head;
+		while (tmp != nullptr) {
+			if (tmp->data.getAccountStatus() == tmp->data.accountStatusToString(AccountStatus::INACTIVE)) {
+				if (choice == 1) {
+					int customerId;
+					cout << "Enter customer ID to Delete: ";
+					cin >> customerId;
+
+					if (tmp->data.getUID() == customerId) {
+						tmp->data.setAccountStatus(AccountStatus::FREEZE);
+						cout << "Account status changed to FREEZE for customer ID " << customerId << endl;
+						break;  // Exit loop after finding and changing the specific customer's account status
+					}
+				}
+				else if (choice == 2) {
+					tmp->data.setAccountStatus(AccountStatus::FREEZE);
+				}
+			}
+			tmp = tmp->nextAddress;
+		}
+	}
+
+	//Delete FREZEE Account
+	void deleteFreezeAccount(LinkedList<Customer>* custList) {
+		node<Customer>* tmp = custList->head;
+		node<Customer>* prev = nullptr;
+
+		while (tmp != nullptr) {
+			if (tmp->data.getAccountStatus() == tmp->data.accountStatusToString(AccountStatus::FREEZE)) {
+				// Delete the node
+				if (prev == nullptr) {
+					// Deleting the head node
+					custList->head = tmp->nextAddress;
+				}
+				else {
+					prev->nextAddress = tmp->nextAddress;
+				}
+				node<Customer>* toDelete = tmp;
+				tmp = tmp->nextAddress;
+				delete toDelete;
+			}
+			else {
+				prev = tmp;
+				tmp = tmp->nextAddress;
+			}
+		}
 	}
 
 	//Display Register User
@@ -139,6 +208,51 @@ public:
 		}
 
 	}
+
+	// Delete Any User Account
+	void deleteUserAccount(Admin* currentAdmin, LinkedList<Customer>* cusList) {
+		// If the list is empty
+		if (cusList->head == nullptr) {
+			cout << "No user registered yet." << endl;
+			return;
+		}
+
+		// Display the list
+		currentAdmin->displayRegisterUser(cusList);
+
+		// Ask for the UID to delete
+		int UID;
+		cout << "Enter the UID to delete: ";
+		cin >> UID;
+
+		// Check if the UID is valid
+		while (UID <= 0 || UID > cusList->size) {
+			cout << "Error: Invalid UID. Please re-enter: ";
+			cin >> UID;
+		}
+
+
+		// Delete the user
+		if (UID == 1) {
+			cusList->deleteFromFrontList();
+		}
+		else if (UID == cusList->size) {
+			cusList->deleteFromEndList();
+		}
+		else {
+			cusList->deleteFromSpecificLocation(UID - 1);
+		}
+		
+		cout << "User deleted successfully!" << endl;
+	}
+
+	// Delete Inactive User
+	void deleteInactiveUser(LinkedList<Customer> * cusList) {
+		
+	
+	}
+	
+
 
 	//Generate Report
 	void generateReport(LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList, LinkedList<Favorite>* favList) {
