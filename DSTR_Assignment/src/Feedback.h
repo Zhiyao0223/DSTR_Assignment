@@ -30,6 +30,8 @@ protected:
 	Date* date;
 
 public:
+	int dataCount;
+
 	Feedback() {
 		ID = UID = NULL;
 		reply = NULL;
@@ -48,6 +50,7 @@ public:
 		role = UserRole::REGISTERED_USER;
 		date = new Date();
 		setDate();
+		dataCount = 6;
 	}
 
 	/*
@@ -82,10 +85,14 @@ public:
 		return new Feedback(tmpID, tmpUID, tmpTitle, tmpComment);
 	}
 
+	string* toStringArray() {
+		return new string[6]{to_string(getID()), to_string(getUID()), getTitle(), getComment(), getStatus(), getDate()};
+	}
+
 	/*
 		Display feedback in detail
 	*/
-	void displayDetail() {
+	void display() {
 		Util::cleanScreen();
 
 		cout << "Ticket ID" << "\t" << ": " << ID << endl
@@ -171,8 +178,16 @@ public:
 		return ID;
 	}
 
+	int getDataCount() {
+		return dataCount;
+	}
+
 	int getUID() {
 		return UID;
+	}
+
+	string getTitle() {
+		return title;
 	}
 
 	string getComment() {
@@ -217,6 +232,10 @@ public:
 		UID = tmp;
 	}
 
+	void setTitle(string tmp) {
+		title = tmp;
+	}
+
 	void setComment(string tmp) {
 		comment = tmp;
 	}
@@ -235,5 +254,24 @@ public:
 
 	void setDate() {
 		date->setToday();
+	}
+
+	void setSpecificDate(string tmpDate) {
+		this->date = new Date(tmpDate);
+	}
+
+	void setColumnValue(string* dataArr) {
+		setID(stoi(dataArr[0]));
+		setUID(stoi(dataArr[1]));
+		setTitle(dataArr[2]);
+		setComment(dataArr[3]);
+		
+		
+		if (dataArr[4] == "OPEN") setStatus(FeedbackStatus::OPEN);
+		else if (dataArr[4] == "IN_PROGRESS") setStatus(FeedbackStatus::IN_PROGRESS);
+		else if (dataArr[4] == "RESOLVED") setStatus(FeedbackStatus::RESOLVED);
+		else if (dataArr[4] == "CLOSED") setStatus(FeedbackStatus::CLOSED);
+
+		setSpecificDate(dataArr[5]);
 	}
 };

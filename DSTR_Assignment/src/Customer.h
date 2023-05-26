@@ -153,7 +153,6 @@ public:
 				Util::sleep(1);
 				continue;
 			}
-			
 
 			cout << "Password: ";
 			tmpPass = Util::getPassword();
@@ -303,8 +302,8 @@ public:
 			getline(cin, index);
 			try {
 				stoi(index);
-
-			} catch (exception) {
+			}
+			catch (exception) {
 				cout << "Invalid option." << endl;
 			}
 
@@ -538,9 +537,9 @@ public:
 					cout << "Ticket ID" << "\t" << "Latest Date" << "\t" << "Status" << endl;
 				}
 
-				cout << "   [" << ticketCounter << "] " << "\t\t" 
-					<< current->data.getDate() << "\t" 
-					<<  current->data.getStatus() << endl;
+				cout << "   [" << ticketCounter << "] " << "\t\t"
+					<< current->data.getDate() << "\t"
+					<< current->data.getStatus() << endl;
 
 				ticketCounter++;
 			}
@@ -596,7 +595,7 @@ public:
 					while (current != NULL) {
 						if (current->data.getUID() == this->getUID()) {
 							if (counter == indexInt - 1) {
-								current->data.displayDetail();
+								current->data.display();
 								break;
 							}
 							counter++;

@@ -20,7 +20,7 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 
 
 int main() {
-	//test();
+	test();
 
 	// Create required objects
 	Admin* admin = new Admin();
@@ -35,6 +35,8 @@ int main() {
 
 	string option;
 
+	
+
 	// Print welcome message, draft only for now
 	while (true) {
 		cout << "Welcome to XXX System" << endl;
@@ -45,9 +47,6 @@ int main() {
 		cout << "2. Admin" << endl;
 		cout << "3. Exit" << endl;
 		cout << "Option: ";
-
-		getline(cin, option);
-		cout << endl;
 
 		try {
 			switch (stoi(option)) {
@@ -255,7 +254,7 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	int adminNewId = adminList->getNewUID();
 	int favNewId = favList->getNewUID();
 	int feedbackNewId = feedbackList->getNewUID();
-	
+
 	FileIO file;
 	uniList = file.readFile();
 
@@ -293,6 +292,11 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	feedbackList->insertToEndList(new Feedback(feedbackNewId + 8, 4, "Title", "2"));
 	feedbackList->insertToEndList(new Feedback(feedbackNewId + 9, 4, "Title", "21"));
 	feedbackList->head->data.setReply(feedbackNewId, 4, "Reply", "1111");
+	
+	feedbackList->head->data.setSpecificDate("12/4/2022");
+
+	node<Feedback>* current = feedbackList->head->nextAddress;
+	current->data.setSpecificDate("22/5/2023");
 
 	Feedback* tmp = feedbackList->head->data.getReply();
 	tmp->setRole(UserRole::ADMIN);
@@ -300,25 +304,48 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 
 // Purely use for testing, delete later
 
-
 void test() {
+<<<<<<< HEAD
+=======
+	Customer* cust = new Customer();
+	LinkedList<Admin>* adminList = new LinkedList<Admin>();
+	LinkedList<Customer>* custList = new LinkedList<Customer>();
+	LinkedList<Favorite>* favList = new LinkedList<Favorite>();
+	LinkedList<Feedback>* feedbackList = new LinkedList<Feedback>();
+	FileIO file;
+	LinkedList<University>* uniList = file.readFile();
 
+	setupUser(custList, adminList, favList, feedbackList, uniList);
+
+	Admin admin;
+	Customer customer;
+>>>>>>> 00693227f4568bfda6aa6814e8d0c15b4a58638b
+
+	admin.displayFeedbackByDate(feedbackList);
 }
 
 // Update Inactive Account to Status 'INACTIVE'
-static void updateUserStatus(LinkedList<Customer>* custList) {
-	
-	// Check by using checkInactiveStatus function
-	// If true, update the status to 'INACTIVE'
-	// Else, do nothing
-	
-	node <Customer>* tmp = custList->head;
+//static void updateUserStatus(LinkedList<Customer>* custList) {
+//	// Check by using checkInactiveStatus function
+//	// If true, update the status to 'INACTIVE'
+//	// Else, do nothing
+//
+//	node <Customer>* tmp = custList->head;
+//
+//	while (tmp != nullptr) {
+//		if (tmp->data.checkInactiveStatus()) {
+//			tmp->data.setAccountStatus(AccountStatus::INACTIVE);
+//		}
+//		tmp = tmp->nextAddress;
+//	}
+//}
 
-	while (tmp != nullptr) {
-		if (tmp->data.checkInactiveStatus()) {
-			tmp->data.setAccountStatus(AccountStatus::INACTIVE);
-		}
-		tmp = tmp->nextAddress;
-	}
-}
-	
+//void MoveFeedBck() {
+//
+//	LinkedList<Feedback>* feedList = new LinkedList<Feedback>();
+//	LinkedList<Feedback> moveFeed;
+//	// Populate the feedList with feedback data
+//	Admin admin;
+//	admin
+//	//moveFeedback(feedList);
+//}
