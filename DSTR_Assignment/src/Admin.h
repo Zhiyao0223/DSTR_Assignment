@@ -116,7 +116,8 @@ public:
 	}
 
 	//Edit University
-	void editUniversity() {
+	void editUniversity(LinkedList<University>* uniList) {
+
 	}
 
 	//Display Register User
@@ -139,6 +140,51 @@ public:
 		}
 
 	}
+
+	// Delete Any User Account
+	void deleteUserAccount(Admin* currentAdmin, LinkedList<Customer>* cusList) {
+		// If the list is empty
+		if (cusList->head == nullptr) {
+			cout << "No user registered yet." << endl;
+			return;
+		}
+
+		// Display the list
+		currentAdmin->displayRegisterUser(cusList);
+
+		// Ask for the UID to delete
+		int UID;
+		cout << "Enter the UID to delete: ";
+		cin >> UID;
+
+		// Check if the UID is valid
+		while (UID <= 0 || UID > cusList->size) {
+			cout << "Error: Invalid UID. Please re-enter: ";
+			cin >> UID;
+		}
+
+
+		// Delete the user
+		if (UID == 1) {
+			cusList->deleteFromFrontList();
+		}
+		else if (UID == cusList->size) {
+			cusList->deleteFromEndList();
+		}
+		else {
+			cusList->deleteFromSpecificLocation(UID - 1);
+		}
+		
+		cout << "User deleted successfully!" << endl;
+	}
+
+	// Delete Inactive User
+	void deleteInactiveUser(LinkedList<Customer> * cusList) {
+		
+	
+	}
+	
+
 
 	//Generate Report
 	void generateReport(LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList, LinkedList<Favorite>* favList) {
