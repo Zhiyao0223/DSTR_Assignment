@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iostream>
+#include <map>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -246,13 +247,7 @@ public:
 		cout << "User deleted successfully!" << endl;
 	}
 
-	// Delete Inactive User
-	void deleteInactiveUser(LinkedList<Customer> * cusList) {
-		
-	
-	}
-	
-
+	//
 
 	//Generate Report
 	void generateReport(LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList, LinkedList<Favorite>* favList) {
@@ -372,6 +367,67 @@ public:
 
 		outputFile4.close(); // Close the input file
 	}
+
+
+	void summarizeTop10Preferred(LinkedList<Favorite>* favoritesList) {
+		const int MAX_UNIVERSITIES = 10;
+		int universityIDs[MAX_UNIVERSITIES] = { 0 };
+		int universityFrequencies[MAX_UNIVERSITIES] = { 0 };
+
+		// Count the frequency of each university in the favorites list
+		node<Favorite>* current = favoritesList->head;
+		while (current != NULL) {
+			int universityID = current->data.getInstitutionRank();
+			University* universityName = current->data.getUniversity(universityID);
+
+			for (int i = 0; i < MAX_UNIVERSITIES; i++) {
+				if (universityIDs[i] == 0) {
+					// Found an empty slot, add the university ID and set frequency to 1
+					universityIDs[i] = universityID;
+					universityFrequencies[i] = 1;
+					break;
+				}
+				else if (universityIDs[i] == universityID) {
+					// Found a matching university ID, increase the frequency
+					universityFrequencies[i]++;
+					break;
+				}
+			}
+			current = current->nextAddress;
+		}
+
+		// Sort the universities based on their frequency in descending order
+		for (int i = 0; i < MAX_UNIVERSITIES; i++) {
+			for (int j = i + 1; j < MAX_UNIVERSITIES; j++) {
+				if (universityFrequencies[j] > universityFrequencies[i]) {
+					// Swap university IDs
+					int tempID = universityIDs[i];
+					universityIDs[i] = universityIDs[j];
+					universityIDs[j] = tempID;
+
+					// Swap frequencies
+					int tempFrequency = universityFrequencies[i];
+					universityFrequencies[i] = universityFrequencies[j];
+					universityFrequencies[j] = tempFrequency;
+				}
+			}
+		}
+
+		// Print the top 10 preferred universities
+		cout << "Top 10 Preferred Universities by Parents in Malaysia:" << endl;
+		for (int i = 0; i < MAX_UNIVERSITIES; i++) {
+			if (universityIDs[i] == 0) {
+				break;
+			}
+			University* university = current->data.getUniversity(universityIDs[i]);
+			if (university != NULL) {
+				string universityName = university->getInstitution(); // Assuming the University class has a `getName` method
+				cout << "University Name: " << universityName << ", Frequency: " << universityFrequencies[i] << endl;
+			}
+		}
+
+	}
+
 };
 
 void modifyUser(LinkedList<Customer>* editUser) {

@@ -15,8 +15,9 @@ using namespace std;
 
 void test();
 void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>* uniList);
-void adminPlatform(Admin* currentAdmin);
+void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedList<University>* uniList);
 void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>* uniList);
+
 
 int main() {
 	//test();
@@ -59,7 +60,7 @@ int main() {
 					cout << "Invalid username or password" << endl;
 				}
 				else {
-					adminPlatform(admin);
+					adminPlatform(admin, favList, uniList);
 				}
 				break;
 			case 3:
@@ -86,7 +87,7 @@ int main() {
 				cout << "Invalid username or password" << endl;
 			}
 			else {
-				adminPlatform(admin);
+				adminPlatform(admin, favList, uniList);
 			}
 			break;
 		case 3:
@@ -103,7 +104,7 @@ int main() {
 }
 
 // Admin Platform
-void adminPlatform(Admin* currentAdmin) {
+void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedList<University>* uniList){
 	Util::cleanScreen();
 
 	//Admin Menu
@@ -139,7 +140,7 @@ void adminPlatform(Admin* currentAdmin) {
 				//admin.displayUniversity();
 				break;
 			case 5:
-				//admin.generateReport();
+				currentAdmin->summarizeTop10Preferred(favList);
 				break;
 			case 6:
 				//admin.viewProfile();
@@ -277,6 +278,9 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	favList->insertToEndList(new Favorite(favNewId + 7, 4, 5));
 	favList->insertToEndList(new Favorite(favNewId + 8, 4, 2));
 	favList->insertToEndList(new Favorite(favNewId + 9, 4, 21));
+	favList->insertToEndList(new Favorite(favNewId + 10, 5, 2));
+	favList->insertToEndList(new Favorite(favNewId + 11, 5, 21));
+	favList->insertToEndList(new Favorite(favNewId + 12, 5, 2));
 
 	feedbackList->insertToEndList(new Feedback(feedbackNewId, 1, "Title", "haha"));
 	feedbackList->insertToEndList(new Feedback(feedbackNewId + 1, 1, "Title", "9"));
@@ -292,36 +296,12 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 
 	Feedback* tmp = feedbackList->head->data.getReply();
 	tmp->setRole(UserRole::ADMIN);
-
 }
 
 // Purely use for testing, delete later
 
 
 void test() {
-	Customer* cust = new Customer();
-	LinkedList<Admin>* adminList = new LinkedList<Admin>();
-	LinkedList<Customer>* custList = new LinkedList<Customer>();
-	LinkedList<Favorite>* favList = new LinkedList<Favorite>();
-	LinkedList<Feedback>* feedbackList = new LinkedList<Feedback>();
-	FileIO file;
-	LinkedList<University>* uniList = file.readFile();
-
-	setupUser(custList, adminList, favList, feedbackList, uniList);
-
-	Admin admin;
-	Customer customer;
-	// Populate the linked list with data
-
-
-
-
-	//Edit User
-	//LinkedList<Customer> editUser;  // Create an instance of the LinkedList<Customer> class
-
-
-
-	modifyUser(custList);  // Call the modifyUser function and pass the address of the userList object
 
 }
 
