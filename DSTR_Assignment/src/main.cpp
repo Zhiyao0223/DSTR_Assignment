@@ -22,7 +22,7 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 int main() {
 	test();
 
-	// Create required objects
+	// Initialize doubly linked list, classes and variables
 	Admin* admin = new Admin();
 	Customer* cust = new Customer();
 	LinkedList<Admin>* adminList = new LinkedList<Admin>();
@@ -31,23 +31,30 @@ int main() {
 	LinkedList<Feedback>* feedbackList = new LinkedList<Feedback>();
 	LinkedList<University>* uniList = new LinkedList<University>();
 
+	string option;
+	string programName = "Awesome CLI Program";
+	string welcomeMsg = "Welcome to XXX System";
+	string thankYouMsg = "Thank you for using the Awesome CLI Program!\n"
+						"We appreciate your time and hope you found it useful.\n"
+						"If you have any feedback or suggestions, please let us know.\n"
+						"Have a fantastic day!";
+
+	// Setup dummy data
 	setupUser(custList, adminList, favList, feedbackList, uniList);
 
-	string option;
-
-	
-
-	// Print welcome message, draft only for now
+	// Get user role
 	while (true) {
-		cout << "Welcome to XXX System" << endl;
-		cout << "---------------------------------------" << endl;
+		// Print welcome message
+		cout << programName << endl;
 
+		// Select role
 		cout << "Please select your role:" << endl;
 		cout << "1. Customer" << endl;
 		cout << "2. Admin" << endl;
 		cout << "3. Exit" << endl;
 		cout << "Option: ";
 
+		// Prevent user from entering invalid option
 		try {
 			switch (stoi(option)) {
 			case 1:
@@ -291,10 +298,9 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	feedbackList->insertToEndList(new Feedback(feedbackNewId + 7, 4, "Title", "25"));
 	feedbackList->insertToEndList(new Feedback(feedbackNewId + 8, 4, "Title", "2"));
 	feedbackList->insertToEndList(new Feedback(feedbackNewId + 9, 4, "Title", "21"));
-	feedbackList->head->data.setReply(feedbackNewId, 4, "Reply", "1111");
 	
+	feedbackList->head->data.setReply(feedbackNewId, 4, "Reply", "1111");
 	feedbackList->head->data.setSpecificDate("12/4/2022");
-
 	node<Feedback>* current = feedbackList->head->nextAddress;
 	current->data.setSpecificDate("22/5/2023");
 
@@ -305,23 +311,7 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 // Purely use for testing, delete later
 
 void test() {
-<<<<<<< HEAD
-=======
-	Customer* cust = new Customer();
-	LinkedList<Admin>* adminList = new LinkedList<Admin>();
-	LinkedList<Customer>* custList = new LinkedList<Customer>();
-	LinkedList<Favorite>* favList = new LinkedList<Favorite>();
-	LinkedList<Feedback>* feedbackList = new LinkedList<Feedback>();
-	FileIO file;
-	LinkedList<University>* uniList = file.readFile();
 
-	setupUser(custList, adminList, favList, feedbackList, uniList);
-
-	Admin admin;
-	Customer customer;
->>>>>>> 00693227f4568bfda6aa6814e8d0c15b4a58638b
-
-	admin.displayFeedbackByDate(feedbackList);
 }
 
 // Update Inactive Account to Status 'INACTIVE'
