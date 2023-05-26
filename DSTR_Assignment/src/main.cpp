@@ -18,88 +18,92 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 void adminPlatform(Admin* currentAdmin);
 void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>* uniList);
 
+
+
 int main() {
-	//test();
+	test();
 
-	// Create required objects
-	Admin* admin = new Admin();
-	Customer* cust = new Customer();
-	LinkedList<Admin>* adminList = new LinkedList<Admin>();
-	LinkedList<Customer>* custList = new LinkedList<Customer>();
-	LinkedList<Favorite>* favList = new LinkedList<Favorite>();
-	LinkedList<Feedback>* feedbackList = new LinkedList<Feedback>();
-	LinkedList<University>* uniList = new LinkedList<University>();
+	//// Create required objects
+	//Admin* admin = new Admin();
+	//Customer* cust = new Customer();
+	//LinkedList<Admin>* adminList = new LinkedList<Admin>();
+	//LinkedList<Customer>* custList = new LinkedList<Customer>();
+	//LinkedList<Favorite>* favList = new LinkedList<Favorite>();
+	//LinkedList<Feedback>* feedbackList = new LinkedList<Feedback>();
+	//LinkedList<University>* uniList = new LinkedList<University>();
 
-	setupUser(custList, adminList, favList, feedbackList, uniList);
+	//setupUser(custList, adminList, favList, feedbackList, uniList);
 
-	string option;
+	//string option;
 
-	// Print welcome message, draft only for now
-	while (true) {
-		cout << "Welcome to XXX System" << endl;
-		cout << "---------------------------------------" << endl;
+	//
 
-		cout << "Please select your role:" << endl;
-		cout << "1. Customer" << endl;
-		cout << "2. Admin" << endl;
-		cout << "3. Exit" << endl;
-		cout << "Option: ";
+	//// Print welcome message, draft only for now
+	//while (true) {
+	//	cout << "Welcome to XXX System" << endl;
+	//	cout << "---------------------------------------" << endl;
 
-		getline(cin, option);
-		cout << endl;
+	//	cout << "Please select your role:" << endl;
+	//	cout << "1. Customer" << endl;
+	//	cout << "2. Admin" << endl;
+	//	cout << "3. Exit" << endl;
+	//	cout << "Option: ";
 
-		try {
-			switch (stoi(option)) {
-			case 1:
-				custPlatform(custList, favList, feedbackList, uniList);
-				break;
-			case 2:
-				admin = admin->login(adminList);
-				if (admin == nullptr) {
-					cout << "Invalid username or password" << endl;
-				}
-				else {
-					adminPlatform(admin);
-				}
-				break;
-			case 3:
-				cout << "Thanks for using the system" << endl;
-				return  0;
-			default:
-				cout << "Please enter only the option available." << endl << endl;
-			}
-		}
-		catch (exception) {
-			cout << "Please enter only the option available." << endl << endl;
-		}
-		Util::sleepClean(1);
-	}
+	//	getline(cin, option);
+	//	cout << endl;
 
-	try {
-		switch (stoi(option)) {
-		case 1:
-			custPlatform(custList, favList, feedbackList, uniList);
-			break;
-		case 2:
-			admin = admin->login(adminList);
-			if (admin == nullptr) {
-				cout << "Invalid username or password" << endl;
-			}
-			else {
-				adminPlatform(admin);
-			}
-			break;
-		case 3:
-			cout << "Thanks for using the system" << endl;
-			return  0;
-		default:
-			cout << "Please enter only the option available." << endl << endl;
-		}
-	}
-	catch (exception) {
-		cout << "Please enter only the option available." << endl << endl;
-	}
-	Util::sleepClean(1);
+	//	try {
+	//		switch (stoi(option)) {
+	//		case 1:
+	//			custPlatform(custList, favList, feedbackList, uniList);
+	//			break;
+	//		case 2:
+	//			admin = admin->login(adminList);
+	//			if (admin == nullptr) {
+	//				cout << "Invalid username or password" << endl;
+	//			}
+	//			else {
+	//				adminPlatform(admin);
+	//			}
+	//			break;
+	//		case 3:
+	//			cout << "Thanks for using the system" << endl;
+	//			return  0;
+	//		default:
+	//			cout << "Please enter only the option available." << endl << endl;
+	//		}
+	//	}
+	//	catch (exception) {
+	//		cout << "Please enter only the option available." << endl << endl;
+	//	}
+	//	Util::sleepClean(1);
+	//}
+
+	//try {
+	//	switch (stoi(option)) {
+	//	case 1:
+	//		custPlatform(custList, favList, feedbackList, uniList);
+	//		break;
+	//	case 2:
+	//		admin = admin->login(adminList);
+	//		if (admin == nullptr) {
+	//			cout << "Invalid username or password" << endl;
+	//		}
+	//		else {
+	//			adminPlatform(admin);
+	//		}
+	//		break;
+	//	case 3:
+	//		cout << "Thanks for using the system" << endl;
+	//		return  0;
+	//	default:
+	//		cout << "Please enter only the option available." << endl << endl;
+	//	}
+	//}
+	//catch (exception) {
+	//	cout << "Please enter only the option available." << endl << endl;
+	//}
+	//Util::sleepClean(1);
 }
 
 // Admin Platform
@@ -254,7 +258,7 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	int adminNewId = adminList->getNewUID();
 	int favNewId = favList->getNewUID();
 	int feedbackNewId = feedbackList->getNewUID();
-	
+
 	FileIO file;
 	uniList = file.readFile();
 
@@ -289,14 +293,17 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	feedbackList->insertToEndList(new Feedback(feedbackNewId + 8, 4, "Title", "2"));
 	feedbackList->insertToEndList(new Feedback(feedbackNewId + 9, 4, "Title", "21"));
 	feedbackList->head->data.setReply(feedbackNewId, 4, "Reply", "1111");
+	
+	feedbackList->head->data.setSpecificDate("12/4/2022");
+
+	node<Feedback>* current = feedbackList->head->nextAddress;
+	current->data.setSpecificDate("22/5/2023");
 
 	Feedback* tmp = feedbackList->head->data.getReply();
 	tmp->setRole(UserRole::ADMIN);
-
 }
 
 // Purely use for testing, delete later
-
 
 void test() {
 	Customer* cust = new Customer();
@@ -311,34 +318,32 @@ void test() {
 
 	Admin admin;
 	Customer customer;
-	// Populate the linked list with data
 
-
-
-
-	//Edit User
-	//LinkedList<Customer> editUser;  // Create an instance of the LinkedList<Customer> class
-
-
-
-	modifyUser(custList);  // Call the modifyUser function and pass the address of the userList object
-
+	admin.displayFeedbackByDate(feedbackList);
 }
 
 // Update Inactive Account to Status 'INACTIVE'
-static void updateUserStatus(LinkedList<Customer>* custList) {
-	
-	// Check by using checkInactiveStatus function
-	// If true, update the status to 'INACTIVE'
-	// Else, do nothing
-	
-	node <Customer>* tmp = custList->head;
+//static void updateUserStatus(LinkedList<Customer>* custList) {
+//	// Check by using checkInactiveStatus function
+//	// If true, update the status to 'INACTIVE'
+//	// Else, do nothing
+//
+//	node <Customer>* tmp = custList->head;
+//
+//	while (tmp != nullptr) {
+//		if (tmp->data.checkInactiveStatus()) {
+//			tmp->data.setAccountStatus(AccountStatus::INACTIVE);
+//		}
+//		tmp = tmp->nextAddress;
+//	}
+//}
 
-	while (tmp != nullptr) {
-		if (tmp->data.checkInactiveStatus()) {
-			tmp->data.setAccountStatus(AccountStatus::INACTIVE);
-		}
-		tmp = tmp->nextAddress;
-	}
-}
-	
+//void MoveFeedBck() {
+//
+//	LinkedList<Feedback>* feedList = new LinkedList<Feedback>();
+//	LinkedList<Feedback> moveFeed;
+//	// Populate the feedList with feedback data
+//	Admin admin;
+//	admin
+//	//moveFeedback(feedList);
+//}

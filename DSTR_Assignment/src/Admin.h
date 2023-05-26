@@ -14,6 +14,7 @@
 #include "Feedback.h"
 #include "LinkedList.h"
 #include "University.h"
+#include "Sort.h"
 
 using namespace std;
 
@@ -117,10 +118,9 @@ public:
 
 	//Edit University
 	void editUniversity(LinkedList<University>* uniList) {
-
 	}
 
-	// Change INACTIVE Account to FREEZE Account (AKA Delete Inactive Account) 
+	// Change INACTIVE Account to FREEZE Account (AKA Delete Inactive Account)
 	void changeInactiveToFreeze(LinkedList<Customer>* custList) {
 		node<Customer>* tmp = custList->head;
 
@@ -190,7 +190,6 @@ public:
 
 	//Display Register User
 	void displayRegisterUser(LinkedList<Customer>* cusList) {
-
 		//If the list is empty
 		if (cusList->head == nullptr) {
 			cout << "No user registered yet." << endl;
@@ -206,7 +205,6 @@ public:
 			cout << "-----------------------------------------------------------------" << endl;
 			current = current->nextAddress;
 		}
-
 	}
 
 	// Delete Any User Account
@@ -231,7 +229,6 @@ public:
 			cin >> UID;
 		}
 
-
 		// Delete the user
 		if (UID == 1) {
 			cusList->deleteFromFrontList();
@@ -242,17 +239,13 @@ public:
 		else {
 			cusList->deleteFromSpecificLocation(UID - 1);
 		}
-		
+
 		cout << "User deleted successfully!" << endl;
 	}
 
 	// Delete Inactive User
-	void deleteInactiveUser(LinkedList<Customer> * cusList) {
-		
-	
+	void deleteInactiveUser(LinkedList<Customer>* cusList) {
 	}
-	
-
 
 	//Generate Report
 	void generateReport(LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList, LinkedList<Favorite>* favList) {
@@ -349,7 +342,7 @@ public:
 
 		ofstream outputFile4("feedback.csv"); // Open the input CSV file
 
-		outputFile4 << "ID, UID, comment, reply, status\n";
+		outputFile4 << "ID, UID, comment, reply, status, role, date\n";
 		if (outputFile4.is_open()) {
 			node<Feedback>* current = feedbackList->head;
 			while (current != nullptr) {
@@ -360,7 +353,9 @@ public:
 					<< tmp.getUID() << ", "
 					<< tmp.getComment() << ", "
 					<< tmp.getReply() << ", "
-					<< tmp.getStatus() << "\n";
+					<< tmp.getStatus() << ", "
+					<< tmp.getRole() << ", "
+					<< tmp.getDate() << "\n";
 
 				current = current->nextAddress;
 			}
@@ -372,68 +367,80 @@ public:
 
 		outputFile4.close(); // Close the input file
 	}
+
+	void modifyUser(LinkedList<Customer>* editUser) {
+	// Display the list of users
+	cout << "Customer List:" << endl;
+	cout << "---------------------------------------" << endl;
+	node<Customer>* currentNode = editUser->head;
+	while (currentNode != nullptr) {
+		cout << "ID: " << currentNode->data.getUID() << endl;
+		cout << "Username: " << currentNode->data.getUsername() << endl;
+		cout << "Email: " << currentNode->data.getEmail() << endl;
+		cout << "Phone: " << currentNode->data.getPhoneNo() << endl;
+		cout << "Password: " << currentNode->data.getPassword() << endl;
+		cout << "Postcode: " << currentNode->data.getPostcode() << endl;
+		cout << "Address: " << currentNode->data.getAddress() << endl;
+		cout << "State: " << currentNode->data.getState() << endl;
+		cout << "Country: " << currentNode->data.getCountry() << endl;
+		cout << "---------------------------------------" << endl;
+
+		currentNode = currentNode->nextAddress;
+	}
+
+	// Ask for user selection
+	string index;
+	while (true) {
+		try {
+			cout << "Enter the index of the user you want to modify: ";
+			getline(cin, index);
+			stoi(index);
+			break;
+		}
+		catch (exception) {
+		}
+	}
+
+	Util::cleanScreen();
+
+	// Get the user from the linked list based on UID
+	Customer* selectedUser = nullptr;
+	node<Customer>* editNode = editUser->head;
+	while (editNode != nullptr) {
+		if (editNode->data.getUID() == stoi(index)) {
+			selectedUser = &(editNode->data);
+			break;
+		}
+		editNode = editNode->nextAddress;
+	}
+
+	if (selectedUser) {
+		// Edit the profile of the selected user
+		if (selectedUser->editProfile()) {
+			selectedUser->toString();
+		}
+	}
+	else {
+		cout << "User with UID " << index << " not found." << endl;
+		Util::sleepClean(1);
+		modifyUser(editUser);
+	}
 };
 
-void modifyUser(LinkedList<Customer>* editUser) {
-   
+	void displayFeedbackByDate(LinkedList<Feedback>* feedbackList) {
 
-    // Display the list of users
-    cout << "Customer List:" << endl;
-    cout << "---------------------------------------" << endl;
-    node<Customer>* currentNode = editUser->head;
-    while (currentNode != nullptr) {
-        cout << "ID: " << currentNode->data.getUID() << endl;
-        cout << "Username: " << currentNode->data.getUsername() << endl;
-        cout << "Email: " << currentNode->data.getEmail() << endl;
-        cout << "Phone: " << currentNode->data.getPhoneNo() << endl;
-        cout << "Password: " << currentNode->data.getPassword() << endl;
-        cout << "Postcode: " << currentNode->data.getPostcode() << endl;
-        cout << "Address: " << currentNode->data.getAddress() << endl;
-        cout << "State: " << currentNode->data.getState() << endl;
-        cout << "Country: " << currentNode->data.getCountry() << endl;
-        cout << "---------------------------------------" << endl;
-
-        currentNode = currentNode->nextAddress;
-    }
-
-    // Ask for user selection
-    string index;
-    while (true) {
-        try {
-            cout << "Enter the index of the user you want to modify: ";
-            getline(cin, index);
-            stoi(index);
-            break;
-        }
-        catch (exception) {
-        }
-    }
-
-    Util::cleanScreen();
-
-    // Get the user from the linked list based on UID
-    Customer* selectedUser = nullptr;
-    node<Customer>* editNode = editUser->head;
-    while (editNode != nullptr) {
-        if (editNode->data.getUID() == stoi(index)) {
-            selectedUser = &(editNode->data);
-            break;
-        }
-        editNode = editNode->nextAddress;
-    }
-
-    if (selectedUser) {
-        // Edit the profile of the selected user
-        if (selectedUser->editProfile()) {
-            selectedUser->toString();
-        }
-    }
-    else {
-        cout << "User with UID " << index << " not found." << endl;
-        Util::sleepClean(1);
-        modifyUser(editUser);
+	string** arr = feedbackList->convertTo2DArray();
 
 
-    }
 
+	quicksort(arr, 0, feedbackList->size - 1, 5, true);
+	LinkedList<Feedback>* newSortedList = new LinkedList<Feedback>();
+	for (int i = 0; i < 5; i++) {
+		for (int j = 0; j < 6; j++) {
+			cout << arr[i][j] << ", ";
+		}
+		cout << endl;
+	}
+	
+};
 };
