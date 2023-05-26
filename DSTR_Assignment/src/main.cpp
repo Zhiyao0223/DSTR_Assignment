@@ -5,6 +5,7 @@
 #include "Feedback.h"
 #include "FileIO.h"
 #include "University.h"
+#include "Sort.h"
 #include "LinkedList.h"
 #include "Validation.h"
 #include "Util.h"
@@ -13,7 +14,7 @@
 using namespace std;
 
 void test();
-void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList);
+void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList);
 void adminPlatform(Admin* currentAdmin);
 void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList);
 
@@ -48,7 +49,11 @@ int main() {
 	//	try {
 	//		switch (stoi(option)) {
 	//		case 1:
+<<<<<<< HEAD
 	//			custPlatform(custList, favList);
+=======
+	//			custPlatform(custList, favList, feedbackList);
+>>>>>>> c18921a2c56370e79068bad5f1bcebf2e6964260
 	//			break;
 	//		case 2:
 	//			admin = admin->login(adminList);
@@ -71,8 +76,11 @@ int main() {
 	//	}
 	//	Util::sleepClean(1);
 	//}
+<<<<<<< HEAD
 
 	
+=======
+>>>>>>> c18921a2c56370e79068bad5f1bcebf2e6964260
 }
 
 // Admin Platform
@@ -132,7 +140,7 @@ void adminPlatform(Admin* currentAdmin) {
 }
 
 // Customer Platform
-void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList) {
+void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList) {
 	Customer* currentCust = new Customer();
 
 	bool isLogin = false;
@@ -163,7 +171,7 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList)
 					currentCust->displayFav(favList);
 					break;
 				case 4:
-					//cust.feedback();
+					currentCust->displayFeedback(feedbackList);
 					break;
 				case 5:
 					currentCust->displayProfileMenu();
@@ -235,7 +243,7 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	custList->insertToEndList(new Customer(custNewId + 4, "aliaa", "ali5@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda5, Shah Alam", "Selangor", "Malaysia"));
 
 	adminList->insertToEndList(new Admin(adminNewId, "admin1", "admin1@gmail.com", "123", "01112345678"));
-	adminList->insertToEndList(new Admin(adminNewId + 1, "admin1", "admin1@gmail.com", "123", "01112345678"));
+	adminList->insertToEndList(new Admin(adminNewId + 1, "admin2", "admin2@gmail.com", "123", "01112345678"));
 
 	favList->insertToEndList(new Favorite(favNewId, 1, 2));
 	favList->insertToEndList(new Favorite(favNewId + 1, 1, 9));
@@ -279,4 +287,3 @@ void test() {
 	modifyUser(custList);  // Call the modifyUser function and pass the address of the userList object
 
 }
-

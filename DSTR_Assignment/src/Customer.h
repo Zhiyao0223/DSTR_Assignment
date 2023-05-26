@@ -4,6 +4,7 @@
 #include "User.h"
 #include "Date.h"
 #include "FileIO.h"
+#include "Feedback.h"
 #include "Favorite.h"
 #include "Util.h"
 #include "LinkedList.h"
@@ -34,6 +35,36 @@ public:
 		this->country = country;
 		lastLogDate = new Date();
 		updateLogDate();
+	}
+
+	template <typename T>
+	T getColumn(int index) {
+		/*
+		*	Column Index:
+		*	0 - UID
+		*	1 - Username
+		*	2 - Email
+		*	3 - PostCode
+		*	4 - Address
+		*	5 - State
+		*	6 - Country
+		*/
+		switch (index) {
+		case 0:
+			return getUID();
+		case 1:
+			return getUsername();
+		case 2:
+			return getEmail();
+		case 3:
+			return postcode;
+		case 4:
+			return address;
+		case 5:
+			return state;
+		case 6:
+			return country;
+		}
 	}
 
 	// Update latest login date
@@ -328,7 +359,10 @@ public:
 		cout << "Country: " << country << endl;
 	}
 
-	// View University
+	/*
+		Display University
+		@para favList: Favorite List
+	*/
 	void viewUniversity(LinkedList<Favorite>* favList) {
 		FileIO fileIO;
 		LinkedList<University>* uniList = fileIO.readFile();
@@ -373,6 +407,10 @@ public:
 		}
 	}
 
+	/*
+		Display Favorite
+		@param favList - Favorite List
+	*/
 	void displayFav(LinkedList<Favorite>* favList) {
 		// Display all favorite
 		Util::cleanScreen();
@@ -473,6 +511,12 @@ public:
 				Util::sleep(1);
 			}
 		}
+	}
+
+	// View Feedback
+	void displayFeedback(LinkedList<Feedback>* feedbackList) {
+		cout << "Feedback" << endl;
+		cout << "---------------------------------------" << endl;
 	}
 
 	// Getter Function
