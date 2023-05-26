@@ -1,7 +1,6 @@
 #pragma once
 
 #include <iostream>
-#include <map>
 #include <fstream>
 #include <sstream>
 #include <string>
@@ -378,7 +377,6 @@ public:
 		node<Favorite>* current = favoritesList->head;
 		while (current != NULL) {
 			int universityID = current->data.getInstitutionRank();
-			University* universityName = current->data.getUniversity(universityID);
 
 			for (int i = 0; i < MAX_UNIVERSITIES; i++) {
 				if (universityIDs[i] == 0) {
@@ -419,13 +417,20 @@ public:
 			if (universityIDs[i] == 0) {
 				break;
 			}
-			University* university = current->data.getUniversity(universityIDs[i]);
-			if (university != NULL) {
-				string universityName = university->getInstitution(); // Assuming the University class has a `getName` method
-				cout << "University Name: " << universityName << ", Frequency: " << universityFrequencies[i] << endl;
+			node<Favorite>* currentUniversity = favoritesList->head; // New node pointer for iterating through the linked list
+			while (currentUniversity != NULL) {
+				int universityID = currentUniversity->data.getInstitutionRank();
+				if (universityID == universityIDs[i]) {
+					University* university = currentUniversity->data.getUniversity(universityID);
+					if (university != NULL) {
+						string universityName = university->getInstitution(); // Assuming the University class has a `getInstitution` method
+						cout << "University Name: " << universityName << ", Frequency: " << universityFrequencies[i] << endl;
+						break; // Exit the loop once the university is found
+					}
+				}
+				currentUniversity = currentUniversity->nextAddress;
 			}
 		}
-
 	}
 
 };
