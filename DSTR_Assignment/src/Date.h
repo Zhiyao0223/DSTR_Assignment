@@ -21,6 +21,7 @@ public:
 		year = month = day = -1;
 	}
 
+	// Constructor with date format "D/MM/YYYY"
 	Date(string tmpDate) {
 		istringstream iss(tmpDate);
 		string tmp;

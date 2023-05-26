@@ -12,20 +12,42 @@ enum class FeedbackStatus
 	CLOSED
 };
 
+enum class UserRole {
+	ADMIN,
+	REGISTERED_USER,
+	NORMAL_USER
+};
+
 class Feedback {
 protected:
 	int ID;
 	int UID;
+	string title;
 	string comment;
 	Feedback* reply;
 	FeedbackStatus status;
+	UserRole role;
+	Date* date;
+
 public:
-	Feedback(int tmpID, int tmpUID, string tmpComment) {
+	Feedback() {
+		ID = UID = NULL;
+		reply = NULL;
+		comment = "";
+		date = new Date();
+		role = UserRole::NORMAL_USER;
+	}
+
+	Feedback(int tmpID, int tmpUID, string tmpTitle, string tmpComment) {
 		ID = tmpID;
 		UID = tmpUID;
+		title = tmpTitle;
 		comment = tmpComment;
 		reply = NULL;
 		status = FeedbackStatus::OPEN;
+		role = UserRole::REGISTERED_USER;
+		date = new Date();
+		setDate();
 	}
 
 	/*
@@ -45,7 +67,7 @@ public:
 		case 1:
 			return UID;
 		case 2:
-			return enumToString(status);
+			return FeedbackStatusToString(status);
 		}
 	}
 
@@ -56,19 +78,63 @@ public:
 		@param tmpComment - Comment
 		@return Pointer of new feedback node
 	*/
-	Feedback* createNewReply(int tmpID, int tmpUID, string tmpComment) {
-		return new Feedback(tmpID, tmpUID, tmpComment);
+	Feedback* createNewReply(int tmpID, int tmpUID, string tmpTitle, string tmpComment) {
+		return new Feedback(tmpID, tmpUID, tmpTitle, tmpComment);
 	}
 
 	/*
-		Display feedback. IN PROGRESS
+		Display feedback in detail
 	*/
-	void custDisplay() {
-		cout << "Ticket ID: " << ID << endl
-			<< "UID:" << UID << endl
-			<< "Status: " << enumToString(status) << endl
-			<< "Comment" << endl
-			<< "" << endl;
+	void displayDetail() {
+		Util::cleanScreen();
+
+		cout << "Ticket ID" << "\t" << ": " << ID << endl
+			<< "UID:" << "\t\t" << ": " << UID << endl
+			<< "Status: " << "\t" << ": " << FeedbackStatusToString(status) << endl
+			<< "Title" << "\t\t" << ": " << title << endl << endl
+			<< "#-------- Comment ---------#" << endl << endl 
+			<< UserRoleToString(role) << " [" << date->toString() << "] :" << endl 
+			<< comment << endl << endl;
+
+		Feedback* currentReply = this->reply;
+		Feedback* tmp = currentReply;
+		while (currentReply != NULL) {
+			cout << UserRoleToString(currentReply->role) << " [" << date->toString() << "] :" << endl
+				<< currentReply->getComment() << endl << endl;
+
+			tmp = currentReply;
+			currentReply = currentReply->reply;
+		}
+
+		cout << "Please select an option:" << endl
+			<< "[1] Reply" << endl
+			<< "[2] Back" << endl
+			<< "Option: ";
+
+		string option, tmpComment;
+		cin >> option;
+
+		if (option == "1") {
+			cout << endl << endl << "Please enter your comment: ";
+			cin.ignore();
+			getline(cin, tmpComment);
+
+			if (tmp == NULL) {
+				this->reply = createNewReply(ID, this->UID, this->title, tmpComment);
+			}
+			else {
+				tmp->reply = createNewReply(ID, this->UID, this->title, tmpComment);
+			}
+
+			this->setStatus(FeedbackStatus::IN_PROGRESS);
+
+			cout << "Reply successfully" << endl;
+			Util::sleep(1);
+		}
+		else if (option != "2") {
+			cout << "Invalid option" << endl;
+		}
+		cin.clear();
 	}
 
 	/*
@@ -76,7 +142,7 @@ public:
 		@param tmpStatus - enum FeedbackStatus
 		@return value of enum
 	*/
-	string enumToString(FeedbackStatus tmpStatus) {
+	string FeedbackStatusToString(FeedbackStatus tmpStatus) {
 		switch (tmpStatus) {
 		case FeedbackStatus::OPEN:
 			return "OPEN";
@@ -86,6 +152,17 @@ public:
 			return "RESOLVED";
 		case FeedbackStatus::CLOSED:
 			return "CLOSED";
+		}
+	}
+
+	string UserRoleToString(UserRole tmpRole) {
+		switch (tmpRole) {
+		case UserRole::ADMIN:
+			return "ADMIN";
+		case UserRole::REGISTERED_USER:
+			return "USER";
+		case UserRole::NORMAL_USER:
+			return "GUEST";
 		}
 	}
 
@@ -120,7 +197,15 @@ public:
 	}
 
 	string getStatus() {
-		return enumToString(status);
+		return FeedbackStatusToString(status);
+	}
+
+	string getRole() {
+		return UserRoleToString(role);
+	}
+
+	string getDate() {
+		return date->toString();
 	}
 
 	// Setter
@@ -136,11 +221,19 @@ public:
 		comment = tmp;
 	}
 
-	void setReply(int ID, int UID, string tmpComment) {
-		reply = createNewReply(ID, UID, tmpComment);
+	void setReply(int ID, int UID, string tmpTitle, string tmpComment) {
+		reply = createNewReply(ID, UID, tmpTitle, tmpComment);
 	}
 
 	void setStatus(FeedbackStatus newStatus) {
 		status = newStatus;
+	}
+
+	void setRole(UserRole tmpRole) {
+		role = tmpRole;
+	}
+
+	void setDate() {
+		date->setToday();
 	}
 };
