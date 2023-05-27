@@ -76,78 +76,122 @@ public:
 		dataCount = 21;
 	}
 
-	//template <typename T>
-	//T getColumn(int index) {
-	//	/*
-	//	*	Column index:
-	//	*	0 - rank;
-	//	*	1 - institution
-	//	*	2 - locationCode
-	//	*	3 - location
-	//	*	4 - ArScore
-	//	*	5 - ArRank
-	//	*	6 - ErScore
-	//	*	7 - ErRank
-	//	*	8 - FsrScore
-	//	*	9 - FsrRank
-	//	*	10 - CpfScore
-	//	*	11 - CpfRank
-	//	*	12 - IfrScore
-	//	*	13 - IfrRank
-	//	*	14 - IsrScore
-	//	*	15 - IsrRank
-	//	*	16 - IrnScore
-	//	*	17 - IrnRank
-	//	*	18 - GerScore
-	//	*	19 - GerRank
-	//	*	20 - Scorescaled
-	//	*/
+	string getColumn(int columnIndex) {
+		/*
+		*	Column index:
+		*	0 - rank;
+		*	1 - institution
+		*	2 - locationCode
+		*	3 - location
+		*	4 - ArScore
+		*	5 - ArRank
+		*	6 - ErScore
+		*	7 - ErRank
+		*	8 - FsrScore
+		*	9 - FsrRank
+		*	10 - CpfScore
+		*	11 - CpfRank
+		*	12 - IfrScore
+		*	13 - IfrRank
+		*	14 - IsrScore
+		*	15 - IsrRank
+		*	16 - IrnScore
+		*	17 - IrnRank
+		*	18 - GerScore
+		*	19 - GerRank
+		*	20 - Scorescaled
+		*/
 
-	//	switch (index) {
-	//	case 0:
-	//		return rank;
-	//	case 1:
-	//		return institution;
-	//	case 2:
-	//		return locationCode;
-	//	case 3:
-	//		return location;
-	//	case 4:
-	//		return ArScore;
-	//	case 5:
-	//		return ArRank;
-	//	case 6:
-	//		return ErScore;
-	//	case 7:
-	//		return ErRank;
-	//	case 8:
-	//		return FsrScore;
-	//	case 9:
-	//		return FsrRank;
-	//	case 10:
-	//		return CpfScore;
-	//	case 11:
-	//		return CpfRank;
-	//	case 12:
-	//		return IfrScore;
-	//	case 13:
-	//		return IfrRank;
-	//	case 14:
-	//		return IsrScore;
-	//	case 15:
-	//		return IsrRank;
-	//	case 16:
-	//		return IrnScore;
-	//	case 17:
-	//		return IrnRank;
-	//	case 18:
-	//		return GerScore;
-	//	case 19:
-	//		return GerRank;
-	//	case 20:
-	//		return scoreScaled;
-	//	}
-	//}
+		switch (columnIndex) {
+		case 0:
+			return to_string(rank);
+		case 1:
+			return institution;
+		case 2:
+			return locationCode;
+		case 3:
+			return location;
+		case 4:
+			return to_string(ArScore);
+		case 5:
+			return to_string(ArRank);
+		case 6:
+			return to_string(ErScore);
+		case 7:
+			return to_string(ErRank);
+		case 8:
+			return to_string(FsrScore);
+		case 9:
+			return to_string(FsrRank);
+		case 10:
+			return to_string(CpfScore);
+		case 11:
+			return to_string(CpfRank);
+		case 12:
+			return to_string(IfrScore);
+		case 13:
+			return to_string(IfrRank);
+		case 14:
+			return to_string(IsrScore);
+		case 15:
+			return to_string(IsrRank);
+		case 16:
+			return to_string(IrnScore);
+		case 17:
+			return to_string(IrnRank);
+		case 18:
+			return to_string(GerScore);
+		case 19:
+			return to_string(GerRank);
+		case 20:
+			return to_string(scoreScaled);
+		}
+
+		//switch (index) {
+		//case 0:
+		//	return rank;
+		//case 1:
+		//	return institution;
+		//case 2:
+		//	return locationCode;
+		//case 3:
+		//	return location;
+		//case 4:
+		//	return ArScore;
+		//case 5:
+		//	return ArRank;
+		//case 6:
+		//	return ErScore;
+		//case 7:
+		//	return ErRank;
+		//case 8:
+		//	return FsrScore;
+		//case 9:
+		//	return FsrRank;
+		//case 10:
+		//	return CpfScore;
+		//case 11:
+		//	return CpfRank;
+		//case 12:
+		//	return IfrScore;
+		//case 13:
+		//	return IfrRank;
+		//case 14:
+		//	return IsrScore;
+		//case 15:
+		//	return IsrRank;
+		//case 16:
+		//	return IrnScore;
+		//case 17:
+		//	return IrnRank;
+		//case 18:
+		//	return GerScore;
+		//case 19:
+		//	return GerRank;
+		//case 20:
+		//	return scoreScaled;
+		//}
+	}
 
 	// Display University Information
 	void display() {

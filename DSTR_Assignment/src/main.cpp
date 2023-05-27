@@ -15,7 +15,7 @@ using namespace std;
 void test();
 void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>* uniList);
 void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList);
-void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>* uniList);
+void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>** uniList);
 
 
 int main() {
@@ -34,13 +34,18 @@ int main() {
 	string programName = "University Rating System";
 	string welcomeMsg = "This system is a university rating platform.\n"
 						"Get ready to explore the world of command-line magic\n";
-	string thankYouMsg = "Thank you for using this University Rating System!\n"
-						"We appreciate your time and hope you found it useful.\n"
-						"If you have any feedback or suggestions, please let us know.\n"
-						"Have a fantastic day!";
+	string thanksBanner = R"(
+			       ^ ^                         ^ ^   
+			      (O,O)                       (O,O)
+			      (   )       Thank You       (   )
+		            ---"-"-------------------------"-"---
+
+		If you have any feedback or suggestions, please let us know.
+				       Have a great day!
+						)";
 
 	// Setup dummy data
-	setupUser(custList, adminList, favList, feedbackList, uniList);
+	setupUser(custList, adminList, favList, feedbackList, &uniList);
 
 	// Update inactive user status
 	cust->updateUserStatus(custList);
@@ -49,9 +54,9 @@ int main() {
 	while (true) {
 		// Print welcome message
 		Util::printBorderLine();
-		cout << endl << programName << endl;
-		cout << welcomeMsg << endl;
+		cout << "\t\t\t\t" << programName << endl;
 		Util::printBorderLine();
+		cout << endl << welcomeMsg << endl;
 
 		// Select role
 		cout << endl << "Please select your role:" << endl;
@@ -81,7 +86,7 @@ int main() {
 				break;
 			case 3:
 				admin->generateReport(uniList, custList, adminList, feedbackList, favList);
-				cout << endl << thankYouMsg << endl;
+				cout << endl << thanksBanner << endl;
 				return  0;
 			default:
 				cout << "Invalid Option." << endl;
@@ -92,6 +97,9 @@ int main() {
 		}
 		Util::sleepClean(1);
 	}
+
+	// Deallocate memory
+	delete uniList;
 }
 
 // Admin Platform
@@ -189,21 +197,24 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 				// Registered user menu
 				switch (stoi(option)) {
 				case 1:
-					currentCust->viewUniversity(favList);
+					currentCust->viewUniversity(favList, uniList);
 					break;
 				case 2:
-					currentCust->searchUniversity();
+					currentCust->searchUniversity(uniList);
 					break;
 				case 3:
-					currentCust->displayFav(favList);
+					currentCust->sortUniversity(uniList, favList, true);
 					break;
 				case 4:
-					currentCust->displayFeedback(feedbackList);
+					currentCust->displayFav(favList);
 					break;
 				case 5:
-					currentCust->displayProfileMenu();
+					currentCust->displayFeedback(feedbackList);
 					break;
 				case 6:
+					currentCust->displayProfileMenu();
+					break;
+				case 7:
 					currentCust->logOut();
 					return;
 				default:
@@ -215,12 +226,15 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 				Customer* tmp = new Customer();
 				switch (stoi(option)) {
 				case 1:
-					currentCust->viewUniversity(favList);
+					currentCust->viewUniversity(favList, uniList);
 					break;
 				case 2:
-					currentCust->searchUniversity();
+					currentCust->searchUniversity(uniList);
 					break;
 				case 3:
+					currentCust->sortUniversity(uniList, favList);
+					break;
+				case 4:
 					tmp = tmp->login(custList);
 					if (tmp == nullptr) {
 						cout << "Invalid username or password" << endl;
@@ -230,14 +244,14 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 						currentCust = tmp;
 					}
 					break;
-				case 4:
+				case 5:
 					tmp = tmp->registration(custList);
 					if (tmp != nullptr) {
 						cout << endl << tmp->getUsername() << " register successfully" << endl;
 						currentCust = tmp;
 					}
 					break;
-				case 5:
+				case 6:
 					return;
 				default:
 					cout << "Invalid Option." << endl << endl;
@@ -263,7 +277,7 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 	@param feedbackList : feedback list
 	@param uniList : university list
 */
-void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>* uniList) {
+void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>** uniList) {
 	// Get new ID for new data
 	int custNewId = custList->getNewUID();
 	int adminNewId = adminList->getNewUID();
@@ -272,7 +286,7 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 
 	// Read university data from file
 	FileIO file;
-	uniList = file.readFile();
+	*uniList = file.readFile();
 
 	// Add dummy data
 	custList->insertToEndList(new Customer(custNewId, "ali", "ali1@gmail.com", "123", "01112345678", "57000", "Shah Alam", "Selangor", "Malaysia"));

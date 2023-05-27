@@ -393,9 +393,7 @@ public:
 			// Copy data to 2D array
 			for (int i = 0; i < numCols; i++) {
 				newData[row][i] = tmpData[i];
-				cout << newData[row][i] << " ";
 			}
-			cout << endl;
 			current = current->nextAddress;
 			row++;
 		}
@@ -429,5 +427,14 @@ public:
 			current = current->nextAddress;
 		}
 		return new T();
+	}
+
+	bool clearList() {
+		node<T>* current = head;
+
+		for (int i = this->size; i > 0; i++) {
+			deleteFromFrontList();
+		}
+		return true;
 	}
 };

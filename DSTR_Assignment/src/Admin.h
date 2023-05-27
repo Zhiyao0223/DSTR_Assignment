@@ -421,7 +421,7 @@ public:
 			try {
 				cout << "Enter the user index you want to modify: ";
 				getline(cin, index);
-				stoi(index);
+				int tmp = stoi(index);
 				break;
 			}
 			catch (exception) {
