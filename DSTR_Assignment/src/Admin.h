@@ -459,16 +459,100 @@ public:
 		@param feedbackList - feedback list
 	*/
 	void displayFeedbackByDate(LinkedList<Feedback>* feedbackList) {
-		LinkedList<Feedback>* newSortedList = new LinkedList<Feedback>();
-		string** arr = feedbackList->convertTo2DArray();
+		// Initialize variables
+		node<Feedback>* current = feedbackList->tail;
+		int ticketCounter = 1;
 
-		quicksort(arr, 0, feedbackList->size - 1, 5, true);
+		Util::cleanScreen();
+		cout << "Feedback" << endl;
+		cout << "---------------------------------------" << endl << endl;
 
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 6; j++) {
-				cout << arr[i][j] << ", ";
+		// Display ticket in brief info
+		while (current != NULL) {
+			// Ignore reply feedback
+			if (current->data.getIsReply()) {
+				current = current->prevAddress;
+				continue;
 			}
-			cout << endl;
+
+			if (ticketCounter == 1) {
+				cout << "    No." << "\t" << "Latest Date" << "\t" << "Status" << endl;
+			}
+
+			if (ticketCounter < 10) {
+				cout << "   [" << ticketCounter << "] " << "\t\t"
+					<< current->data.getDate() << "\t"
+					<< current->data.getStatus() << endl;
+			}
+
+			else {
+				cout << "   [" << ticketCounter << "] " << "\t"
+					<< current->data.getDate() << "\t"
+					<< current->data.getStatus() << endl;
+			}
+
+			ticketCounter++;
+			current = current->prevAddress;
+		}
+		cout << endl;
+
+		// Prompt if no ticket found
+		if (ticketCounter == 1) {
+			cout << "No ticket at the moment." << endl;
+			Util::sleepClean(2);
+			return;
+		}
+		else {
+			cout << "Please select your action:" << endl;
+			cout << "[1] Check Ticket Details" << endl;
+			cout << "[2] Back" << endl;
+			cout << "Option: ";
+		}
+
+		string selection;
+		getline(cin, selection);
+
+		if (selection == "1" && ticketCounter != 1) {
+			cout << endl << "Please enter the index number you wish to view: ";
+			cin >> selection;
+
+			try {
+				int indexInt = stoi(selection);
+				if (indexInt > 0 && indexInt < ticketCounter) {
+					current = feedbackList->tail;
+					int counter = 0;
+
+					while (current != NULL) {
+						// Ignore reply feedback
+						if (current->data.getIsReply()) {
+							current = current->prevAddress;
+							continue;
+						}
+
+						if (counter == indexInt - 1) {
+							current->data.display(feedbackList, true);
+							break;
+						}
+						counter++;
+						current = current->prevAddress;
+					}
+				}
+				else {
+					cout << "Invalid option." << endl;
+					Util::sleep(1);
+				}
+			}
+			catch (exception) {
+				cout << "Invalid option." << endl;
+				Util::sleep(1);
+			}
+		}
+		else if (selection == "2") {
+			return;
+		}
+		else {
+			cout << "Invalid option." << endl;
+			Util::sleepClean(1);
 		}
 	};
 

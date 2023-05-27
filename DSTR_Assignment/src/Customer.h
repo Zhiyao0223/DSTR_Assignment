@@ -529,22 +529,41 @@ public:
 	}
 
 	// View Feedback
-	void displayFeedback(LinkedList<Feedback>* feedbackList) {
-		LinkedList<Feedback>* currentUserFeedbackList = new LinkedList<Feedback>();
-		node<Feedback>* current = feedbackList->head;
-		int ticketCounter = 1;
+	void displayFeedback(LinkedList<Feedback>* feedbackList, bool isAdmin=false) {
+		// Sort feedback by latest date, Attempt but fail, cannot find way to store reply class when converting to array and back linked list
+		//int originalFeedbackSize = feedbackList->size;
+		//string** arr = feedbackList->convertTo2DArray();
 
+		//quicksort(arr, 0, feedbackList->size - 1, 5, false);
 		
+		//for (int i = 0; i < 10; i++) {
+		//	for (int j = 0; j < 6; j++) {
+		//		cout << arr[i][j] << " ";
+		//	}
+		//	cout << endl;
+		//}
+
+		//while (feedbackList->size > 0) {
+		//	feedbackList->deleteFromFrontList();
+		//}
+
+		//feedbackList->convertToLinkedList(arr, originalFeedbackSize);
+		//feedbackList->head->data.setReplyByString(arr, feedbackList);
+
+		// Initialize variables
+		node<Feedback>* current = feedbackList->tail;
+		int ticketCounter = 1;
 
 		Util::cleanScreen();
 		cout << "Feedback" << endl;
 		cout << "---------------------------------------" << endl << endl;
 
+		// Display ticket in brief info
 		while (current != NULL) {
-			if (current->data.getUID() == this->getUID()) {
+			if (current->data.getUID() == this->getUID() || isAdmin) {
 				// Ignore reply feedback
 				if (current->data.getIsReply()) {
-					current = current->nextAddress;
+					current = current->prevAddress;
 					continue;
 				}
 
@@ -559,11 +578,17 @@ public:
 
 				ticketCounter++;
 			}
-			current = current->nextAddress;
+			current = current->prevAddress;
 		}
 		cout << endl;
 
+		// Prompt if no ticket found
 		if (ticketCounter == 1) {
+			if (isAdmin) {
+				cout << "No ticket at the moment." << endl;
+				Util::sleepClean(2);
+				return;
+			}
 			cout << "No ticket at the moment." << endl;
 
 			cout << "Please select your action:" << endl;
@@ -572,17 +597,26 @@ public:
 			cout << "Option: ";
 		}
 		else {
-			cout << "Please select your action:" << endl;
-			cout << "[1] Create Ticket" << endl;
-			cout << "[2] Check Ticket Details" << endl;
-			cout << "[3] Back" << endl;
-			cout << "Option: ";
+			if (isAdmin) {
+				cout << "Please select your action:" << endl;
+				cout << "[1] Check Ticket Details" << endl;
+				cout << "[2] Back" << endl;
+				cout << "Option: ";
+			}
+			else {
+				cout << "Please select your action:" << endl;
+				cout << "[1] Create Ticket" << endl;
+				cout << "[2] Check Ticket Details" << endl;
+				cout << "[3] Back" << endl;
+				cout << "Option: ";
+			}
+
 		}
 
 		string selection;
 		getline(cin, selection);
 
-		if (selection == "1") {
+		if (selection == "1" && !isAdmin) {
 			Util::cleanScreen();
 			cout << "Create Ticket" << endl;
 			cout << "---------------------------------------" << endl << endl;
@@ -598,21 +632,21 @@ public:
 			cout << endl << "Ticket created." << endl;
 			Util::sleep(1);
 		}
-		else if (selection == "2" && ticketCounter != 1) {
+		else if ((selection == "2" && ticketCounter != 1 && !isAdmin) || (selection == "1" && isAdmin && ticketCounter != 1)) {
 			cout << endl << "Please enter the index number you wish to view: ";
 			cin >> selection;
 
 			try {
 				int indexInt = stoi(selection);
 				if (indexInt > 0 && indexInt < ticketCounter) {
-					current = feedbackList->head;
+					current = feedbackList->tail;
 					int counter = 0;
 
 					while (current != NULL) {
 						if (current->data.getUID() == this->getUID()) {
 							// Ignore reply feedback
 							if (current->data.getIsReply()) {
-								current = current->nextAddress;
+								current = current->prevAddress;
 								continue;
 							}
 
@@ -622,7 +656,7 @@ public:
 							}
 							counter++;
 						}
-						current = current->nextAddress;
+						current = current->prevAddress;
 					}
 				}
 				else {
@@ -635,7 +669,7 @@ public:
 				Util::sleep(1);
 			}
 		}
-		else if ((selection == "2" && ticketCounter == 1) || (selection == "3" && ticketCounter != 1)) {
+		else if ((selection == "2" && ticketCounter == 1) || (selection == "3" && ticketCounter != 1 && !isAdmin) || (selection == "2" && isAdmin)) {
 			return;
 		}
 		else {

@@ -300,15 +300,15 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	favList->insertToEndList(new Favorite(favNewId + 12, 5, 2));
 
 	feedbackList->insertToEndList(new Feedback(feedbackNewId, 1, "Title", "haha"));
-	feedbackList->insertToEndList(new Feedback(feedbackNewId + 1, 1, "Title", "9"));
-	feedbackList->insertToEndList(new Feedback(feedbackNewId + 2, 2, "Title", "12"));
-	feedbackList->insertToEndList(new Feedback(feedbackNewId + 3, 2, "Title", "12"));
-	feedbackList->insertToEndList(new Feedback(feedbackNewId + 4, 2, "Title", "12"));
-	feedbackList->insertToEndList(new Feedback(feedbackNewId + 5, 3, "Title", "212"));
-	feedbackList->insertToEndList(new Feedback(feedbackNewId + 6, 3, "Title", "2"));
-	feedbackList->insertToEndList(new Feedback(feedbackNewId + 7, 4, "Title", "25"));
-	feedbackList->insertToEndList(new Feedback(feedbackNewId + 8, 4, "Title", "2"));
-	feedbackList->insertToEndList(new Feedback(feedbackNewId + 9, 4, "Title", "21"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 1, 1, "Title2", "9"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 2, 2, "Title3", "12"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 3, 2, "Title4", "12"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 4, 2, "Title5", "12"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 5, 3, "Title6", "212"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 6, 3, "Title7", "2"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 7, 4, "Title8", "25"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 8, 4, "Title9", "2"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 9, 4, "Test", "21"));
 	
 	// Modify data for testing purpose
 	feedbackList->head->data.setReply(feedbackNewId, 4, "Reply", "1111", true);
