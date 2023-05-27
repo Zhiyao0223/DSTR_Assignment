@@ -32,7 +32,6 @@ public:
 	void logOut() {
 		setLoginStatus(false);
 		cout << this->getUsername() << " logging out." << endl;
-		//Util::sleep(1);
 	}
 
 	// Getter Function

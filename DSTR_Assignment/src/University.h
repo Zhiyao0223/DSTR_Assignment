@@ -146,51 +146,6 @@ public:
 		case 20:
 			return to_string(scoreScaled);
 		}
-
-		//switch (index) {
-		//case 0:
-		//	return rank;
-		//case 1:
-		//	return institution;
-		//case 2:
-		//	return locationCode;
-		//case 3:
-		//	return location;
-		//case 4:
-		//	return ArScore;
-		//case 5:
-		//	return ArRank;
-		//case 6:
-		//	return ErScore;
-		//case 7:
-		//	return ErRank;
-		//case 8:
-		//	return FsrScore;
-		//case 9:
-		//	return FsrRank;
-		//case 10:
-		//	return CpfScore;
-		//case 11:
-		//	return CpfRank;
-		//case 12:
-		//	return IfrScore;
-		//case 13:
-		//	return IfrRank;
-		//case 14:
-		//	return IsrScore;
-		//case 15:
-		//	return IsrRank;
-		//case 16:
-		//	return IrnScore;
-		//case 17:
-		//	return IrnRank;
-		//case 18:
-		//	return GerScore;
-		//case 19:
-		//	return GerRank;
-		//case 20:
-		//	return scoreScaled;
-		//}
 	}
 
 	// Display University Information
