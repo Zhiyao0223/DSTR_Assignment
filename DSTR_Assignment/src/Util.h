@@ -65,6 +65,6 @@ public:
 
 	// Print border line for header
 	static void printBorderLine() {
-		cout << "============================" << endl;
+		cout << "====================================================================================" << endl;
 	}
 };

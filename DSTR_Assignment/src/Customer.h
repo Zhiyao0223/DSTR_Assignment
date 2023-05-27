@@ -7,6 +7,7 @@
 #include "Feedback.h"
 #include "Favorite.h"
 #include "Util.h"
+#include "Search.h"
 #include "LinkedList.h"
 #include "Validation.h"
 using namespace std;
@@ -45,36 +46,6 @@ public:
 		updateLogDate();
 	}
 
-	//template <typename T>
-	//T getColumn(int index) {
-	//	/*
-	//	*	Column Index:
-	//	*	0 - UID
-	//	*	1 - Username
-	//	*	2 - Email
-	//	*	3 - PostCode
-	//	*	4 - Address
-	//	*	5 - State
-	//	*	6 - Country
-	//	*/
-	//	switch (index) {
-	//	case 0:
-	//		return getUID();
-	//	case 1:
-	//		return getUsername();
-	//	case 2:
-	//		return getEmail();
-	//	case 3:
-	//		return postcode;
-	//	case 4:
-	//		return address;
-	//	case 5:
-	//		return state;
-	//	case 6:
-	//		return country;
-	//	}
-	//}
-
 	// Update latest login date
 	void updateLogDate() {
 		lastLogDate->setToday();
@@ -112,9 +83,10 @@ public:
 		cout << "Please select your action:" << endl;
 		cout << "[1] View University" << endl;
 		cout << "[2] Search University" << endl;
-		cout << "[3] Login" << endl;
-		cout << "[4] Register" << endl;
-		cout << "[5] Exit" << endl;
+		cout << "[3] Sort University" << endl;
+		cout << "[4] Login" << endl;
+		cout << "[5] Register" << endl;
+		cout << "[6] Exit" << endl;
 		cout << "Option: ";
 	}
 
@@ -127,10 +99,11 @@ public:
 		cout << "Please select your action:" << endl;
 		cout << "[1] View University" << endl;
 		cout << "[2] Search University" << endl;
-		cout << "[3] Favorites" << endl;
-		cout << "[4] MoHE Feedback" << endl;
-		cout << "[5] Profile" << endl;
-		cout << "[6] Logout" << endl;
+		cout << "[3] Sort University" << endl;
+		cout << "[4] Favorites" << endl;
+		cout << "[5] MoHE Feedback" << endl;
+		cout << "[6] Profile" << endl;
+		cout << "[7] Logout" << endl;
 		cout << "Option: ";
 	}
 
@@ -301,7 +274,7 @@ public:
 
 			getline(cin, index);
 			try {
-				stoi(index);
+				int tmp = stoi(index);
 			}
 			catch (exception) {
 				cout << "Invalid option." << endl;
@@ -378,9 +351,9 @@ public:
 		Display University
 		@para favList: Favorite List
 	*/
-	void viewUniversity(LinkedList<Favorite>* favList) {
-		FileIO fileIO;
-		LinkedList<University>* uniList = fileIO.readFile();
+	void viewUniversity(LinkedList<Favorite>* favList, LinkedList<University>* uniList) {
+		//FileIO fileIO;
+		//LinkedList<University>* uniList = fileIO.readFile();
 
 		while (true) {
 			node<University>* selectedUni = uniList->displayAllUniversity();
@@ -699,8 +672,146 @@ public:
 	/*
         Search university. IN PROGRESS
 	*/
-	void searchUniversity() {
+	void searchUniversity(LinkedList<University>* uniList) {
+		Util::cleanScreen();
+		Util::printBorderLine();
+		cout << "\t\t\t\t" << "Search University" << endl;
+		Util::printBorderLine();
+		cout << endl;
 
+		string uniName;
+		cout << "Enter university name: ";
+		getline(cin, uniName);
+
+		cout << endl << "Searching..." << endl
+			 << "It may take a while..." << endl << endl;
+
+		string** arr = uniList->convertTo2DArray();
+		quicksort(arr, 0, uniList->size - 1, 1, true);
+		LinkedList<University>* tmpList = new LinkedList<University>();
+		tmpList->convertToLinkedList(arr, uniList->size);
+
+		int counter = 0;
+		tmpList =  binarySearch(tmpList, uniName, 1);
+		if (tmpList != NULL) {
+			node<University>* current = tmpList->head;
+
+			while (current != NULL) {
+				current->data.display();
+				counter++;
+				current = current->nextAddress;
+			}
+		}
+		else {
+			cout << "No university found." << endl;
+		}
+
+		Util::pause();
+	}
+
+	void sortUniversity(LinkedList<University>* uniList, LinkedList<Favorite>* favList, bool isLogin=false) {
+		Util::cleanScreen();
+		Util::printBorderLine();
+		cout << "Sort University" << endl;
+		Util::printBorderLine();
+		cout << endl;
+
+		if (isLogin) {
+			cout << "Please select the sorting method: " << endl
+				 << "[1] Sort by name" << endl
+				 << "[2] Sort by location code" << endl
+				 << "[3] Sort by location" << endl
+				 << "[4] Sort by academic reputation (score)" << endl
+				 << "[5] Sort by academic reputation (rank)" << endl
+				 << "[6] Sort by employer reputation (score)" << endl
+				 << "[7] Sort by employer reputation (rank)" << endl
+				 << "[8] Sort by faculty / student ratio (score)" << endl
+				 << "[9] Sort by faculty / student ratio (rank)" << endl
+				 << "[10] Sort by citations per faculty (score)" << endl
+				 << "[11] Sort by citations per faculty (rank)" << endl
+				 << "[12] Sort by internation faculty ratio (score)" << endl
+				 << "[13] Sort by internation faculty ratio (rank)" << endl
+				 << "[14] Sort by international student ratio (score)" << endl
+				 << "[15] Sort by international student ratio (rank)" << endl
+				 << "[16] Sort by international research network (score)" << endl
+				 << "[17] Sort by international research network (rank)" << endl
+				 << "[18] Sort by employment outcome (score)" << endl
+				 << "[19] Sort by employment outcome (rank)" << endl
+				 << "[20] Sort by Score Scaled" << endl
+				 << "[21] Back" << endl
+				 << "Option: ";
+		}
+		else {
+			cout << "Please select the sorting method: " << endl;
+			cout << "[1] Sort by name" << endl;
+			cout << "[2] Back" << endl;
+			cout << "Option: ";
+		}
+
+		int colIndex = 0;
+		string indexSelection, ascSelection;
+		getline(cin, indexSelection);
+		
+		try {
+			colIndex = stoi(indexSelection);
+
+			if (isLogin) {
+				if (colIndex < 1 || colIndex > 21) {
+					cout << "Invalid option." << endl;
+					Util::sleepClean(1);
+					return;
+				}
+				else if (colIndex == 21) return;
+			}
+			else {
+				if (colIndex < 1 || colIndex > 2) {
+					cout << "Invalid option." << endl;
+					Util::sleepClean(1);
+					return;
+				}
+				else if (colIndex == 2) return;
+			}
+		}
+		catch (exception) {
+			cout << "Invalid option." << endl;
+			Util::sleepClean(1);
+			return;
+		}
+
+		cout << endl << "Ascending or Descending?" << endl
+			 << "[1] Ascending" << endl
+			 << "[2] Descending" << endl
+			 << "Option: ";
+		getline(cin, ascSelection);
+
+		if (ascSelection != "1" && ascSelection != "2") {
+			cout << "Invalid option." << endl;
+			Util::sleepClean(1);
+			return;
+		}
+		bool isAsc = (ascSelection == "1") ? true : false;
+
+		cout << endl << "Sorting..." << endl
+			<< "It may take a while." << endl;
+
+		LinkedList<University>* tmpList = new LinkedList<University>();
+		string** arr = uniList->convertTo2DArray();
+		quicksort(arr, 0, uniList->size - 1, colIndex, isAsc);
+		tmpList->convertToLinkedList(arr, uniList->size);
+
+		Util::cleanScreen();
+		node<University>* newNode = tmpList->displayAllUniversity();
+		if (newNode != NULL) {
+			if (Validation::isEmpty(getUsername())) {
+				cout << "Please login before proceed." << endl;
+				Util::sleep(1);
+				return;
+			}
+
+			favList->insertToEndList(new Favorite(favList->getNewUID(), this->getUID(), newNode->data.getRank()));
+			cout << endl << newNode->data.getInstitution() << " added to wishlist." << endl;
+			Util::sleep(1);
+		}
 	}
 
 	// Update Inactive Account to Status 'INACTIVE'

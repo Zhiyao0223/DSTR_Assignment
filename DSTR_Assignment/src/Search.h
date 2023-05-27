@@ -24,17 +24,17 @@ LinkedList<T>* binarySearch(LinkedList<T>* list, string key, int columnIndex) {
 			if (result == nullptr) {
 				result = new LinkedList<T>();
 			}
-			result->insertToEndList(mid->data);
+			result->insertToEndList(&(mid->data));
 			// Continue searching in the left and right halves
-			searchRange(start, mid->previousAddress, columnIndex, key, result);
+			searchRange(start, mid->prevAddress, columnIndex, key, result);
 			searchRange(mid->nextAddress, end, columnIndex, key, result);
 			break;  // Found a match, no need to continue searching
 		}
-		else if (mid->data.getColumn(columnIndex) < key) {
+		else if (mid->data.getColumn(columnIndex) > key) {
 			start = mid->nextAddress;
 		}
 		else {
-			end = mid->previousAddress;
+			end = mid->prevAddress;
 		}
 	}
 
@@ -43,7 +43,7 @@ LinkedList<T>* binarySearch(LinkedList<T>* list, string key, int columnIndex) {
 		if (result == nullptr) {
 			result = new LinkedList<T>();
 		}
-		result->insertToEndList(start->data);
+		result->insertToEndList(&(start->data));
 	}
 
 	return result;
@@ -54,7 +54,7 @@ void searchRange(node<T>* start, node<T>* end, int columnIndex, string key, Link
 	node<T>* current = start;
 	while (current != end) {
 		if (current->data.getColumn(columnIndex) == key) {
-			result->insertToEndList(current->data);
+			result->insertToEndList(&(current->data));
 		}
 		current = current->nextAddress;
 	}
