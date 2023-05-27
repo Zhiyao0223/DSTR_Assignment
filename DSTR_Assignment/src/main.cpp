@@ -19,7 +19,7 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 
 
 int main() {
-	test();
+	//test();
 
 	// Initialize doubly linked list, classes and variables
 	Admin* admin = new Admin();
@@ -31,7 +31,7 @@ int main() {
 	LinkedList<University>* uniList = new LinkedList<University>();
 
 	string option;
-	string programName = "Awesome CLI Program";
+	string programName = "University Rating System";
 	string welcomeMsg = "This system is a university rating platform.\n"
 						"Get ready to explore the world of command-line magic\n";
 	string thankYouMsg = "Thank you for using this University Rating System!\n"
@@ -42,14 +42,19 @@ int main() {
 	// Setup dummy data
 	setupUser(custList, adminList, favList, feedbackList, uniList);
 
+	// Update inactive user status
+	cust->updateUserStatus(custList);
+
 	// Get user role
 	while (true) {
 		// Print welcome message
-		cout << programName << endl;
+		Util::printBorderLine();
+		cout << endl << programName << endl;
 		cout << welcomeMsg << endl;
+		Util::printBorderLine();
 
 		// Select role
-		cout << "Please select your role:" << endl;
+		cout << endl << "Please select your role:" << endl;
 		cout << "1. Customer" << endl;
 		cout << "2. Admin" << endl;
 		cout << "3. Exit" << endl;
@@ -150,9 +155,9 @@ void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedLis
 	Util::sleepClean(1);
 }
 
-// Customer Platform
 /*
 	Customer Platform
+
 	@param custList: Customer linked list
 	@param favList: Favorite linked list
 	@param feedbackList: Feedback linked list
@@ -251,6 +256,7 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 	Setup dummy data for testing purpose
 	Cust (ali, 123)
 	Admin (admin1, 123)
+
 	@param custList	 : customer list
 	@param adminList : admin list
 	@param favList : favorite list
@@ -269,11 +275,12 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	uniList = file.readFile();
 
 	// Add dummy data
-	custList->insertToEndList(new Customer(custNewId, "ali", "ali1@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda1, Shah Alam", "Selangor", "Malaysia"));
-	custList->insertToEndList(new Customer(custNewId + 1, "abu", "ali2@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda2, Shah Alam", "Selangor", "Malaysia"));
-	custList->insertToEndList(new Customer(custNewId + 2, "ah Meng", "ali3@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda3, Shah Alam", "Selangor", "Malaysia"));
-	custList->insertToEndList(new Customer(custNewId + 3, "aliu", "ali4@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda4, Shah Alam", "Selangor", "Malaysia"));
-	custList->insertToEndList(new Customer(custNewId + 4, "aliaa", "ali5@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda5, Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId, "ali", "ali1@gmail.com", "123", "01112345678", "57000", "Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId + 1, "abu", "ali2@gmail.com", "123", "01112345678", "57000", "Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId + 2, "ah Meng", "ali3@gmail.com", "123", "01112345678", "57000", "Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId + 3, "aliu", "ali4@gmail.com", "123", "01112345678", "57000", "Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId + 4, "aliaa", "ali5@gmail.com", "123", "01112345678", "57000", "Shah Alam", "Selangor", "Malaysia"));
+	custList->tail->data.setLastLogDate(new Date("12/12/2020"));
 
 	adminList->insertToEndList(new Admin(adminNewId, "admin1", "admin1@gmail.com", "123", "01112345678"));
 	adminList->insertToEndList(new Admin(adminNewId + 1, "admin2", "admin2@gmail.com", "123", "01112345678"));
@@ -304,43 +311,14 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	feedbackList->insertToEndList(new Feedback(feedbackNewId + 9, 4, "Title", "21"));
 	
 	// Modify data for testing purpose
-	feedbackList->head->data.setReply(feedbackNewId, 4, "Reply", "1111");
+	feedbackList->head->data.setReply(feedbackNewId, 4, "Reply", "1111", true);
 	feedbackList->head->data.setSpecificDate("12/4/2022");
 
 	node<Feedback>* current = feedbackList->head->nextAddress;
 	current->data.setSpecificDate("22/5/2023");
-
-	Feedback* tmp = feedbackList->head->data.getReply();
-	tmp->setRole(UserRole::ADMIN);
 }
 
 // Purely use for testing, delete later
 void test() {
 
 }
-
-// Update Inactive Account to Status 'INACTIVE'
-//static void updateUserStatus(LinkedList<Customer>* custList) {
-//	// Check by using checkInactiveStatus function
-//	// If true, update the status to 'INACTIVE'
-//	// Else, do nothing
-//
-//	node <Customer>* tmp = custList->head;
-//
-//	while (tmp != nullptr) {
-//		if (tmp->data.checkInactiveStatus()) {
-//			tmp->data.setAccountStatus(AccountStatus::INACTIVE);
-//		}
-//		tmp = tmp->nextAddress;
-//	}
-//}
-
-//void MoveFeedBck() {
-//
-//	LinkedList<Feedback>* feedList = new LinkedList<Feedback>();
-//	LinkedList<Feedback> moveFeed;
-//	// Populate the feedList with feedback data
-//	Admin admin;
-//	admin
-//	//moveFeedback(feedList);
-//}

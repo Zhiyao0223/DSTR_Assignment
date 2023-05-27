@@ -1,6 +1,9 @@
 #pragma once
 
 #include <iostream>
+#include "Customer.h"
+#include "University.h"
+#include "LinkedList.h"
 using namespace std;
 
 class Favorite {
@@ -20,24 +23,24 @@ public:
 		ID = UID = insitution = NULL;
 	}
 
-	// Return specified column value
-	template <typename T>
-	T getColumn(int index) {
-		/*
-		*	Column Index:
-		*	0 - ID
-		*	1 - UID
-		*	2 - institution
-		*/
-		switch (index) {
-		case 0:
-			return ID;
-		case 1:
-			return UID;
-		case 2:
-			return insitution;
-		}
-	}
+	//// Return specified column value
+	//template <typename T>
+	//T getColumn(int index) {
+	//	/*
+	//	*	Column Index:
+	//	*	0 - ID
+	//	*	1 - UID
+	//	*	2 - institution
+	//	*/
+	//	switch (index) {
+	//	case 0:
+	//		return ID;
+	//	case 1:
+	//		return UID;
+	//	case 2:
+	//		return insitution;
+	//	}
+	//}
 
 	// Get specific university from list
 	University* getUniversity(int id) {
@@ -50,6 +53,14 @@ public:
 			tmp = tmp->nextAddress;
 		}
 		return NULL;
+	}
+
+	string toDataString() {
+		//string username = custList->getName(custList, UID);
+		//string insitutionName = uniList->getName(uniList, insitution);
+
+		//return to_string(ID) + "," + username + "," + insitutionName;
+		return to_string(ID) + "," + to_string(UID) + "," + to_string(insitution);
 	}
 
 	// Getter Function

@@ -1,6 +1,10 @@
 #pragma once
 
 #include <iostream>
+#include "Customer.h"
+#include "University.h"
+#include "LinkedList.h"
+#include "Sort.h"
 using namespace std;
 
 // Prevent typo and easier manage data
@@ -28,6 +32,7 @@ protected:
 	FeedbackStatus status;
 	UserRole role;
 	Date* date;
+	bool isReply;
 
 public:
 	int dataCount;
@@ -38,19 +43,22 @@ public:
 		comment = "";
 		date = new Date();
 		role = UserRole::NORMAL_USER;
+		isReply = false;
 	}
 
-	Feedback(int tmpID, int tmpUID, string tmpTitle, string tmpComment) {
+	Feedback(int tmpID, int tmpUID, string tmpTitle, string tmpComment, bool tmpIsReply=false, bool tmpIsAdmin=false) {
 		ID = tmpID;
 		UID = tmpUID;
 		title = tmpTitle;
 		comment = tmpComment;
 		reply = NULL;
 		status = FeedbackStatus::OPEN;
-		role = UserRole::REGISTERED_USER;
 		date = new Date();
 		setDate();
 		dataCount = 6;
+		isReply = tmpIsReply;
+
+		role = (tmpIsAdmin) ? UserRole::ADMIN : UserRole::REGISTERED_USER;
 	}
 
 	/*
@@ -76,19 +84,24 @@ public:
 
 	// Return string of data for csv export
 	string toDataString() {
-		return to_string(ID) + "," + to_string(UID) + "," + title + "," + comment + "," 
-			+ enumToString(status) + "," + date->toString();
+		//string username = custList->getName(custList, UID);
+
+		//return to_string(ID) + "," + username + "," + UserRoleToString(role) + "," + title + "," + comment + ","
+		//	+ getReply() + "," + enumToString(status) + "," + date->toString();
+		return to_string(ID) + "," + to_string(UID) + "," + UserRoleToString(role) + "," + title + "," + comment + ","
+			+ getReply() + "," + enumToString(status) + "," + date->toString();
 	}
 
 	/*
 		Multi-level linked list for continous replies
+
 		@param tmpID - Ticket ID
 		@param tmpUID - userID who replied
 		@param tmpComment - Comment
 		@return Pointer of new feedback node
 	*/
-	Feedback* createNewReply(int tmpID, int tmpUID, string tmpTitle, string tmpComment) {
-		return new Feedback(tmpID, tmpUID, tmpTitle, tmpComment);
+	Feedback* createNewReply(int tmpID, int tmpUID, string tmpTitle, string tmpComment, bool isAdmin) {
+		return new Feedback(tmpID, tmpUID, tmpTitle, tmpComment, true, isAdmin);
 	}
 
 	string* toStringArray() {
@@ -98,7 +111,13 @@ public:
 	/*
 		Display feedback in detail
 	*/
-	void display(LinkedList<Feedback>* feedbackList) {
+	void display(LinkedList<Feedback>* tmpFeedbackList, bool isAdmin = false) {
+		LinkedList<Feedback>* feedbackList = new LinkedList<Feedback>();
+		string** arr = tmpFeedbackList->convertTo2DArray();
+
+		quicksort(arr, 0, tmpFeedbackList->size - 1, 5, true);
+		feedbackList->convertToLinkedList(arr, tmpFeedbackList->size);
+
 		Util::cleanScreen();
 
 		cout << "Ticket ID" << "\t" << ": " << ID << endl
@@ -134,7 +153,7 @@ public:
 			cin.ignore();
 			getline(cin, tmpComment);
 
-			newNode = createNewReply(newUID, this->UID, this->title, tmpComment);
+			newNode = createNewReply(newUID, this->UID, this->title, tmpComment, isAdmin);
 			feedbackList->insertToEndList(newNode);
 
 			if (tmp == NULL) {
@@ -207,8 +226,13 @@ public:
 
 	string getReply() {
 		Feedback* tmp = reply;
+
+		if (tmp == NULL) {
+			return "-";
+		}
+
 		string replyID = to_string(reply->getID());
-		while(tmp != NULL) {
+		while(tmp->reply != NULL) {
 			tmp = tmp->reply;
 			replyID += "," + to_string(tmp->getID());
 		}
@@ -241,6 +265,10 @@ public:
 		return date->toString();
 	}
 
+	bool getIsReply() {
+		return isReply;
+	}
+
 	// Setter
 	void setID(int tmp) {
 		ID = tmp;
@@ -258,8 +286,8 @@ public:
 		comment = tmp;
 	}
 
-	void setReply(int ID, int UID, string tmpTitle, string tmpComment) {
-		reply = createNewReply(ID, UID, tmpTitle, tmpComment);
+	void setReply(int ID, int UID, string tmpTitle, string tmpComment, bool isAdmin=false) {
+		reply = createNewReply(ID, UID, tmpTitle, tmpComment, isAdmin);
 	}
 
 	void setStatus(FeedbackStatus newStatus) {
@@ -291,5 +319,13 @@ public:
 		else if (dataArr[4] == "CLOSED") setStatus(FeedbackStatus::CLOSED);
 
 		setSpecificDate(dataArr[5]);
+	}
+
+	void setIsReply(bool tmp) {
+		isReply = tmp;
+	}
+
+	void setIsAdmin() {
+		this->setRole(UserRole::ADMIN);
 	}
 };

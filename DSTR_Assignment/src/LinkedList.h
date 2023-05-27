@@ -328,6 +328,21 @@ public:
 		return tmp + 1;
 	}
 
+	// Get username from linked list
+	string getName(LinkedList<T>* list, int searchId) {
+		// Initialize variables
+		node<T>* current = list->head;
+
+		// Loop through linked list and compare matched data
+		while (current != NULL) {
+			if (current->data.getUID() == searchId) {
+				return current->data.getUsername();
+			}
+			current = current->nextAddress;
+		}
+		return "";
+	}
+
 	/*
 		Swap two nodes in linked list
 		@param node1 - First node

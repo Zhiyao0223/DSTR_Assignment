@@ -22,7 +22,7 @@ enum class AccountStatus {
 class Customer : public User {
 protected:
 	string postcode;
-	string address;
+	string city;
 	string state;
 	string country;
 	Date* lastLogDate;
@@ -30,50 +30,50 @@ protected:
 public:
 	// Constructor
 	Customer() : User() {
-		postcode = address = state = country = "";
+		postcode = city = state = country = "";
 		lastLogDate = new Date();
 	}
 
-	Customer(int UID, string username, string email, string password, string phoneNo, string postCode, string address, string state, string country)
+	Customer(int UID, string username, string email, string password, string phoneNo, string postCode, string city, string state, string country)
 		: User(UID, username, email, password, phoneNo) {
 		Date date;
 		this->postcode = postCode;
-		this->address = address;
+		this->city = city;
 		this->state = state;
 		this->country = country;
 		lastLogDate = new Date();
 		updateLogDate();
 	}
 
-	template <typename T>
-	T getColumn(int index) {
-		/*
-		*	Column Index:
-		*	0 - UID
-		*	1 - Username
-		*	2 - Email
-		*	3 - PostCode
-		*	4 - Address
-		*	5 - State
-		*	6 - Country
-		*/
-		switch (index) {
-		case 0:
-			return getUID();
-		case 1:
-			return getUsername();
-		case 2:
-			return getEmail();
-		case 3:
-			return postcode;
-		case 4:
-			return address;
-		case 5:
-			return state;
-		case 6:
-			return country;
-		}
-	}
+	//template <typename T>
+	//T getColumn(int index) {
+	//	/*
+	//	*	Column Index:
+	//	*	0 - UID
+	//	*	1 - Username
+	//	*	2 - Email
+	//	*	3 - PostCode
+	//	*	4 - Address
+	//	*	5 - State
+	//	*	6 - Country
+	//	*/
+	//	switch (index) {
+	//	case 0:
+	//		return getUID();
+	//	case 1:
+	//		return getUsername();
+	//	case 2:
+	//		return getEmail();
+	//	case 3:
+	//		return postcode;
+	//	case 4:
+	//		return address;
+	//	case 5:
+	//		return state;
+	//	case 6:
+	//		return country;
+	//	}
+	//}
 
 	// Update latest login date
 	void updateLogDate() {
@@ -332,8 +332,8 @@ public:
 				cout << "Postcode updated." << endl;
 				break;
 			case 4:
-				setAddress(newData);
-				cout << "Address updated." << endl;
+				setCity(newData);
+				cout << "City updated." << endl;
 				break;
 			case 5:
 				setState(newData);
@@ -362,7 +362,7 @@ public:
 		cout << "Email: " << email << endl;
 		cout << "Phone Number: " << getPhoneNo() << endl;
 		cout << "Postcode: " << postcode << endl;
-		cout << "Address: " << address << endl;
+		cout << "City: " << city << endl;
 		cout << "State: " << state << endl;
 		cout << "Country: " << country << endl;
 	}
@@ -370,7 +370,8 @@ public:
 	// Return string of data for csv export
 	string toDataString() {
 		return to_string(getUID()) + "," + username + "," + email + "," + password + "," 
-				+ getPhoneNo() + "," + getPostcode() + "," + address + "," + state + "," + country;
+				+ getPhoneNo() + "," + getPostcode() + "," + city + "," + state + "," + country + "," 
+				+ getLastLogDate() + "," + getAccountStatus();
 	}
 
 	/*
@@ -541,25 +542,11 @@ public:
 
 		while (current != NULL) {
 			if (current->data.getUID() == this->getUID()) {
-				//if (!Validation::isEmpty(current->data.getReply())) {
-				//	stringstream ss(feedbackList->head->data.getReply());
-				//	int arrSize = 0;
-				//	string token;
-				//	while (getline(ss, token, ',')) {
-				//		arrSize++;
-				//	}
-
-				//	int* arr = new int[arrSize];
-
-				//	ss.clear();
-				//	ss.seekg(0);
-
-				//	int index = 0;
-				//	while (getline(ss, token, ',')) {
-				//		arr[index] = std::stoi(token);
-				//		index++;
-				//	}
-				//}
+				// Ignore reply feedback
+				if (current->data.getIsReply()) {
+					current = current->nextAddress;
+					continue;
+				}
 
 				if (ticketCounter == 1) {
 					cout << "Ticket ID" << "\t" << "Latest Date" << "\t" << "Status" << endl;
@@ -623,6 +610,12 @@ public:
 
 					while (current != NULL) {
 						if (current->data.getUID() == this->getUID()) {
+							// Ignore reply feedback
+							if (current->data.getIsReply()) {
+								current = current->nextAddress;
+								continue;
+							}
+
 							if (counter == indexInt - 1) {
 								current->data.display(feedbackList);
 								break;
@@ -676,13 +669,29 @@ public:
 
 	}
 
+	// Update Inactive Account to Status 'INACTIVE'
+	void updateUserStatus(LinkedList<Customer>* custList) {
+		// Check by using checkInactiveStatus function
+		// If true, update the status to 'INACTIVE'
+		// Else, do nothing
+
+		node <Customer>* tmp = custList->head;
+
+		while (tmp != nullptr) {
+			if (tmp->data.checkInactiveStatus()) {
+				tmp->data.setAccountStatus(AccountStatus::INACTIVE);
+			}
+			tmp = tmp->nextAddress;
+		}
+	}
+
 	// Getter Function
 	string getPostcode() {
 		return postcode;
 	}
 
-	string getAddress() {
-		return address;
+	string getCity() {
+		return city;
 	}
 
 	string getState() {
@@ -705,8 +714,8 @@ public:
 		postcode = data;
 	}
 
-	void setAddress(string data) {
-		address = data;
+	void setCity(string data) {
+		city = data;
 	}
 
 	void setState(string data) {
