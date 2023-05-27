@@ -21,6 +21,10 @@ public:
 		this_thread::sleep_for(chrono::seconds(second));
 	}
 
+	static void pause() {
+		system("pause");
+	}
+
 	// Freeze and sleep screen
 	static void sleepClean(int second) {
 		sleep(second);

@@ -269,7 +269,7 @@ public:
 		@param dataList: data list to export
 	*/
 	template <class T>
-	void exportData(string filename, string header, LinkedList<T>* dataList) {
+	void exportData(string filename, string header, LinkedList<T>* dataList, LinkedList<Customer>* custList, LinkedList<University>* uniList) {
 		ofstream outputFile(filename);
 
 		if (outputFile.is_open()) {
@@ -277,7 +277,7 @@ public:
 
 			node<T>* current = dataList->head;
 			while (current != nullptr) {
-				string dataString = current->data;
+				string dataString = current->data.toDataString();
 				outputFile << dataString << '\n';
 				current = current->nextAddress;
 			}
@@ -298,133 +298,26 @@ public:
 	*/
 	void generateReport(LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Feedback>* feedbackList, LinkedList<Favorite>* favList) {
 		// Open the input CSV file
-		
-		
-		ofstream outputFile1("output/university.csv"); 
+		string uniFileName = "output/university.csv";
+		string uniHeader = "Rank,Institution,Location Code,Location,AR Score,AR Rank,ER Score,ER Rank,FSR Score,FSR Rank,CPF Score,CPF Rank,IFR Score,IFR Rank,ISR Score,ISR Rank,IRN Score,IRN Rank,GER Score,GER Rank,Score Scaled";
 
-		outputFile1 << "Rank, Institution, Location Code, Location, AR Score, AR Rank, ER Score, ER Rank, FSR Score, FSR Rank, CPF Score, CPF Rank, IFR Score, IFR Rank, ISR Score, ISR Rank, IRN Score, IRN Rank, GER Score, GER Rank, Score Scaled\n";
-		if (outputFile1.is_open()) {
-			node<University>* current = uniList->head;
-			while (current != nullptr) {
-				University tmp = current->data;
+		string custFileName = "output/customer.csv";
+		string custHeader = "UID,Username,Email,Password,Phone No.,Postcode,Address,State,Country,Last Login,Account Status";
 
-				// Write to the CSV file
-				outputFile1 << tmp.getRank() << ", "
-							<< tmp.getInstitution() << ", "
-							<< tmp.getLocationCode() << ", "
-							<< tmp.getLocation() << ", "
-							<< tmp.getArScore() << ", "
-							<< tmp.getArRank() << ", "
-							<< tmp.getErScore() << ", "
-							<< tmp.getErRank() << ", "
-							<< tmp.getFsrScore() << ", "
-							<< tmp.getFsrRank() << ", "
-							<< tmp.getCpfScore() << ", "
-							<< tmp.getCpfRank() << ", "
-							<< tmp.getIfrScore() << ", "
-							<< tmp.getIfrRank() << ", "
-							<< tmp.getIsrScore() << ", "
-							<< tmp.getIsrRank() << ", "
-							<< tmp.getIrnScore() << ", "
-							<< tmp.getIrnRank() << ", "
-							<< tmp.getGerScore() << ", "
-							<< tmp.getGerRank() << ", "
-							<< tmp.getScoreScaled() << "\n";
+		string adminFileName = "output/admin.csv";
+		string adminHeader = "UID, Username, Email, Password, Phone No.";
 
-				current = current->nextAddress;
-			}
-			// Close the output file
-			outputFile1.close(); 
-		}
-		else {
-			cout << "Error opening the output file for attribute: " << endl;
-		}
-		// Close the input file
-		outputFile1.close(); 
+		string feedbackFileName = "output/feedback.csv";
+		string feedbackHeader = "ID,Name,Role,Title,Comment,Reply ID,Status,Date";
 
-		// Open the input CSV file
-		ofstream outputFile2("output/customer.csv");
+		string favFileName = "output/favorite.csv";
+		string favHeader = "ID,Username,Institution Name";
 
-		outputFile2 << "Username, Email, PhoneNo, Postcode, Address, State, Country\n";
-		if (outputFile2.is_open()) {
-			node<Customer>* current = custList->head;
-			while (current != nullptr) {
-				Customer tmp = current->data;
-
-				// Write the data to the file
-				outputFile2 << tmp.getUsername() << ", "
-							<< tmp.getEmail() << ", "
-							<< tmp.getPhoneNo() << ", "
-							<< tmp.getPostcode() << ", "
-							<< tmp.getAddress() << ", "
-							<< tmp.getState() << ", "
-							<< tmp.getCountry() << "\n";
-
-				current = current->nextAddress;
-			}
-			// Close the output file
-			outputFile2.close(); 
-		}
-		else {
-			cout << "Error opening the output file for attribute: " << endl;
-		}
-		// Close the input file
-		outputFile2.close(); 
-
-		// Open the input CSV file
-		ofstream outputFile3("output/favorite.csv"); 
-
-		outputFile3 << "ID, UID, insitution\n";
-		if (outputFile3.is_open()) {
-			node<Favorite>* current = favList->head;
-			while (current != nullptr) {
-				Favorite tmp = current->data;
-
-				// Write into CSV file
-				outputFile3 << tmp.getID() << ", "
-							<< tmp.getUID() << ", "
-							<< tmp.getInstitutionRank() << "\n";
-
-				current = current->nextAddress;
-			}
-			// Close the output file
-			outputFile3.close(); 
-		}
-		else {
-			cout << "Error opening the output file for attribute: " << endl;
-		}
-		// Close the input file
-		outputFile3.close(); 
-
-		// Open the input CSV file
-		ofstream outputFile4("output/feedback.csv"); 
-
-		outputFile4 << "ID, UID, comment, reply, status, role, date\n";
-		if (outputFile4.is_open()) {
-			node<Feedback>* current = feedbackList->head;
-			while (current != nullptr) {
-				Feedback tmp = current->data;
-
-				// Write into CSV file
-				outputFile4 << tmp.getID() << ", "
-							<< tmp.getUID() << ", "
-							<< tmp.getComment() << ", "
-							<< tmp.getReply() << ", "
-							<< tmp.getStatus() << ", "
-							<< tmp.getRole() << ", "
-							<< tmp.getDate() << "\n";
-
-				current = current->nextAddress;
-			}
-			// Close the output file
-			outputFile4.close(); 
-		}
-		else {
-			cout << "Error opening the output file for attribute: " << endl;
-		}
-
-		// Close the input file
-		outputFile4.close(); 
+		exportData(uniFileName, uniHeader, uniList, custList, uniList);
+		exportData(custFileName, custHeader, custList, custList, uniList);
+		exportData(adminFileName, adminHeader, adminList, custList, uniList);
+		exportData(feedbackFileName, feedbackHeader, feedbackList, custList, uniList);
+		exportData(favFileName, favHeader, favList, custList, uniList);
 	}
 
 	/*
@@ -514,7 +407,7 @@ public:
 			cout << "Phone: " << currentNode->data.getPhoneNo() << endl;
 			cout << "Password: " << currentNode->data.getPassword() << endl;
 			cout << "Postcode: " << currentNode->data.getPostcode() << endl;
-			cout << "Address: " << currentNode->data.getAddress() << endl;
+			cout << "City: " << currentNode->data.getCity() << endl;
 			cout << "State: " << currentNode->data.getState() << endl;
 			cout << "Country: " << currentNode->data.getCountry() << endl;
 			cout << "---------------------------------------" << endl;
@@ -566,16 +459,100 @@ public:
 		@param feedbackList - feedback list
 	*/
 	void displayFeedbackByDate(LinkedList<Feedback>* feedbackList) {
-		LinkedList<Feedback>* newSortedList = new LinkedList<Feedback>();
-		string** arr = feedbackList->convertTo2DArray();
+		// Initialize variables
+		node<Feedback>* current = feedbackList->tail;
+		int ticketCounter = 1;
 
-		quicksort(arr, 0, feedbackList->size - 1, 5, true);
+		Util::cleanScreen();
+		cout << "Feedback" << endl;
+		cout << "---------------------------------------" << endl << endl;
 
-		for (int i = 0; i < 5; i++) {
-			for (int j = 0; j < 6; j++) {
-				cout << arr[i][j] << ", ";
+		// Display ticket in brief info
+		while (current != NULL) {
+			// Ignore reply feedback
+			if (current->data.getIsReply()) {
+				current = current->prevAddress;
+				continue;
 			}
-			cout << endl;
+
+			if (ticketCounter == 1) {
+				cout << "    No." << "\t" << "Latest Date" << "\t" << "Status" << endl;
+			}
+
+			if (ticketCounter < 10) {
+				cout << "   [" << ticketCounter << "] " << "\t\t"
+					<< current->data.getDate() << "\t"
+					<< current->data.getStatus() << endl;
+			}
+
+			else {
+				cout << "   [" << ticketCounter << "] " << "\t"
+					<< current->data.getDate() << "\t"
+					<< current->data.getStatus() << endl;
+			}
+
+			ticketCounter++;
+			current = current->prevAddress;
+		}
+		cout << endl;
+
+		// Prompt if no ticket found
+		if (ticketCounter == 1) {
+			cout << "No ticket at the moment." << endl;
+			Util::sleepClean(2);
+			return;
+		}
+		else {
+			cout << "Please select your action:" << endl;
+			cout << "[1] Check Ticket Details" << endl;
+			cout << "[2] Back" << endl;
+			cout << "Option: ";
+		}
+
+		string selection;
+		getline(cin, selection);
+
+		if (selection == "1" && ticketCounter != 1) {
+			cout << endl << "Please enter the index number you wish to view: ";
+			cin >> selection;
+
+			try {
+				int indexInt = stoi(selection);
+				if (indexInt > 0 && indexInt < ticketCounter) {
+					current = feedbackList->tail;
+					int counter = 0;
+
+					while (current != NULL) {
+						// Ignore reply feedback
+						if (current->data.getIsReply()) {
+							current = current->prevAddress;
+							continue;
+						}
+
+						if (counter == indexInt - 1) {
+							current->data.display(feedbackList, true);
+							break;
+						}
+						counter++;
+						current = current->prevAddress;
+					}
+				}
+				else {
+					cout << "Invalid option." << endl;
+					Util::sleep(1);
+				}
+			}
+			catch (exception) {
+				cout << "Invalid option." << endl;
+				Util::sleep(1);
+			}
+		}
+		else if (selection == "2") {
+			return;
+		}
+		else {
+			cout << "Invalid option." << endl;
+			Util::sleepClean(1);
 		}
 	};
 

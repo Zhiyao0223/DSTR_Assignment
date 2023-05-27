@@ -22,7 +22,7 @@ enum class AccountStatus {
 class Customer : public User {
 protected:
 	string postcode;
-	string address;
+	string city;
 	string state;
 	string country;
 	Date* lastLogDate;
@@ -30,50 +30,50 @@ protected:
 public:
 	// Constructor
 	Customer() : User() {
-		postcode = address = state = country = "";
+		postcode = city = state = country = "";
 		lastLogDate = new Date();
 	}
 
-	Customer(int UID, string username, string email, string password, string phoneNo, string postCode, string address, string state, string country)
+	Customer(int UID, string username, string email, string password, string phoneNo, string postCode, string city, string state, string country)
 		: User(UID, username, email, password, phoneNo) {
 		Date date;
 		this->postcode = postCode;
-		this->address = address;
+		this->city = city;
 		this->state = state;
 		this->country = country;
 		lastLogDate = new Date();
 		updateLogDate();
 	}
 
-	template <typename T>
-	T getColumn(int index) {
-		/*
-		*	Column Index:
-		*	0 - UID
-		*	1 - Username
-		*	2 - Email
-		*	3 - PostCode
-		*	4 - Address
-		*	5 - State
-		*	6 - Country
-		*/
-		switch (index) {
-		case 0:
-			return getUID();
-		case 1:
-			return getUsername();
-		case 2:
-			return getEmail();
-		case 3:
-			return postcode;
-		case 4:
-			return address;
-		case 5:
-			return state;
-		case 6:
-			return country;
-		}
-	}
+	//template <typename T>
+	//T getColumn(int index) {
+	//	/*
+	//	*	Column Index:
+	//	*	0 - UID
+	//	*	1 - Username
+	//	*	2 - Email
+	//	*	3 - PostCode
+	//	*	4 - Address
+	//	*	5 - State
+	//	*	6 - Country
+	//	*/
+	//	switch (index) {
+	//	case 0:
+	//		return getUID();
+	//	case 1:
+	//		return getUsername();
+	//	case 2:
+	//		return getEmail();
+	//	case 3:
+	//		return postcode;
+	//	case 4:
+	//		return address;
+	//	case 5:
+	//		return state;
+	//	case 6:
+	//		return country;
+	//	}
+	//}
 
 	// Update latest login date
 	void updateLogDate() {
@@ -332,8 +332,8 @@ public:
 				cout << "Postcode updated." << endl;
 				break;
 			case 4:
-				setAddress(newData);
-				cout << "Address updated." << endl;
+				setCity(newData);
+				cout << "City updated." << endl;
 				break;
 			case 5:
 				setState(newData);
@@ -362,7 +362,7 @@ public:
 		cout << "Email: " << email << endl;
 		cout << "Phone Number: " << getPhoneNo() << endl;
 		cout << "Postcode: " << postcode << endl;
-		cout << "Address: " << address << endl;
+		cout << "City: " << city << endl;
 		cout << "State: " << state << endl;
 		cout << "Country: " << country << endl;
 	}
@@ -370,7 +370,8 @@ public:
 	// Return string of data for csv export
 	string toDataString() {
 		return to_string(getUID()) + "," + username + "," + email + "," + password + "," 
-				+ getPhoneNo() + "," + getPostcode() + "," + address + "," + state + "," + country;
+				+ getPhoneNo() + "," + getPostcode() + "," + city + "," + state + "," + country + "," 
+				+ getLastLogDate() + "," + getAccountStatus();
 	}
 
 	/*
@@ -528,38 +529,43 @@ public:
 	}
 
 	// View Feedback
-	void displayFeedback(LinkedList<Feedback>* feedbackList) {
-		LinkedList<Feedback>* currentUserFeedbackList = new LinkedList<Feedback>();
-		node<Feedback>* current = feedbackList->head;
-		int ticketCounter = 1;
+	void displayFeedback(LinkedList<Feedback>* feedbackList, bool isAdmin=false) {
+		// Sort feedback by latest date, Attempt but fail, cannot find way to store reply class when converting to array and back linked list
+		//int originalFeedbackSize = feedbackList->size;
+		//string** arr = feedbackList->convertTo2DArray();
 
+		//quicksort(arr, 0, feedbackList->size - 1, 5, false);
 		
+		//for (int i = 0; i < 10; i++) {
+		//	for (int j = 0; j < 6; j++) {
+		//		cout << arr[i][j] << " ";
+		//	}
+		//	cout << endl;
+		//}
+
+		//while (feedbackList->size > 0) {
+		//	feedbackList->deleteFromFrontList();
+		//}
+
+		//feedbackList->convertToLinkedList(arr, originalFeedbackSize);
+		//feedbackList->head->data.setReplyByString(arr, feedbackList);
+
+		// Initialize variables
+		node<Feedback>* current = feedbackList->tail;
+		int ticketCounter = 1;
 
 		Util::cleanScreen();
 		cout << "Feedback" << endl;
 		cout << "---------------------------------------" << endl << endl;
 
+		// Display ticket in brief info
 		while (current != NULL) {
-			if (current->data.getUID() == this->getUID()) {
-				//if (!Validation::isEmpty(current->data.getReply())) {
-				//	stringstream ss(feedbackList->head->data.getReply());
-				//	int arrSize = 0;
-				//	string token;
-				//	while (getline(ss, token, ',')) {
-				//		arrSize++;
-				//	}
-
-				//	int* arr = new int[arrSize];
-
-				//	ss.clear();
-				//	ss.seekg(0);
-
-				//	int index = 0;
-				//	while (getline(ss, token, ',')) {
-				//		arr[index] = std::stoi(token);
-				//		index++;
-				//	}
-				//}
+			if (current->data.getUID() == this->getUID() || isAdmin) {
+				// Ignore reply feedback
+				if (current->data.getIsReply()) {
+					current = current->prevAddress;
+					continue;
+				}
 
 				if (ticketCounter == 1) {
 					cout << "Ticket ID" << "\t" << "Latest Date" << "\t" << "Status" << endl;
@@ -572,11 +578,17 @@ public:
 
 				ticketCounter++;
 			}
-			current = current->nextAddress;
+			current = current->prevAddress;
 		}
 		cout << endl;
 
+		// Prompt if no ticket found
 		if (ticketCounter == 1) {
+			if (isAdmin) {
+				cout << "No ticket at the moment." << endl;
+				Util::sleepClean(2);
+				return;
+			}
 			cout << "No ticket at the moment." << endl;
 
 			cout << "Please select your action:" << endl;
@@ -585,17 +597,26 @@ public:
 			cout << "Option: ";
 		}
 		else {
-			cout << "Please select your action:" << endl;
-			cout << "[1] Create Ticket" << endl;
-			cout << "[2] Check Ticket Details" << endl;
-			cout << "[3] Back" << endl;
-			cout << "Option: ";
+			if (isAdmin) {
+				cout << "Please select your action:" << endl;
+				cout << "[1] Check Ticket Details" << endl;
+				cout << "[2] Back" << endl;
+				cout << "Option: ";
+			}
+			else {
+				cout << "Please select your action:" << endl;
+				cout << "[1] Create Ticket" << endl;
+				cout << "[2] Check Ticket Details" << endl;
+				cout << "[3] Back" << endl;
+				cout << "Option: ";
+			}
+
 		}
 
 		string selection;
 		getline(cin, selection);
 
-		if (selection == "1") {
+		if (selection == "1" && !isAdmin) {
 			Util::cleanScreen();
 			cout << "Create Ticket" << endl;
 			cout << "---------------------------------------" << endl << endl;
@@ -611,25 +632,31 @@ public:
 			cout << endl << "Ticket created." << endl;
 			Util::sleep(1);
 		}
-		else if (selection == "2" && ticketCounter != 1) {
+		else if ((selection == "2" && ticketCounter != 1 && !isAdmin) || (selection == "1" && isAdmin && ticketCounter != 1)) {
 			cout << endl << "Please enter the index number you wish to view: ";
 			cin >> selection;
 
 			try {
 				int indexInt = stoi(selection);
 				if (indexInt > 0 && indexInt < ticketCounter) {
-					current = feedbackList->head;
+					current = feedbackList->tail;
 					int counter = 0;
 
 					while (current != NULL) {
 						if (current->data.getUID() == this->getUID()) {
+							// Ignore reply feedback
+							if (current->data.getIsReply()) {
+								current = current->prevAddress;
+								continue;
+							}
+
 							if (counter == indexInt - 1) {
 								current->data.display(feedbackList);
 								break;
 							}
 							counter++;
 						}
-						current = current->nextAddress;
+						current = current->prevAddress;
 					}
 				}
 				else {
@@ -642,7 +669,7 @@ public:
 				Util::sleep(1);
 			}
 		}
-		else if ((selection == "2" && ticketCounter == 1) || (selection == "3" && ticketCounter != 1)) {
+		else if ((selection == "2" && ticketCounter == 1) || (selection == "3" && ticketCounter != 1 && !isAdmin) || (selection == "2" && isAdmin)) {
 			return;
 		}
 		else {
@@ -676,13 +703,29 @@ public:
 
 	}
 
+	// Update Inactive Account to Status 'INACTIVE'
+	void updateUserStatus(LinkedList<Customer>* custList) {
+		// Check by using checkInactiveStatus function
+		// If true, update the status to 'INACTIVE'
+		// Else, do nothing
+
+		node <Customer>* tmp = custList->head;
+
+		while (tmp != nullptr) {
+			if (tmp->data.checkInactiveStatus()) {
+				tmp->data.setAccountStatus(AccountStatus::INACTIVE);
+			}
+			tmp = tmp->nextAddress;
+		}
+	}
+
 	// Getter Function
 	string getPostcode() {
 		return postcode;
 	}
 
-	string getAddress() {
-		return address;
+	string getCity() {
+		return city;
 	}
 
 	string getState() {
@@ -705,8 +748,8 @@ public:
 		postcode = data;
 	}
 
-	void setAddress(string data) {
-		address = data;
+	void setCity(string data) {
+		city = data;
 	}
 
 	void setState(string data) {

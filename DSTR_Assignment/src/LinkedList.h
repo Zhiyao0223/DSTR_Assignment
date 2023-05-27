@@ -187,7 +187,7 @@ public:
 	void insertToEndList(T* data) {
 		node<T>* newNode = createNewNode(data);
 
-		if (tail == NULL) {
+		if (tail == NULL || head == NULL) {
 			head = tail = newNode;
 		}
 		else {
@@ -211,7 +211,14 @@ public:
 		node<T>* temp = head;
 		T data = temp->data;
 
-		head = head->nextAddress;
+		if (head == tail) {
+			head = tail = NULL;
+		}
+		else {
+			head = head->nextAddress;
+			head->prevAddress = NULL;
+		}
+
 		delete temp;
 		size--;
 
@@ -328,6 +335,21 @@ public:
 		return tmp + 1;
 	}
 
+	// Get username from linked list
+	string getName(LinkedList<T>* list, int searchId) {
+		// Initialize variables
+		node<T>* current = list->head;
+
+		// Loop through linked list and compare matched data
+		while (current != NULL) {
+			if (current->data.getUID() == searchId) {
+				return current->data.getUsername();
+			}
+			current = current->nextAddress;
+		}
+		return "";
+	}
+
 	/*
 		Swap two nodes in linked list
 		@param node1 - First node
@@ -371,7 +393,9 @@ public:
 			// Copy data to 2D array
 			for (int i = 0; i < numCols; i++) {
 				newData[row][i] = tmpData[i];
+				cout << newData[row][i] << " ";
 			}
+			cout << endl;
 			current = current->nextAddress;
 			row++;
 		}
@@ -395,5 +419,15 @@ public:
 			this->insertToEndList(data);
 			currentRow++;
 		}
+	}
+
+	T* findNodeByID(int searchID) {
+		node<T>* current = head;
+
+		while (current != NULL) {
+			if (current->data.getID() == searchID) return &(current->data);
+			current = current->nextAddress;
+		}
+		return new T();
 	}
 };
