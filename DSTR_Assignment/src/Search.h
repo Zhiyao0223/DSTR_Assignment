@@ -8,7 +8,7 @@
 #include "Sort.h"
 using namespace std;
 
-string** binarySearch(string** array, int arraySize, string key, int columnIndex, int* count) {
+string** binarySearch(string** array, int arraySize, string key, int columnIndex, int* count=0) {
     string* tmpArr = new string[arraySize];
     for (int i = 0; i < arraySize; i++) {
         tmpArr[i] = "0";
@@ -60,6 +60,7 @@ string** binarySearch(string** array, int arraySize, string key, int columnIndex
 	for (int i = 0; i < resultCount; i++) {
         int index = stoi(tmpArr[i]);
         resultArray[i] = array[index];
+        cout << resultArray[i][20];
 	}
     
     *count = resultCount;

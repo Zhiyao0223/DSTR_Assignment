@@ -47,13 +47,12 @@ void selectionSort(string** universityData, int size, int index) {
 *   Quick Sort
 */
 // Comparison function to determine the order of two strings
-bool compareStrings(string& a, string& b, int colIndex, bool isAsc) {
+bool compareStrings(const string& a, const string& b, int colIndex, bool isAsc) {
 	// Sort string in lexicographical order
 	if (colIndex >= 1 && colIndex < 4) {
 		return (isAsc) ? a < b : a > b;
 	}
 	else {
-
 		// Integer column
 		int value1 = stoi(a);
 		int value2 = stoi(b);
@@ -63,35 +62,31 @@ bool compareStrings(string& a, string& b, int colIndex, bool isAsc) {
 }
 
 // Swap two strings
-void swapStrings(string* a, std::string* b) {
-	std::string temp = *a;
+void swapStrings(string** a, string** b) {
+	string* temp = *a;
 	*a = *b;
 	*b = temp;
 }
 
 // Partition the array
 int partition(string** arr, int low, int high, int colIndex, bool isAsc) {
-	std::string pivot = arr[high][colIndex];
+	string* pivot = arr[high];
 	int i = low - 1;
 
 	for (int j = low; j < high; j++) {
-		if (compareStrings(arr[j][colIndex], pivot, colIndex, isAsc)) {
+		if (compareStrings(arr[j][colIndex], pivot[colIndex], colIndex, isAsc)) {
 			i++;
-			for (int k = 0; k < colIndex + 1; k++) {
-				swapStrings(&arr[i][k], &arr[j][k]);
-			}
+			swapStrings(&arr[i], &arr[j]);
 		}
 	}
 
-	for (int k = 0; k < colIndex + 1; k++) {
-		swapStrings(&arr[i + 1][k], &arr[high][k]);
-	}
+	swapStrings(&arr[i + 1], &arr[high]);
 
 	return i + 1;
 }
 
 // Quicksort algorithm
-void quicksort(std::string** arr, int low, int high, int colIndex, bool isAsc) {
+void quicksort(string** arr, int low, int high, int colIndex, bool isAsc) {
 	if (low < high) {
 		int pivotIndex = partition(arr, low, high, colIndex, isAsc);
 

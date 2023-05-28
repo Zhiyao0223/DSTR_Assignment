@@ -58,6 +58,8 @@ public:
 
 	// Login function
 	Customer* login(LinkedList<Customer>* list) {
+		Util::printHeader("Login");
+
 		string tmpUsername, tmpPass;
 
 		cout << "* Enter 0 at \"Username\" to register" << endl << endl;
@@ -75,11 +77,9 @@ public:
 	}
 
 	void displayNotLoginMenu() {
-		Util::cleanScreen();
+		Util::printHeader("Customer Platform");
 
-		cout << "Welcome to Customer Platform" << endl;
-		cout << "---------------------------------------" << endl;
-
+		cout << "Welcome !" << endl << endl;
 		cout << "Please select your action:" << endl;
 		cout << "[1] View University" << endl;
 		cout << "[2] Search University" << endl;
@@ -91,11 +91,9 @@ public:
 	}
 
 	void displayLoginMenu() {
-		Util::cleanScreen();
+		Util::printHeader("Customer Platform");
 
-		cout << "Welcome to Customer Platform" << endl;
-		cout << "---------------------------------------" << endl;
-
+		cout << "Welcome , " << this->username << endl << endl;
 		cout << "Please select your action:" << endl;
 		cout << "[1] View University" << endl;
 		cout << "[2] Search University" << endl;
@@ -111,13 +109,11 @@ public:
 		string tmpUsername, tmpEmail, tmpPass, confirmPass, tmpPhoneNo, tmpPostcode, tmpAddress, tmpState, tmpCountry;
 
 		while (true) {
-			Util::cleanScreen();
+			Util::printHeader("Registration");
 
-			cout << "Registration" << endl;
-			cout << "---------------------------------------" << endl;
 			cout << "Enter -1 if you want to cancel registration" << endl << endl;
 
-			cout << "Username: ";
+			cout << "Username" << "\t\t" << ": ";
 			getline(cin, tmpUsername);
 
 			if (tmpUsername == "-1") return NULL;
@@ -127,10 +123,10 @@ public:
 				continue;
 			}
 
-			cout << "Password: ";
+			cout << "Password" << "\t\t" << ": ";
 			tmpPass = Util::getPassword();
 
-			cout << "Confirm Password: ";
+			cout << "Confirm Password" << "\t" << ": ";
 			confirmPass = Util::getPassword();
 
 			if (tmpPass != confirmPass) {
@@ -140,7 +136,7 @@ public:
 			}
 			else if (tmpUsername == "-1") return NULL;
 
-			cout << "Email: ";
+			cout << "Email" << "\t\t\t" << ": ";
 			getline(cin, tmpEmail);
 
 			if (!Validation::isEmail(tmpEmail)) {
@@ -150,7 +146,7 @@ public:
 			}
 			else if (tmpUsername == "-1") return NULL;
 
-			cout << "Phone Number: ";
+			cout << "Phone Number" << "\t\t" << ": ";
 			getline(cin, tmpPhoneNo);
 
 			if (!Validation::isPhoneNo(tmpPhoneNo)) {
@@ -160,7 +156,17 @@ public:
 			}
 			else if (tmpUsername == "-1") return NULL;
 
-			cout << "Postcode: ";
+			cout << "City" << "\t\t\t" << ": ";
+			getline(cin, tmpAddress);
+
+			if (Validation::isEmpty(tmpAddress)) {
+				cout << "City field cannot empty" << endl;
+				Util::sleep(1);
+				continue;
+			}
+			else if (tmpUsername == "-1") return NULL;
+
+			cout << "Postcode" << "\t\t" << ": ";
 			getline(cin, tmpPostcode);
 
 			if (Validation::isEmpty(tmpPostcode)) {
@@ -170,17 +176,7 @@ public:
 			}
 			else if (tmpUsername == "-1") return NULL;
 
-			cout << "Address: ";
-			getline(cin, tmpAddress);
-
-			if (Validation::isEmpty(tmpAddress)) {
-				cout << "Address field cannot empty" << endl;
-				Util::sleep(1);
-				continue;
-			}
-			else if (tmpUsername == "-1") return NULL;
-
-			cout << "State: ";
+			cout << "State" << "\t\t\t" << ": ";
 			getline(cin, tmpState);
 
 			if (Validation::isEmpty(tmpState)) {
@@ -190,7 +186,7 @@ public:
 			}
 			else if (tmpUsername == "-1") return NULL;
 
-			cout << "Country: ";
+			cout << "Country" << "\t\t\t" << ": ";
 			getline(cin, tmpCountry);
 
 			if (Validation::isEmpty(tmpCountry)) {
@@ -240,11 +236,8 @@ public:
 
 	// Display profile menu
 	void displayProfileMenu() {
-		Util::cleanScreen();
-
-		cout << "Profile" << endl;
-		cout << "---------------------------------------" << endl;
-		toString();
+		Util::printHeader("Profile Menu");
+		display();
 
 		cout << "Please select your action:" << endl;
 		cout << "[1] Edit Profile" << endl;
@@ -254,13 +247,10 @@ public:
 
 	// Edit Profile
 	bool editProfile() {
-		//Util::cleanScreen();
-
 		string index, newData;
 		while (true) {
-			cout << "Edit Profile" << endl;
-			cout << "---------------------------------------" << endl;
-			toString();
+			Util::printHeader("Edit Profile");
+			display();
 
 			cout << "Please select your action:" << endl;
 			cout << "[1] Edit Email" << endl;
@@ -330,7 +320,7 @@ public:
 	}
 
 	// Display individual profile
-	void toString() {
+	void display() {
 		cout << "Username: " << username << endl;
 		cout << "Email: " << email << endl;
 		cout << "Phone Number: " << getPhoneNo() << endl;
@@ -342,18 +332,17 @@ public:
 
 	// Return string of data for csv export
 	string toDataString() {
-		return to_string(getUID()) + "," + username + "," + email + "," + password + "," 
-				+ getPhoneNo() + "," + getPostcode() + "," + city + "," + state + "," + country + "," 
-				+ getLastLogDate() + "," + getAccountStatus();
+		return to_string(getUID()) + "," + username + "," + email + "," + password + ","
+			+ getPhoneNo() + "," + getPostcode() + "," + city + "," + state + "," + country + ","
+			+ getLastLogDate() + "," + getAccountStatus();
 	}
 
 	/*
 		Display University
 		@para favList: Favorite List
 	*/
-	void viewUniversity(LinkedList<Favorite>* favList, LinkedList<University>* uniList, int selectedUniIndex=0) {
-		//FileIO fileIO;
-		//LinkedList<University>* uniList = fileIO.readFile();
+	void viewUniversity(LinkedList<Favorite>* favList, LinkedList<University>* uniList, int selectedUniIndex = 0) {
+		Util::printHeader("University List");
 
 		while (true) {
 			node <University>* selectedUni = new node<University>();
@@ -363,7 +352,7 @@ public:
 			else {
 				selectedUni = uniList->displayAllUniversity();
 			}
-			
+
 			if (selectedUni != NULL) {
 				if (Validation::isEmpty(getUsername())) {
 					cout << "Please login before proceed." << endl;
@@ -407,10 +396,7 @@ public:
 	*/
 	void displayFav(LinkedList<Favorite>* favList) {
 		// Display all favorite
-		Util::cleanScreen();
-
-		cout << "Favorite" << endl;
-		cout << "---------------------------------------" << endl;
+		Util::printHeader("Favorite");
 
 		LinkedList<University>* favUniList = new LinkedList<University>();
 		node<Favorite>* tmp = favList->head;
@@ -508,34 +494,12 @@ public:
 	}
 
 	// View Feedback
-	void displayFeedback(LinkedList<Feedback>* feedbackList, bool isAdmin=false) {
-		// Sort feedback by latest date, Attempt but fail, cannot find way to store reply class when converting to array and back linked list
-		//int originalFeedbackSize = feedbackList->size;
-		//string** arr = feedbackList->convertTo2DArray();
-
-		//quicksort(arr, 0, feedbackList->size - 1, 5, false);
-		
-		//for (int i = 0; i < 10; i++) {
-		//	for (int j = 0; j < 6; j++) {
-		//		cout << arr[i][j] << " ";
-		//	}
-		//	cout << endl;
-		//}
-
-		//while (feedbackList->size > 0) {
-		//	feedbackList->deleteFromFrontList();
-		//}
-
-		//feedbackList->convertToLinkedList(arr, originalFeedbackSize);
-		//feedbackList->head->data.setReplyByString(arr, feedbackList);
-
+	void displayFeedback(LinkedList<Feedback>* feedbackList, bool isAdmin = false) {
 		// Initialize variables
 		node<Feedback>* current = feedbackList->tail;
 		int ticketCounter = 1;
 
-		Util::cleanScreen();
-		cout << "Feedback" << endl;
-		cout << "---------------------------------------" << endl << endl;
+		Util::printHeader("Feedback");
 
 		// Display ticket in brief info
 		while (current != NULL) {
@@ -550,7 +514,6 @@ public:
 					cout << "Ticket ID" << "\t" << "Latest Date" << "\t" << "Status" << endl;
 				}
 
-				
 				cout << "   [" << ticketCounter << "] " << "\t\t"
 					<< current->data.getDate() << "\t"
 					<< current->data.getStatus() << endl;
@@ -589,16 +552,13 @@ public:
 				cout << "[3] Back" << endl;
 				cout << "Option: ";
 			}
-
 		}
 
 		string selection;
 		getline(cin, selection);
 
 		if (selection == "1" && !isAdmin) {
-			Util::cleanScreen();
-			cout << "Create Ticket" << endl;
-			cout << "---------------------------------------" << endl << endl;
+			Util::printHeader("Create Ticket");
 
 			string title, description;
 			cout << "Title: ";
@@ -675,31 +635,49 @@ public:
 		}
 	}
 
-
 	string* displayUniByArray(string** arr, int row) {
-		Util::cleanScreen();
-		Util::printBorderLine();
-		cout << "\t\t\t\t" << "Search University" << endl;
-		Util::printBorderLine();
+		Util::printHeader("Search University");
 
 		int counter = 0;
 		const int MAX_ITEM_PER_PAGE = 5;
 		string option, rank;
-		
+
 		for (int i = 0; i < row; i++) {
+			for (int j = 4; j < 21; j++) {
+				if (arr[i][j] == "-1") {
+					arr[i][j] = "-";
+				}
+				else if (arr[i][j] == "501" || arr[i][j] == "601") {
+					arr[i][j] += "+";
+				}
+			}
+
 			cout << endl << "[" << counter + 1 << "]" << endl;
-			cout << "Rank: " << arr[i][0] << endl;
-			cout << "Institution Name: " << arr[i][1] << endl;
-			cout << "Location: " << arr[i][2] << endl;
-			cout << "Academic Reputation (rank): " << arr[i][3] << endl;
-			cout << "Employer Reputation (rank): " << arr[i][4] << endl;
-			cout << "Faculty / Student Ratio (rank): " << arr[i][5] << endl;
-			cout << "Citations Per Faculty (rank): " << arr[i][6] << endl;
-			cout << "Internation Faculty Ratio (rank): " << arr[i][7] << endl;
-			cout << "International Student Ratio (rank): " << arr[i][8] << endl;
-			cout << "Overall Score: " << arr[i][9] << endl << endl;
+			cout << "Rank " << "\t\t\t\t\t" << ": " << arr[i][0] << endl;
+			cout << "Intitution Name" << "\t\t\t\t" << ": " << arr[i][1] << endl;
+			cout << "Location " << "\t\t\t\t" << ": " << arr[i][3] << " (" << arr[i][2] << ")" << endl;
+			cout << "Academic Reputation (rank)" << "\t\t" << ": " << arr[i][4] << " (" << arr[i][5] << ")" << endl;
+			cout << "Employer Reputation (rank)" << "\t\t" << ": " << arr[i][6] << " (" << arr[i][7] << ")" << endl;
+			cout << "Faculty / Student Ratio (rank)" << "\t\t" << ": " << arr[i][8] << " (" << arr[i][9] << ")" << endl;
+			cout << "Citations Per Faculty (rank)" << "\t\t" << ": " << arr[i][10] << " (" << arr[i][11] << ")" << endl;
+			cout << "Internation Faculty Ratio (rank)" << "\t" << ": " << arr[i][12] << " (" << arr[i][13] << ")" << endl;
+			cout << "Internation Student Ratio (rank)" << "\t" << ": " << arr[i][14] << " (" << arr[i][15] << ")" << endl;
+			cout << "International Research Network (rank)" << "\t" << ": " << arr[i][16] << " (" << arr[i][17] << ")" << endl;
+			cout << "Employment Outcome (rank)" << "\t\t" << ": " << arr[i][18] << " (" << arr[i][19] << ")" << endl;
+			cout << "Overall Score" << "\t\t\t\t" << ": " << arr[i][20] << endl;
+
+			//cout << "Rank: " <<  << endl;
+			//cout << "Institution Name: " << arr[i][1] << endl;
+			//cout << "Location: " << arr[i][2] << endl;
+			//cout << "Academic Reputation (rank): " << arr[i][3] << endl;
+			//cout << "Employer Reputation (rank): " << arr[i][4] << endl;
+			//cout << "Faculty / Student Ratio (rank): " << arr[i][5] << endl;
+			//cout << "Citations Per Faculty (rank): " << arr[i][6] << endl;
+			//cout << "Internation Faculty Ratio (rank): " << arr[i][7] << endl;
+			//cout << "International Student Ratio (rank): " << arr[i][8] << endl;
+			//cout << "Overall Score: " << arr[i][9] << endl << endl;
 		}
-		
+
 		cout << endl << "[1] Add University to Favourite" << endl;
 		cout << "[2] Return" << endl;
 		cout << "Option: ";
@@ -712,15 +690,15 @@ public:
 				cout << endl << "Please enter the index number of university you wish to add: ";
 				getline(cin, option);
 				cout << endl;
-			
+
 				if (option < "1" || option > to_string(counter)) {
 					cerr << "Invalid option. Returning..." << endl;
 					Util::sleep(1);
 					return NULL;
 				}
 			}
-			
-			return arr[stoi(option)-1];
+
+			return arr[stoi(option) - 1];
 		}
 		// Return to previous page
 		else if (option == "2") {
@@ -734,32 +712,28 @@ public:
 		}
 		counter = 0;
 	}
-	
+
 	/*
-        Search university. IN PROGRESS
+		Search university. IN PROGRESS
 	*/
 	void searchUniversity(LinkedList<University>* uniList, LinkedList<Favorite>* favList) {
-		Util::cleanScreen();
-		Util::printBorderLine();
-		cout << "\t\t\t\t" << "Search University" << endl;
-		Util::printBorderLine();
-		cout << endl;
+		Util::printHeader("Search University");
 
-		string uniName;
+		string uniName = "";
+		cout << "* Exact Match Only *" << endl << endl;
 		cout << "Enter university name: ";
 		getline(cin, uniName);
 
 		cout << endl << "Searching..." << endl
-			 << "It may take a while..." << endl << endl;
+			<< "It may take a while..." << endl << endl;
 
 		string** arr = uniList->convertTo2DArray();
 		quicksort(arr, 0, uniList->size - 1, 1, true);
 
 		int counter = 0, numRows = 0;
 
-		arr =  binarySearch(arr, uniList->size,uniName, 1, &numRows);
+		arr = binarySearch(arr, uniList->size, uniName, 1, &numRows);
 
-		
 		if (arr == NULL) {
 			cout << "No result found." << endl;
 			Util::sleepClean(1);
@@ -767,7 +741,7 @@ public:
 		}
 
 		string* selectedUni = displayUniByArray(arr, numRows);
-		
+
 		if (selectedUni != NULL) {
 			if (Validation::isEmpty(this->getUsername())) {
 				cout << "Please login to proceed." << endl;
@@ -782,37 +756,37 @@ public:
 		}
 	}
 
-	void sortUniversity(LinkedList<University>* uniList, LinkedList<Favorite>* favList, bool isLogin=false) {
+	void sortUniversity(LinkedList<University>* uniList, LinkedList<Favorite>* favList, bool isLogin = false) {
 		Util::cleanScreen();
 		Util::printBorderLine();
-		cout << "Sort University" << endl;
+		cout << "\t\t\t\t" << "Sort University" << endl;
 		Util::printBorderLine();
 		cout << endl;
 
 		if (isLogin) {
 			cout << "Please select the sorting method: " << endl
-				 << "[1] Sort by name" << endl
-				 << "[2] Sort by location code" << endl
-				 << "[3] Sort by location" << endl
-				 << "[4] Sort by academic reputation (score)" << endl
-				 << "[5] Sort by academic reputation (rank)" << endl
-				 << "[6] Sort by employer reputation (score)" << endl
-				 << "[7] Sort by employer reputation (rank)" << endl
-				 << "[8] Sort by faculty / student ratio (score)" << endl
-				 << "[9] Sort by faculty / student ratio (rank)" << endl
-				 << "[10] Sort by citations per faculty (score)" << endl
-				 << "[11] Sort by citations per faculty (rank)" << endl
-				 << "[12] Sort by internation faculty ratio (score)" << endl
-				 << "[13] Sort by internation faculty ratio (rank)" << endl
-				 << "[14] Sort by international student ratio (score)" << endl
-				 << "[15] Sort by international student ratio (rank)" << endl
-				 << "[16] Sort by international research network (score)" << endl
-				 << "[17] Sort by international research network (rank)" << endl
-				 << "[18] Sort by employment outcome (score)" << endl
-				 << "[19] Sort by employment outcome (rank)" << endl
-				 << "[20] Sort by Score Scaled" << endl
-				 << "[21] Back" << endl
-				 << "Option: ";
+				<< "[1] Sort by name" << endl
+				<< "[2] Sort by location code" << endl
+				<< "[3] Sort by location" << endl
+				<< "[4] Sort by academic reputation (score)" << endl
+				<< "[5] Sort by academic reputation (rank)" << endl
+				<< "[6] Sort by employer reputation (score)" << endl
+				<< "[7] Sort by employer reputation (rank)" << endl
+				<< "[8] Sort by faculty / student ratio (score)" << endl
+				<< "[9] Sort by faculty / student ratio (rank)" << endl
+				<< "[10] Sort by citations per faculty (score)" << endl
+				<< "[11] Sort by citations per faculty (rank)" << endl
+				<< "[12] Sort by internation faculty ratio (score)" << endl
+				<< "[13] Sort by internation faculty ratio (rank)" << endl
+				<< "[14] Sort by international student ratio (score)" << endl
+				<< "[15] Sort by international student ratio (rank)" << endl
+				<< "[16] Sort by international research network (score)" << endl
+				<< "[17] Sort by international research network (rank)" << endl
+				<< "[18] Sort by employment outcome (score)" << endl
+				<< "[19] Sort by employment outcome (rank)" << endl
+				<< "[20] Sort by Score Scaled" << endl
+				<< "[21] Back" << endl
+				<< "Option: ";
 		}
 		else {
 			cout << "Please select the sorting method: " << endl;
@@ -824,7 +798,7 @@ public:
 		int colIndex = 0;
 		string indexSelection, ascSelection;
 		getline(cin, indexSelection);
-		
+
 		try {
 			colIndex = stoi(indexSelection);
 
@@ -852,9 +826,9 @@ public:
 		}
 
 		cout << endl << "Ascending or Descending?" << endl
-			 << "[1] Ascending" << endl
-			 << "[2] Descending" << endl
-			 << "Option: ";
+			<< "[1] Ascending" << endl
+			<< "[2] Descending" << endl
+			<< "Option: ";
 		getline(cin, ascSelection);
 
 		if (ascSelection != "1" && ascSelection != "2") {
@@ -872,7 +846,7 @@ public:
 		quicksort(arr, 0, uniList->size - 1, colIndex, isAsc);
 		tmpList->convertToLinkedList(arr, uniList->size);
 
-		Util::cleanScreen();
+		//Util::cleanScreen();
 		node<University>* newNode = tmpList->displayAllUniversity();
 		if (newNode != NULL) {
 			if (Validation::isEmpty(getUsername())) {

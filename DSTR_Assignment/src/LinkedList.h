@@ -56,6 +56,8 @@ public:
 		@return Pointer to selected node by input index
 	*/
 	node<T>* displayAllUniversity() {
+		Util::printHeader("University List");
+
 		// Initialize variables
 		node<T>* tmp = head;
 		T test;
@@ -109,13 +111,19 @@ public:
 
 					if (newPointer == NULL) {
 						cout << "No previous page available!" << endl;
+						tmp = setToPreviousElement(tmp, MAX_ITEM_PER_PAGE-1);
+						counter = 0;
+						Util::sleepClean(1);
 						continue;
 					}
-					else tmp = newPointer;
+					else {
+						tmp = newPointer;
+						Util::printHeader("University List");
+					}
 				}
 				// Set to next five records
 				else if (option == "3") {
-					// Do nothing
+					Util::printHeader("University List");
 				}
 				// Return to previous page
 				else if (option == "4") {

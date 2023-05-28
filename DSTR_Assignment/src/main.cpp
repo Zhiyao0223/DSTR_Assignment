@@ -54,10 +54,8 @@ int main() {
 	// Get user role
 	while (true) {
 		// Print welcome message
-		Util::printBorderLine();
-		cout << "\t\t\t\t" << programName << endl;
-		Util::printBorderLine();
-		cout << endl << welcomeMsg << endl;
+		Util::printHeader(programName);
+		cout << welcomeMsg << endl;
 
 		// Select role
 		cout << endl << "Please select your role:" << endl;
@@ -80,6 +78,7 @@ int main() {
 				admin = admin->login(adminList);
 				if (admin == nullptr) {
 					cout << "Invalid username or password" << endl;
+					Util::sleep(1);
 				}
 				else {
 					adminPlatform(admin, favList, uniList, custList, feedbackList);
@@ -91,12 +90,14 @@ int main() {
 				return  0;
 			default:
 				cout << "Invalid Option." << endl;
+				Util::sleep(1);
 			}
 		}
 		catch (exception) {
 			cout << "Invalid Option." << endl;
+			Util::sleep(1);
 		}
-		Util::sleepClean(1);
+		Util::cleanScreen();
 	}
 
 	// Deallocate memory
@@ -106,24 +107,21 @@ int main() {
 
 // Admin Platform
 void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList){
-	Util::cleanScreen();
-
 	//Admin Menu
 	while (true) {
 		// Print header
-		Util::printBorderLine();
-		cout << "      " << "Admin Platform" << endl;
-		Util::printBorderLine();
+		Util::printHeader("Admin Platform");
 		
 		// Display admin menu
-		cout << endl << "Welcome, " << currentAdmin->getUsername() << "!" << endl << endl
+		cout << "Welcome, " << currentAdmin->getUsername() << "!" << endl << endl
 			<< "Please select your action:" << endl
 			<< "[1] Add University" << endl
 			<< "[2] Display Registered Users' Detail" << endl
 			<< "[3] Modify User Detail" << endl
-			<< "[4] Delete inactive account" << endl
-			<< "[5] Feedback" << endl
-			<< "[6] Generate Report" << endl
+			<< "[3] Delete inactive account" << endl
+			<< "[4] Feedback" << endl
+			<< "[5] Generate Report" << endl
+			<< "[6] Compare Algorithm Runtime" << endl
 			<< "[7] Logout" << endl
 			<< "Option: ";
 
@@ -137,32 +135,34 @@ void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedLis
 				currentAdmin->addUniversity(uniList);
 				break;
 			case 2:
-				currentAdmin->displayRegisterUser(custList);
+				currentAdmin->displayAndModifyUser(custList);
 				break;
 			case 3:
-				currentAdmin->modifyUser(custList);
-				break;
-			case 4:
 				currentAdmin->changeInactiveToFreeze(custList);
 				break;
-			case 5:
+			case 4:
 				currentAdmin->displayFeedbackByDate(feedbackList);
 				break;
-			case 6:
+			case 5:
 				currentAdmin->summarizeTop10Preferred(favList);
 				break;
+			case 6:
+				currentAdmin->compareTimeComplexity(uniList);
 			case 7:
 				currentAdmin->logOut();
 				return;
 			default:
 				cout << "Invalid Option." << endl << endl;
+				Util::sleep(1);
 			}
 		}
 		catch (exception) {
 			cout << "Invalid Option." << endl << endl;
+			Util::sleep(1);
 		}
+		Util::cleanScreen();
 	}
-	Util::sleepClean(1);
+
 }
 
 /*
@@ -269,100 +269,6 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 	}
 }
 
-void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>* uniList) {
-	// Store login customer information
-	Customer* currentCust = new Customer();
-
-	// Record login status
-	bool isLogin = false;
-
-	Util::cleanScreen();
-
-	// Display customer Menu
-	while (true) {
-		// Check if currentCust has value to determine login status
-		isLogin = !Validation::isEmpty(currentCust->getUsername());
-
-		isLogin ? currentCust->displayLoginMenu() : currentCust->displayNotLoginMenu();
-
-		// Redirect user to different features. If invalid option, print error message
-		string option;
-		getline(cin, option);
-		cout << endl;
-
-		try {
-			if (isLogin) {
-				// Registered user menu
-				switch (stoi(option)) {
-				case 1:
-					currentCust->viewUniversity(favList, uniList);
-					break;
-				case 2:
-					currentCust->searchUniversity(uniList, favList);
-					break;
-				case 3:
-					currentCust->sortUniversity(uniList, favList, true);
-					break;
-				case 4:
-					currentCust->displayFav(favList);
-					break;
-				case 5:
-					currentCust->displayFeedback(feedbackList);
-					break;
-				case 6:
-					currentCust->displayProfileMenu();
-					break;
-				case 7:
-					currentCust->logOut();
-					return;
-				default:
-					cout << "Invalid Option." << endl << endl;
-				}
-			}
-			else {
-				// Guest user menu
-				Customer* tmp = new Customer();
-				switch (stoi(option)) {
-				case 1:
-					currentCust->viewUniversity(favList, uniList);
-					break;
-				case 2:
-					currentCust->searchUniversity(uniList, favList);
-					break;
-				case 3:
-					currentCust->sortUniversity(uniList, favList);
-					break;
-				case 4:
-					tmp = tmp->login(custList);
-					if (tmp == nullptr) {
-						cout << "Invalid username or password" << endl;
-					}
-					else {
-						cout << endl << tmp->getUsername() << " login successfully" << endl;
-						currentCust = tmp;
-					}
-					break;
-				case 5:
-					tmp = tmp->registration(custList);
-					if (tmp != nullptr) {
-						cout << endl << tmp->getUsername() << " register successfully" << endl;
-						currentCust = tmp;
-					}
-					break;
-				case 6:
-					return;
-				default:
-					cout << "Invalid Option." << endl << endl;
-				}
-			}
-		}
-		catch (exception) {
-			cout << "Invalid Option." << endl << endl;
-			Util::sleepClean(1);
-		}
-		Util::cleanScreen();
-	}
-}
 
 /*
 	Setup dummy data for testing purpose

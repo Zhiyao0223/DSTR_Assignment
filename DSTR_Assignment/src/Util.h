@@ -67,4 +67,13 @@ public:
 	static void printBorderLine() {
 		cout << "====================================================================================" << endl;
 	}
+
+	// Print header
+	static void printHeader(string title) {
+		Util::cleanScreen();
+		Util::printBorderLine();
+		cout << "\t\t\t\t" << title << endl;
+		Util::printBorderLine();
+		cout << endl;
+	}
 };
