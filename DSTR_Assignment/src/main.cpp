@@ -200,7 +200,7 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 					currentCust->viewUniversity(favList, uniList);
 					break;
 				case 2:
-					currentCust->searchUniversity(uniList);
+					currentCust->searchUniversity(uniList, favList);
 					break;
 				case 3:
 					currentCust->sortUniversity(uniList, favList, true);
@@ -229,7 +229,7 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 					currentCust->viewUniversity(favList, uniList);
 					break;
 				case 2:
-					currentCust->searchUniversity(uniList);
+					currentCust->searchUniversity(uniList, favList);
 					break;
 				case 3:
 					currentCust->sortUniversity(uniList, favList);

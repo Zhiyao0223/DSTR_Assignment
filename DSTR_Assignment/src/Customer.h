@@ -351,13 +351,19 @@ public:
 		Display University
 		@para favList: Favorite List
 	*/
-	void viewUniversity(LinkedList<Favorite>* favList, LinkedList<University>* uniList) {
+	void viewUniversity(LinkedList<Favorite>* favList, LinkedList<University>* uniList, int selectedUniIndex=0) {
 		//FileIO fileIO;
 		//LinkedList<University>* uniList = fileIO.readFile();
 
 		while (true) {
-			node<University>* selectedUni = uniList->displayAllUniversity();
-
+			node <University>* selectedUni = new node<University>();
+			if (selectedUniIndex != 0) {
+				selectedUni = uniList->findNodeListByID(selectedUniIndex);
+			}
+			else {
+				selectedUni = uniList->displayAllUniversity();
+			}
+			
 			if (selectedUni != NULL) {
 				if (Validation::isEmpty(getUsername())) {
 					cout << "Please login before proceed." << endl;
@@ -669,10 +675,70 @@ public:
 		}
 	}
 
+
+	string* displayUniByArray(string** arr, int row) {
+		Util::cleanScreen();
+		Util::printBorderLine();
+		cout << "\t\t\t\t" << "Search University" << endl;
+		Util::printBorderLine();
+
+		int counter = 0;
+		const int MAX_ITEM_PER_PAGE = 5;
+		string option, rank;
+		
+		for (int i = 0; i < row; i++) {
+			cout << endl << "[" << counter + 1 << "]" << endl;
+			cout << "Rank: " << arr[i][0] << endl;
+			cout << "Institution Name: " << arr[i][1] << endl;
+			cout << "Location: " << arr[i][2] << endl;
+			cout << "Academic Reputation (rank): " << arr[i][3] << endl;
+			cout << "Employer Reputation (rank): " << arr[i][4] << endl;
+			cout << "Faculty / Student Ratio (rank): " << arr[i][5] << endl;
+			cout << "Citations Per Faculty (rank): " << arr[i][6] << endl;
+			cout << "Internation Faculty Ratio (rank): " << arr[i][7] << endl;
+			cout << "International Student Ratio (rank): " << arr[i][8] << endl;
+			cout << "Overall Score: " << arr[i][9] << endl << endl;
+		}
+		
+		cout << endl << "[1] Add University to Favourite" << endl;
+		cout << "[2] Return" << endl;
+		cout << "Option: ";
+
+		getline(cin, option);
+
+		// Set to selected record
+		if (option == "1") {
+			if (counter > 1) {
+				cout << endl << "Please enter the index number of university you wish to add: ";
+				getline(cin, option);
+				cout << endl;
+			
+				if (option < "1" || option > to_string(counter)) {
+					cerr << "Invalid option. Returning..." << endl;
+					Util::sleep(1);
+					return NULL;
+				}
+			}
+			
+			return arr[stoi(option)-1];
+		}
+		// Return to previous page
+		else if (option == "2") {
+			return NULL;
+		}
+		// Also return to previous page if invalid numeric input
+		else {
+			cerr << "Invalid option. Returning..." << endl;
+			Util::sleep(2);
+			return NULL;
+		}
+		counter = 0;
+	}
+	
 	/*
         Search university. IN PROGRESS
 	*/
-	void searchUniversity(LinkedList<University>* uniList) {
+	void searchUniversity(LinkedList<University>* uniList, LinkedList<Favorite>* favList) {
 		Util::cleanScreen();
 		Util::printBorderLine();
 		cout << "\t\t\t\t" << "Search University" << endl;
@@ -688,25 +754,32 @@ public:
 
 		string** arr = uniList->convertTo2DArray();
 		quicksort(arr, 0, uniList->size - 1, 1, true);
-		LinkedList<University>* tmpList = new LinkedList<University>();
-		tmpList->convertToLinkedList(arr, uniList->size);
 
-		int counter = 0;
-		tmpList =  binarySearch(tmpList, uniName, 1);
-		if (tmpList != NULL) {
-			node<University>* current = tmpList->head;
+		int counter = 0, numRows = 0;
 
-			while (current != NULL) {
-				current->data.display();
-				counter++;
-				current = current->nextAddress;
+		arr =  binarySearch(arr, uniList->size,uniName, 1, &numRows);
+
+		
+		if (arr == NULL) {
+			cout << "No result found." << endl;
+			Util::sleepClean(1);
+			return;
+		}
+
+		string* selectedUni = displayUniByArray(arr, numRows);
+		
+		if (selectedUni != NULL) {
+			if (Validation::isEmpty(this->getUsername())) {
+				cout << "Please login to proceed." << endl;
+				Util::sleepClean(1);
+				return;
 			}
-		}
-		else {
-			cout << "No university found." << endl;
-		}
 
-		Util::pause();
+			int favUID = favList->getNewUID();
+			favList->insertToEndList(new Favorite(favUID, this->getUID(), stoi(selectedUni[0])));
+			cout << endl << selectedUni[1] << " added to wishlist." << endl;
+			Util::sleep(1);
+		}
 	}
 
 	void sortUniversity(LinkedList<University>* uniList, LinkedList<Favorite>* favList, bool isLogin=false) {
