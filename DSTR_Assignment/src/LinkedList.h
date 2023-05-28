@@ -423,10 +423,20 @@ public:
 		node<T>* current = head;
 
 		while (current != NULL) {
-			if (current->data.getID() == searchID) return &(current->data);
+			if (current->data.getUID() == searchID) return &(current->data);
 			current = current->nextAddress;
 		}
 		return new T();
+	}
+
+	node<T>* findNodeListByID(int searchID) {
+		node<T>* current = head;
+
+		while (current != NULL) {
+			if (current->data.getUID() == searchID) return current;
+			current = current->nextAddress;
+		}
+		return new node<T>();
 	}
 
 	bool clearList() {

@@ -48,6 +48,7 @@ public:
 
 	// Constructor
 	University() {
+		dataCount = 21;
 		// Delete this constructor later coz no use, declare for no error temporary.
 	}
 
