@@ -10,51 +10,55 @@ using namespace std;
 /*
 	Selection Sort
 */
-template <class T>
-void selectionSort(LinkedList<T>* uniList) {
-	node<T>* current = uniList->head;
-
-	while (current != nullptr) {
-		node<T>* minNode = current;
-		node<T>* nextNode = current->nextAddress;
-
-		while (nextNode != nullptr) {
-			if (nextNode->data < minNode->data) {
-				minNode = nextNode;
+void selectionSort(string** universityData, int size, int index) {
+	for (int i = 0; i < size - 1; i++) {
+		int minIndex = i;
+		for (int j = i + 1; j < size; j++) {
+			// Compare based on the type of the column's value
+			if (index >= 1 && index < 4) {
+				// String column
+				if (universityData[j][index] < universityData[minIndex][index]) {
+					minIndex = j;
+				}
 			}
-			nextNode = nextNode->nextAddress;
+			else {
+				// Integer column
+				int value1 = stoi(universityData[j][index]);
+				int value2 = stoi(universityData[minIndex][index]);
+				if (value1 < value2) {
+					minIndex = j;
+				}
+			}
 		}
 
-		if (minNode != current) {
-			std::swap(minNode->data, current->data);
+		if (universityData[minIndex][index] != universityData[i][index]) {
+			// Swap the elements manually without using swap function
+			string temp = universityData[i][index];
+			universityData[i][index] = universityData[minIndex][index];
+			universityData[minIndex][index] = temp;
 		}
-
-		current = current->nextAddress;
 	}
 }
+
+
+
 
 /*
 *   Quick Sort
 */
 // Comparison function to determine the order of two strings
-bool compareStrings(string& a, string& b, bool isAsc) {
-	// Sort in numerical order if both strings are numbers
-	if (Validation::isNumber(a) && Validation::isNumber(b)) {
-		// Sort in numerical order
-		if (isAsc) {
-			return stoi(a) < stoi(b);
-		}
-		else {
-			return stoi(a) > stoi(b);
-		}
-	}
-
+bool compareStrings(string& a, string& b, int colIndex, bool isAsc) {
 	// Sort string in lexicographical order
-	if (isAsc) {
-		return a < b;
+	if (colIndex >= 1 && colIndex < 4) {
+		return (isAsc) ? a < b : a > b;
 	}
 	else {
-		return a > b;
+
+		// Integer column
+		int value1 = stoi(a);
+		int value2 = stoi(b);
+
+		return (isAsc) ? value1 < value2 : value1 > value2;
 	}
 }
 
@@ -71,7 +75,7 @@ int partition(string** arr, int low, int high, int colIndex, bool isAsc) {
 	int i = low - 1;
 
 	for (int j = low; j < high; j++) {
-		if (compareStrings(arr[j][colIndex], pivot, isAsc)) {
+		if (compareStrings(arr[j][colIndex], pivot, colIndex, isAsc)) {
 			i++;
 			for (int k = 0; k < colIndex + 1; k++) {
 				swapStrings(&arr[i][k], &arr[j][k]);
