@@ -151,18 +151,28 @@ public:
 
 	// Display University Information
 	void display() {
-		cout << "Rank: " << getRank() << endl;
-		cout << "Intitution Name: " << getInstitution() << endl;
-		cout << "Location :" << getLocation() << " (" << getLocationCode() << ")" << endl;
-		cout << "Academic Reputation (rank): " << getArScore() << " (" << getArRank() << ")" << endl;
-		cout << "Employer Reputation (rank): " << getErScore() << " (" << getErRank() << ")" << endl;
-		cout << "Faculty / Student Ratio (rank): " << getFsrScore() << " (" << getFsrRank() << ")" << endl;
-		cout << "Citations Per Faculty (rank): " << getCpfScore() << " (" << getCpfRank() << ")" << endl;
-		cout << "Internation Faculty Ratio (rank): " << getIfrScore() << " (" << getIfrRank() << ")" << endl;
-		cout << "Internation Student Ratio (rank): " << getIsrScore() << " (" << getIsrRank() << ")" << endl;
-		cout << "International Research Network (rank): " << getIrnScore() << " (" << getIrnRank() << ")" << endl;
-		cout << "Employment Outcome (rank): " << getGerScore() << " (" << getGerRank() << ")" << endl;
-		cout << "Score Scaled: " << scoreScaled << endl << endl;
+		string* arr = toStringArray();
+		for (int i = 4; i < dataCount; i++) {
+			if (arr[i] == "-1") {
+				arr[i] = "-";
+			}
+			else if (arr[i] == "501" || arr[i] == "601") {
+				arr[i] += "+";
+			}
+		}
+
+		cout << "Rank " << "\t\t\t\t\t" << ": " << getRank() << endl;
+		cout << "Intitution Name" << "\t\t\t\t" << ": " << getInstitution() << endl;
+		cout << "Location " << "\t\t\t\t" << ": " << getLocation() << " (" << getLocationCode() << ")" << endl;
+		cout << "Academic Reputation (rank)" << "\t\t" << ": " << arr[4] << " (" << arr[5] << ")" << endl;
+		cout << "Employer Reputation (rank)" << "\t\t" << ": " << arr[6] << " (" << arr[7] << ")" << endl;
+		cout << "Faculty / Student Ratio (rank)" << "\t\t" << ": " << arr[8] << " (" << arr[9] << ")" << endl;
+		cout << "Citations Per Faculty (rank)" << "\t\t" << ": " << arr[10] << " (" << arr[11] << ")" << endl;
+		cout << "Internation Faculty Ratio (rank)" << "\t" << ": " << arr[12] << " (" << arr[13] << ")" << endl;
+		cout << "Internation Student Ratio (rank)" << "\t" << ": " << arr[14] << " (" << arr[15] << ")" << endl;
+		cout << "International Research Network (rank)" << "\t" << ": " << arr[16] << " (" << arr[17] << ")" << endl;
+		cout << "Employment Outcome (rank)" << "\t\t" << ": " << arr[18] << " (" << arr[19] << ")" << endl;
+		cout << "Overall Score" << "\t\t\t\t" << ": " << arr[20] << endl;
 	}
 
 	/*
@@ -250,7 +260,6 @@ public:
 	string getLocation() {
 		return location;
 	}
-
 
 	int getArScore() {
 		return ArScore;

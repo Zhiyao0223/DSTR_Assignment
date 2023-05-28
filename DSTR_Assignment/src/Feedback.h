@@ -49,7 +49,7 @@ public:
 		dataCount = 9;
 	}
 
-	Feedback(int tmpID, int tmpUID, string tmpTitle, string tmpComment, bool tmpIsReply=false, bool tmpIsAdmin=false) {
+	Feedback(int tmpID, int tmpUID, string tmpTitle, string tmpComment, bool tmpIsReply = false, bool tmpIsAdmin = false) {
 		ID = tmpID;
 		UID = tmpUID;
 		title = tmpTitle;
@@ -108,7 +108,7 @@ public:
 	}
 
 	string* toStringArray() {
-		return new string[9]{to_string(getID()), to_string(getUID()), getTitle(), getComment(), getStatus(), getDate(), UserRoleToString(role), to_string(getIsReply()), getReply()};
+		return new string[9]{ to_string(getID()), to_string(getUID()), getTitle(), getComment(), getStatus(), getDate(), UserRoleToString(role), to_string(getIsReply()), getReply() };
 	}
 
 	/*
@@ -162,7 +162,8 @@ public:
 
 			if (isAdmin) {
 				this->setStatus(FeedbackStatus::WAITING_FOR_CUSTOMER);
-			} else {
+			}
+			else {
 				this->setStatus(FeedbackStatus::WAITING_FOR_SUPPORT);
 			}
 
@@ -235,14 +236,13 @@ public:
 		}
 
 		string replyID = to_string(reply->getID());
-		while(tmp->reply != NULL) {
+		while (tmp->reply != NULL) {
 			tmp = tmp->reply;
 			replyID += "," + to_string(tmp->getID());
 		}
 
 		return replyID;
 	}
-
 
 	string getStatus() {
 		return FeedbackStatusToString(status);
@@ -290,7 +290,7 @@ public:
 		comment = tmp;
 	}
 
-	void setReply(int ID, int UID, string tmpTitle, string tmpComment, bool isAdmin=false) {
+	void setReply(int ID, int UID, string tmpTitle, string tmpComment, bool isAdmin = false) {
 		reply = createNewReply(ID, UID, tmpTitle, tmpComment, isAdmin);
 	}
 
@@ -315,8 +315,7 @@ public:
 		setUID(stoi(dataArr[1]));
 		setTitle(dataArr[2]);
 		setComment(dataArr[3]);
-		
-		
+
 		if (dataArr[4] == "OPEN") setStatus(FeedbackStatus::OPEN);
 		else if (dataArr[4] == "WAITING_FOR_CUSTOMER") setStatus(FeedbackStatus::WAITING_FOR_CUSTOMER);
 		else if (dataArr[4] == "WAITING_FOR_SUPPORT") setStatus(FeedbackStatus::WAITING_FOR_SUPPORT);
@@ -343,7 +342,7 @@ public:
 			if (tmp[j][8] == "-") continue;
 
 			current = getNodeByIndex(feedbackList, j);
-			
+
 			stringstream ss(tmp[j][8]);
 
 			while (getline(ss, tmpNo, ',')) {

@@ -52,6 +52,8 @@ public:
 		@return Admin* - pointer to the admin object if login successful, nullptr otherwise
 	*/
 	Admin* login(LinkedList<Admin>* list) {
+		Util::printHeader("Admin Login");
+
 		// Initialise temporary variables
 		string tmpUsername, tmpPass;
 
@@ -70,6 +72,8 @@ public:
 		@param list - university list
 	*/
 	void addUniversity(LinkedList<University>* list) {
+		Util::printHeader("Add University");
+
 		string tmpName, tmpLocationCode, tmpLocation;
 		float data[17];
 
@@ -118,12 +122,13 @@ public:
 		list->insertToEndList(uni);
 
 		cout << "University added successfully!" << endl;
+		Util::sleep(1);
 	}
 
 	/*
 		Change INACTIVE account to FREEZE account (AKA Soft Delete Inactive Account)
 		@param custList: customer list
-	*/ 
+	*/
 	void changeInactiveToFreeze(LinkedList<Customer>* custList) {
 		node<Customer>* tmp = custList->head;
 
@@ -198,7 +203,9 @@ public:
 		Display Registered User Detail
 		@param cusList: customer list
 	*/
-	void displayRegisterUser(LinkedList<Customer>* cusList) {
+	void displayAndModifyUser(LinkedList<Customer>* cusList) {
+		Util::printHeader("Registered User Detail");
+
 		//If the list is empty
 		if (cusList->head == nullptr) {
 			cout << "No user registered yet." << endl;
@@ -207,12 +214,58 @@ public:
 
 		//Display the list
 		cout << "UID\tUsername\tEmail\t\t\tPhone No." << endl;
+
 		node<Customer>* current = cusList->head;
 		while (current != nullptr) {
 			Customer tmp = current->data;
-			cout << tmp.getUID() << "\t" << tmp.getUsername() << "\t\t" << tmp.getEmail() << "\t" << tmp.getPhoneNo() << endl;
+			cout << tmp.getUID() << "\t" << tmp.getUsername() << "\t\t" << tmp.getEmail() << "\t\t" << tmp.getPhoneNo() << endl;
 			cout << "-----------------------------------------------------------------" << endl;
 			current = current->nextAddress;
+		}
+
+		// Ask for user selection
+		string index;
+		try {
+			cout << "* Enter -1 to exit *" << endl;
+			cout << "Enter the user index you want to modify: ";
+			getline(cin, index);
+			if (stoi(index) < 0 || stoi(index) >= cusList->size) {
+				cout << "Invalid option." << endl;
+				Util::sleepClean(1);
+				return;
+			}
+			else if (stoi(index) == -1) {
+				return;
+			}
+		}
+		catch (exception) {
+			cout << "Invalid option." << endl;
+			Util::sleepClean(1);
+			return;
+		}
+
+		Util::cleanScreen();
+
+		// Get the user from the linked list based on UID
+		Customer* selectedUser = NULL;
+		node<Customer>* editNode = cusList->head;
+		while (editNode != nullptr) {
+			if (editNode->data.getUID() == stoi(index)) {
+				selectedUser = &(editNode->data);
+				break;
+			}
+			editNode = editNode->nextAddress;
+		}
+
+		if (selectedUser != NULL) {
+			// Edit the profile of the selected user
+			if (selectedUser->editProfile()) {
+				selectedUser->display();
+			}
+		}
+		else {
+			cout << "User with UID " << index << " not found." << endl;
+			Util::sleepClean(1);
 		}
 	}
 
@@ -229,7 +282,7 @@ public:
 		}
 
 		// Display the list
-		currentAdmin->displayRegisterUser(cusList);
+		currentAdmin->displayAndModifyUser(cusList);
 
 		// Ask for the UID to delete
 		int UID;
@@ -258,8 +311,8 @@ public:
 
 	// Return string of data for csv export
 	string toDataString() {
-		return to_string(this->getUID()) + "," + this->getUsername() + "," + this->getEmail() + "," 
-				+ this->getPassword() + "," + this->getPhoneNo();
+		return to_string(this->getUID()) + "," + this->getUsername() + "," + this->getEmail() + ","
+			+ this->getPassword() + "," + this->getPhoneNo();
 	}
 
 	/*
@@ -325,6 +378,8 @@ public:
 		@param favoritesList - favorites list
 	*/
 	void summarizeTop10Preferred(LinkedList<Favorite>* favoritesList) {
+		Util::printHeader("Top 10 Preferred Universities");
+
 		const int MAX_UNIVERSITIES = 10;
 		int universityIDs[MAX_UNIVERSITIES] = { 0 };
 		int universityFrequencies[MAX_UNIVERSITIES] = { 0 };
@@ -392,67 +447,65 @@ public:
 	/*
 		Change user details
 		@param editUser - user list
-	*/
-	void modifyUser(LinkedList<Customer>* editUser) {
-	// Display the list of users
-		Util::printBorderLine();
-		cout << "Customer List" << endl;
-		Util::printBorderLine();
+	//*/
+	//void modifyUser(LinkedList<Customer>* editUser) {
+	//// Display the list of users
+	//	Util::printHeader("Customer List");
 
-		node<Customer>* currentNode = editUser->head;
-		while (currentNode != nullptr) {
-			cout << "ID: " << currentNode->data.getUID() << endl;
-			cout << "Username: " << currentNode->data.getUsername() << endl;
-			cout << "Email: " << currentNode->data.getEmail() << endl;
-			cout << "Phone: " << currentNode->data.getPhoneNo() << endl;
-			cout << "Password: " << currentNode->data.getPassword() << endl;
-			cout << "Postcode: " << currentNode->data.getPostcode() << endl;
-			cout << "City: " << currentNode->data.getCity() << endl;
-			cout << "State: " << currentNode->data.getState() << endl;
-			cout << "Country: " << currentNode->data.getCountry() << endl;
-			cout << "---------------------------------------" << endl;
+	//	node<Customer>* currentNode = editUser->head;
+	//	while (currentNode != nullptr) {
+	//		cout << "ID: " << currentNode->data.getUID() << endl;
+	//		cout << "Username: " << currentNode->data.getUsername() << endl;
+	//		cout << "Email: " << currentNode->data.getEmail() << endl;
+	//		cout << "Phone: " << currentNode->data.getPhoneNo() << endl;
+	//		cout << "Password: " << currentNode->data.getPassword() << endl;
+	//		cout << "Postcode: " << currentNode->data.getPostcode() << endl;
+	//		cout << "City: " << currentNode->data.getCity() << endl;
+	//		cout << "State: " << currentNode->data.getState() << endl;
+	//		cout << "Country: " << currentNode->data.getCountry() << endl;
+	//		cout << "---------------------------------------" << endl;
 
-			currentNode = currentNode->nextAddress;
-		}
+	//		currentNode = currentNode->nextAddress;
+	//	}
 
-		// Ask for user selection
-		string index;
-		while (true) {
-			try {
-				cout << "Enter the user index you want to modify: ";
-				getline(cin, index);
-				int tmp = stoi(index);
-				break;
-			}
-			catch (exception) {
-			}
-		}	
+	//	// Ask for user selection
+	//	string index;
+	//	while (true) {
+	//		try {
+	//			cout << "Enter the user index you want to modify: ";
+	//			getline(cin, index);
+	//			int tmp = stoi(index);
+	//			break;
+	//		}
+	//		catch (exception) {
+	//		}
+	//	}
 
-		Util::cleanScreen();
+	//	Util::cleanScreen();
 
-		// Get the user from the linked list based on UID
-		Customer* selectedUser = nullptr;
-		node<Customer>* editNode = editUser->head;
-		while (editNode != nullptr) {
-			if (editNode->data.getUID() == stoi(index)) {
-				selectedUser = &(editNode->data);
-				break;
-			}
-			editNode = editNode->nextAddress;
-		}
+	//	// Get the user from the linked list based on UID
+	//	Customer* selectedUser = nullptr;
+	//	node<Customer>* editNode = editUser->head;
+	//	while (editNode != nullptr) {
+	//		if (editNode->data.getUID() == stoi(index)) {
+	//			selectedUser = &(editNode->data);
+	//			break;
+	//		}
+	//		editNode = editNode->nextAddress;
+	//	}
 
-		if (selectedUser) {
-			// Edit the profile of the selected user
-			if (selectedUser->editProfile()) {
-				selectedUser->toString();
-			}
-		}
-		else {
-			cout << "User with UID " << index << " not found." << endl;
-			Util::sleepClean(1);
-			modifyUser(editUser);
-		}
-	};
+	//	if (selectedUser) {
+	//		// Edit the profile of the selected user
+	//		if (selectedUser->editProfile()) {
+	//			selectedUser->display();
+	//		}
+	//	}
+	//	else {
+	//		cout << "User with UID " << index << " not found." << endl;
+	//		Util::sleepClean(1);
+	//		modifyUser(editUser);
+	//	}
+	//};
 
 	/*
 		Display Feedback sort by latest date
@@ -561,17 +614,23 @@ public:
 		@param list - Searched List
 		@param searchOp - Search Operation
 	*/
-	template <class T, typename SearchOperation>
-	void countTimeComplexitySearch(LinkedList<T>* list, SearchOperation searchOp) {
+	double countTimeComplexitySearch(LinkedList<University>* list, string key, int colIndex, string searchMethod) {
+		string** arr = list->convertTo2DArray();
+
 		auto startTime = std::chrono::steady_clock::now();
 
 		// Perform the search operation
-		searchOp(list);
+		if (searchMethod == "linear") {
+			//linearSearch();
+		}
+		else {
+			binarySearch(arr, list->size, key, colIndex);
+		}
 
 		auto endTime = chrono::steady_clock::now();
 		auto duration = chrono::duration_cast<chrono::microseconds>(endTime - startTime);
 
-		std::cout << "Search Time Complexity: " << duration.count() << " microseconds" << std::endl;
+		return duration.count();
 	}
 
 	/*
@@ -579,17 +638,23 @@ public:
 		@param list - Unsorted List
 		@param sortOp - Sort Operation
 	*/
-	template <class T, typename SortOperation>
-	void countTimeComplexitySort(LinkedList<T>* list, SortOperation sortOp) {
+	double countTimeComplexitySort(LinkedList<University>* list, int colIndex, string sortMethod) {
+		string** arr = list->convertTo2DArray();
+
 		auto startTime = chrono::steady_clock::now();
 
 		// Perform the sort operation
-		sortOp(list);
+		if (sortMethod == "selection") {
+			selectionSort(arr, list->size, colIndex);
+		}
+		else {
+			quicksort(arr, 0, list->size - 1, colIndex, true);
+		}
 
 		auto endTime = chrono::steady_clock::now();
 		auto duration = chrono::duration_cast<std::chrono::microseconds>(endTime - startTime);
 
-		cout << "Sort Time Complexity: " << duration.count() << " microseconds" << std::endl;
+		return duration.count();
 	}
 
 	/*
@@ -598,10 +663,105 @@ public:
 		@param searchOp - Search Operation
 		@param sortOp - Sort Operation
 	*/
-	template <class T, typename SearchOperation, typename SortOperation>
-	void compareTimeComplexity(LinkedList<T>* list, SearchOperation searchOp, SortOperation sortOp) {
-		countTimeComplexitySearch(list, searchOp);
-		countTimeComplexitySort(list, sortOp);
-	}
+	void compareTimeComplexity(LinkedList<University>* list) {
+		Util::printHeader("Compare Time Complexity");
 
+		cout << "Please select the operation you wish to perform:" << endl;
+		cout << "[1] Search" << endl;
+		cout << "[2] Sort" << endl;
+		cout << "Option: ";
+
+		string selection;
+		string method[2] = { };
+		double time1 = 0.0, time2 = 0.0;
+		getline(cin, selection);
+
+		if (selection != "1" && selection != "2") {
+			cout << "Invalid option." << endl;
+			Util::sleepClean(1);
+			return;
+		}
+		cout << "Performing Test..." << endl << endl;
+
+		// Compare search operations
+		if (selection == "1") {
+			method[0] = "Linear Search";
+			method[1] = "Binary Search";
+
+			time1 += countTimeComplexitySearch(list, "UCL", 1, "linear");
+			time1 += countTimeComplexitySearch(list, "University of Ghana", 1, "linear");
+			time1 += countTimeComplexitySearch(list, "Universiti Malaya (UM)", 1, "linear");
+
+			time2 += countTimeComplexitySearch(list, "UCL", 1, "binary");
+			time2 += countTimeComplexitySearch(list, "University of Ghana", 1, "binary");
+			time2 += countTimeComplexitySearch(list, "Universiti Malaya (UM)", 1, "binary");
+			cout << "Test Case 1 Completed" << endl << endl;
+
+			time1 += countTimeComplexitySearch(list, "University of Northern British Columbia", 1, "linear");
+			time1 += countTimeComplexitySearch(list, "University of Lincoln", 1, "linear");
+			time1 += countTimeComplexitySearch(list, "University of Messina (UniME)", 1, "linear");
+
+			time2 += countTimeComplexitySearch(list, "University of Northern British Columbia", 1, "binary");
+			time2 += countTimeComplexitySearch(list, "University of Lincoln", 1, "binary");
+			time2 += countTimeComplexitySearch(list, "University of Messina (UniME)", 1, "binary");
+			cout << "Test Case 2 Completed" << endl << endl;
+
+			time1 += countTimeComplexitySearch(list, "King Fahd University of Petroleum & Minerals", 1, "linear");
+			time1 += countTimeComplexitySearch(list, "Hanyang University", 1, "linear");
+			time1 += countTimeComplexitySearch(list, "Xi'an Jiaotong Liverpool University", 1, "linear");
+
+			time2 += countTimeComplexitySearch(list, "King Fahd University of Petroleum & Minerals", 1, "linear");
+			time2 += countTimeComplexitySearch(list, "Hanyang University", 1, "linear");
+			time2 += countTimeComplexitySearch(list, "Xi'an Jiaotong Liverpool University", 1, "linear");
+			cout << "Test Case 3 Completed" << endl << endl;
+		}
+		// Compare sort operations
+		else if (selection == "2") {
+			method[0] = "Selection Sort";
+			method[1] = "Quick Sort";
+
+			time1 += countTimeComplexitySort(list, 1, "selection");
+			time1 += countTimeComplexitySort(list, 2, "selection");
+			time1 += countTimeComplexitySort(list, 3, "selection");
+
+			time2 += countTimeComplexitySort(list, 1, "quicksort");
+			time2 += countTimeComplexitySort(list, 2, "quicksort");
+			time2 += countTimeComplexitySort(list, 3, "quicksort");
+			cout << "Test Case 1 Completed" << endl << endl;
+
+			time1 += countTimeComplexitySort(list, 4, "selection");
+			time1 += countTimeComplexitySort(list, 5, "selection");
+			time1 += countTimeComplexitySort(list, 6, "selection");
+
+			time2 += countTimeComplexitySort(list, 4, "quicksort");
+			time2 += countTimeComplexitySort(list, 5, "quicksort");
+			time2 += countTimeComplexitySort(list, 6, "quicksort");
+			cout << "Test Case 2 Completed" << endl << endl;
+
+			time1 += countTimeComplexitySort(list, 7, "selection");
+			time1 += countTimeComplexitySort(list, 8, "selection");
+			time1 += countTimeComplexitySort(list, 9, "selection");
+
+			time2 += countTimeComplexitySort(list, 7, "quicksort");
+			time2 += countTimeComplexitySort(list, 8, "quicksort");
+			time2 += countTimeComplexitySort(list, 9, "quicksort");
+			cout << "Test Case 3 Completed" << endl << endl;
+		}
+
+		cout << "Average Time Complexity: " << endl
+			<< method[0] << "\t" << ": " << round(time1 / 9) << " ms" << endl
+			<< method[1] << "\t" << ": " << round(time2 / 9) << " ms" << endl << endl;
+
+		cout << "Conclusion: ";
+		if (time1 < time2) {
+			cout << method[0] << " is faster than " << method[1] << endl;
+		}
+		else if (time1 > time2) {
+			cout << method[1] << " is faster than " << method[0] << endl;
+		}
+		else {
+			cout << method[0] << " and " << method[1] << " are equally fast" << endl;
+		}
+		Util::pause();
+	}
 };

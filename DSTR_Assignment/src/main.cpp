@@ -1,4 +1,5 @@
 #include <iostream>
+#include <chrono>
 #include "Customer.h"
 #include "Admin.h"
 #include "Favorite.h"
@@ -17,7 +18,6 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList);
 void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>** uniList);
 
-
 int main() {
 	//test();
 
@@ -33,9 +33,9 @@ int main() {
 	string option;
 	string programName = "University Rating System";
 	string welcomeMsg = "This system is a university rating platform.\n"
-						"Get ready to explore the world of command-line magic\n";
+		"Get ready to explore the world of command-line magic\n";
 	string thanksBanner = R"(
-			       ^ ^                         ^ ^   
+			       ^ ^                         ^ ^
 			      (O,O)                       (O,O)
 			      (   )       Thank You       (   )
 		            ---"-"-------------------------"-"---
@@ -53,10 +53,8 @@ int main() {
 	// Get user role
 	while (true) {
 		// Print welcome message
-		Util::printBorderLine();
-		cout << "\t\t\t\t" << programName << endl;
-		Util::printBorderLine();
-		cout << endl << welcomeMsg << endl;
+		Util::printHeader(programName);
+		cout << welcomeMsg << endl;
 
 		// Select role
 		cout << endl << "Please select your role:" << endl;
@@ -79,6 +77,7 @@ int main() {
 				admin = admin->login(adminList);
 				if (admin == nullptr) {
 					cout << "Invalid username or password" << endl;
+					Util::sleep(1);
 				}
 				else {
 					adminPlatform(admin, favList, uniList, custList, feedbackList);
@@ -90,12 +89,14 @@ int main() {
 				return  0;
 			default:
 				cout << "Invalid Option." << endl;
+				Util::sleep(1);
 			}
 		}
 		catch (exception) {
 			cout << "Invalid Option." << endl;
+			Util::sleep(1);
 		}
-		Util::sleepClean(1);
+		Util::cleanScreen();
 	}
 
 	// Deallocate memory
@@ -103,25 +104,22 @@ int main() {
 }
 
 // Admin Platform
-void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList){
-	Util::cleanScreen();
-
+void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList) {
 	//Admin Menu
 	while (true) {
 		// Print header
-		Util::printBorderLine();
-		cout << "      " << "Admin Platform" << endl;
-		Util::printBorderLine();
-		
+		Util::printHeader("Admin Platform");
+
 		// Display admin menu
-		cout << endl << "Welcome, " << currentAdmin->getUsername() << "!" << endl << endl
+		cout << "Welcome, " << currentAdmin->getUsername() << "!" << endl << endl
 			<< "Please select your action:" << endl
 			<< "[1] Add University" << endl
 			<< "[2] Display Registered Users' Detail" << endl
 			<< "[3] Modify User Detail" << endl
-			<< "[4] Delete inactive account" << endl
-			<< "[5] Feedback" << endl
-			<< "[6] Generate Report" << endl
+			<< "[3] Delete inactive account" << endl
+			<< "[4] Feedback" << endl
+			<< "[5] Generate Report" << endl
+			<< "[6] Compare Algorithm Runtime" << endl
 			<< "[7] Logout" << endl
 			<< "Option: ";
 
@@ -135,32 +133,33 @@ void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedLis
 				currentAdmin->addUniversity(uniList);
 				break;
 			case 2:
-				currentAdmin->displayRegisterUser(custList);
+				currentAdmin->displayAndModifyUser(custList);
 				break;
 			case 3:
-				currentAdmin->modifyUser(custList);
-				break;
-			case 4:
 				currentAdmin->changeInactiveToFreeze(custList);
 				break;
-			case 5:
+			case 4:
 				currentAdmin->displayFeedbackByDate(feedbackList);
 				break;
-			case 6:
+			case 5:
 				currentAdmin->summarizeTop10Preferred(favList);
 				break;
+			case 6:
+				currentAdmin->compareTimeComplexity(uniList);
 			case 7:
 				currentAdmin->logOut();
 				return;
 			default:
 				cout << "Invalid Option." << endl << endl;
+				Util::sleep(1);
 			}
 		}
 		catch (exception) {
 			cout << "Invalid Option." << endl << endl;
+			Util::sleep(1);
 		}
+		Util::cleanScreen();
 	}
-	Util::sleepClean(1);
 }
 
 /*
@@ -171,6 +170,7 @@ void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedLis
 	@param feedbackList: Feedback linked list
 	@param uniList: University linked list
 */
+
 void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>* uniList) {
 	// Store login customer information
 	Customer* currentCust = new Customer();
@@ -323,7 +323,7 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	feedbackList->insertToEndList(new Feedback(feedbackNewId + 7, 4, "Title8", "25"));
 	feedbackList->insertToEndList(new Feedback(feedbackNewId + 8, 4, "Title9", "2"));
 	feedbackList->insertToEndList(new Feedback(feedbackNewId + 9, 4, "Test", "21"));
-	
+
 	// Modify data for testing purpose
 	feedbackList->head->data.setReply(feedbackNewId, 4, "Reply", "1111", true);
 	feedbackList->head->data.setSpecificDate("12/4/2022");
@@ -334,5 +334,32 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 
 // Purely use for testing, delete later
 void test() {
+	FileIO file;
+	LinkedList<University>* uniList = file.readFile();
 
+	int size = uniList->size; // Number of universities
+
+	// Create a 2D array to hold the university data
+	string** universityData = uniList->convertTo2DArray();
+	int index = 2;
+
+	auto startTime = std::chrono::high_resolution_clock::now();
+	selectionSort(universityData, size, index);
+	auto endTime = std::chrono::high_resolution_clock::now();
+	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
+
+	auto startTime1 = std::chrono::high_resolution_clock::now();
+	quicksort(universityData, 0, size - 1, index, true);
+	auto endTime1 = std::chrono::high_resolution_clock::now();
+	auto duration1 = std::chrono::duration_cast<std::chrono::microseconds>(endTime1 - startTime1).count();
+
+	// Display the sorted university data
+	for (int i = 0; i < size; i++) {
+		cout << universityData[i][index] << ", " << universityData[i][1] << endl;
+	}
+
+	cout << duration << endl;
+	cout << duration1 << endl;
+
+	//uniList->displayAllUniversity(universityData, size);
 }
