@@ -128,7 +128,7 @@ public:
 	/*
 		Change INACTIVE account to FREEZE account (AKA Soft Delete Inactive Account)
 		@param custList: customer list
-	*/ 
+	*/
 	void changeInactiveToFreeze(LinkedList<Customer>* custList) {
 		node<Customer>* tmp = custList->head;
 
@@ -311,8 +311,8 @@ public:
 
 	// Return string of data for csv export
 	string toDataString() {
-		return to_string(this->getUID()) + "," + this->getUsername() + "," + this->getEmail() + "," 
-				+ this->getPassword() + "," + this->getPhoneNo();
+		return to_string(this->getUID()) + "," + this->getUsername() + "," + this->getEmail() + ","
+			+ this->getPassword() + "," + this->getPhoneNo();
 	}
 
 	/*
@@ -479,7 +479,7 @@ public:
 	//		}
 	//		catch (exception) {
 	//		}
-	//	}	
+	//	}
 
 	//	Util::cleanScreen();
 
@@ -648,7 +648,7 @@ public:
 			selectionSort(arr, list->size, colIndex);
 		}
 		else {
-			quicksort(arr, 0, list->size-1, colIndex, true);
+			quicksort(arr, 0, list->size - 1, colIndex, true);
 		}
 
 		auto endTime = chrono::steady_clock::now();
@@ -764,5 +764,4 @@ public:
 		}
 		Util::pause();
 	}
-
 };

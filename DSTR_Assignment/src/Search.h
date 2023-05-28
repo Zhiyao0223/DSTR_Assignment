@@ -8,62 +8,62 @@
 #include "Sort.h"
 using namespace std;
 
-string** binarySearch(string** array, int arraySize, string key, int columnIndex, int* count=0) {
-    string* tmpArr = new string[arraySize];
-    for (int i = 0; i < arraySize; i++) {
-        tmpArr[i] = "0";
-    }
+string** binarySearch(string** array, int arraySize, string key, int columnIndex, int* count = 0) {
+	string* tmpArr = new string[arraySize];
+	for (int i = 0; i < arraySize; i++) {
+		tmpArr[i] = "0";
+	}
 
-    int low = 0;
-    int high = arraySize - 1;
-    int resultCount = 0;  // Count the number of matching rows
+	int low = 0;
+	int high = arraySize - 1;
+	int resultCount = 0;  // Count the number of matching rows
 
-    // Count the number of matching rows
-    while (low <= high) {
-        int mid = low + (high - low) / 2;
+	// Count the number of matching rows
+	while (low <= high) {
+		int mid = low + (high - low) / 2;
 
-        if (array[mid][columnIndex] == key) {
-            tmpArr[resultCount] = to_string(mid);
-            
-            // Key found, increment the result count
-            resultCount++;
-            // Continue counting other matching keys
-            int left = mid - 1;
-            int right = mid + 1;
-            while (left >= low && array[left][columnIndex] == key) {
-                tmpArr[resultCount] = to_string(left);
-                resultCount++;
-                left--;
-            }
-            while (right <= high && array[right][columnIndex] == key) {
-                tmpArr[resultCount] = to_string(right);
-                resultCount++;
-                right++;
-            }
-            break;
-        }
+		if (array[mid][columnIndex] == key) {
+			tmpArr[resultCount] = to_string(mid);
 
-        if (array[mid][columnIndex] < key) {
-            low = mid + 1;
-        }
-        else {
-            high = mid - 1;
-        }
-    }
+			// Key found, increment the result count
+			resultCount++;
+			// Continue counting other matching keys
+			int left = mid - 1;
+			int right = mid + 1;
+			while (left >= low && array[left][columnIndex] == key) {
+				tmpArr[resultCount] = to_string(left);
+				resultCount++;
+				left--;
+			}
+			while (right <= high && array[right][columnIndex] == key) {
+				tmpArr[resultCount] = to_string(right);
+				resultCount++;
+				right++;
+			}
+			break;
+		}
 
-    if (resultCount == 0) return NULL;
-    
-    // Create the result array with the appropriate size
-    string** resultArray = new string * [resultCount+1];
-    
+		if (array[mid][columnIndex] < key) {
+			low = mid + 1;
+		}
+		else {
+			high = mid - 1;
+		}
+	}
+
+	if (resultCount == 0) return NULL;
+
+	// Create the result array with the appropriate size
+	string** resultArray = new string * [resultCount + 1];
+
 	// Copy the matching rows to the result array
 	for (int i = 0; i < resultCount; i++) {
-        int index = stoi(tmpArr[i]);
-        resultArray[i] = array[index];
-        cout << resultArray[i][20];
+		int index = stoi(tmpArr[i]);
+		resultArray[i] = array[index];
+		cout << resultArray[i][20];
 	}
-    
-    *count = resultCount;
 
-    return resultArray;
+	*count = resultCount;
+
+	return resultArray;
 }

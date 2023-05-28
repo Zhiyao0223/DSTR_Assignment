@@ -261,7 +261,6 @@ public:
 		return location;
 	}
 
-
 	int getArScore() {
 		return ArScore;
 	}

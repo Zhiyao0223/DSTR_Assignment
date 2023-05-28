@@ -40,9 +40,6 @@ void selectionSort(string** universityData, int size, int index) {
 	}
 }
 
-
-
-
 /*
 *   Quick Sort
 */

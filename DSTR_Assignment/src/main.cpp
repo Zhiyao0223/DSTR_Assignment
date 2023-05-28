@@ -18,10 +18,9 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList);
 void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>** uniList);
 
-
 int main() {
 	//test();
-	
+
 	// Initialize doubly linked list, classes and variables
 	Admin* admin = new Admin();
 	Customer* cust = new Customer();
@@ -34,9 +33,9 @@ int main() {
 	string option;
 	string programName = "University Rating System";
 	string welcomeMsg = "This system is a university rating platform.\n"
-						"Get ready to explore the world of command-line magic\n";
+		"Get ready to explore the world of command-line magic\n";
 	string thanksBanner = R"(
-			       ^ ^                         ^ ^   
+			       ^ ^                         ^ ^
 			      (O,O)                       (O,O)
 			      (   )       Thank You       (   )
 		            ---"-"-------------------------"-"---
@@ -102,16 +101,15 @@ int main() {
 
 	// Deallocate memory
 	delete uniList;
-
 }
 
 // Admin Platform
-void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList){
+void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList) {
 	//Admin Menu
 	while (true) {
 		// Print header
 		Util::printHeader("Admin Platform");
-		
+
 		// Display admin menu
 		cout << "Welcome, " << currentAdmin->getUsername() << "!" << endl << endl
 			<< "Please select your action:" << endl
@@ -162,7 +160,6 @@ void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedLis
 		}
 		Util::cleanScreen();
 	}
-
 }
 
 /*
@@ -269,7 +266,6 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 	}
 }
 
-
 /*
 	Setup dummy data for testing purpose
 	Cust (ali, 123)
@@ -327,7 +323,7 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	feedbackList->insertToEndList(new Feedback(feedbackNewId + 7, 4, "Title8", "25"));
 	feedbackList->insertToEndList(new Feedback(feedbackNewId + 8, 4, "Title9", "2"));
 	feedbackList->insertToEndList(new Feedback(feedbackNewId + 9, 4, "Test", "21"));
-	
+
 	// Modify data for testing purpose
 	feedbackList->head->data.setReply(feedbackNewId, 4, "Reply", "1111", true);
 	feedbackList->head->data.setSpecificDate("12/4/2022");
@@ -342,21 +338,20 @@ void test() {
 	LinkedList<University>* uniList = file.readFile();
 
 	int size = uniList->size; // Number of universities
-	
+
 	// Create a 2D array to hold the university data
 	string** universityData = uniList->convertTo2DArray();
 	int index = 2;
-	
+
 	auto startTime = std::chrono::high_resolution_clock::now();
 	selectionSort(universityData, size, index);
 	auto endTime = std::chrono::high_resolution_clock::now();
 	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
 
 	auto startTime1 = std::chrono::high_resolution_clock::now();
-	quicksort(universityData, 0, size-1, index, true);
+	quicksort(universityData, 0, size - 1, index, true);
 	auto endTime1 = std::chrono::high_resolution_clock::now();
 	auto duration1 = std::chrono::duration_cast<std::chrono::microseconds>(endTime1 - startTime1).count();
-
 
 	// Display the sorted university data
 	for (int i = 0; i < size; i++) {
@@ -368,4 +363,3 @@ void test() {
 
 	//uniList->displayAllUniversity(universityData, size);
 }
-
