@@ -9,6 +9,10 @@ using namespace std;
 
 /*
 	Selection Sort
+
+	@param universityData - the array of university data
+	@param size - the size of the array
+	@param index - the index of the column to sort
 */
 void selectionSort(string** universityData, int size, int index) {
 	for (int i = 0; i < size - 1; i++) {
@@ -41,7 +45,14 @@ void selectionSort(string** universityData, int size, int index) {
 }
 
 /*
-*   Quick Sort
+	Quick Sort
+	Consist of 4 Functions.
+
+	@param arr - the array to be sorted
+	@param low - the first index of the array
+	@param high - the last index of the array
+	@param colIndex - the index of the column to sort
+	@param isAsc - the order of the sorting
 */
 // Comparison function to determine the order of two strings
 bool compareStrings(const string& a, const string& b, int colIndex, bool isAsc) {
@@ -82,7 +93,7 @@ int partition(string** arr, int low, int high, int colIndex, bool isAsc) {
 	return i + 1;
 }
 
-// Quicksort algorithm
+// Quicksort main function
 void quicksort(string** arr, int low, int high, int colIndex, bool isAsc) {
 	if (low < high) {
 		int pivotIndex = partition(arr, low, high, colIndex, isAsc);

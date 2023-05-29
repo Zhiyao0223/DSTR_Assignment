@@ -25,6 +25,7 @@ public:
 
 	/*
 		Used to create new node for linked list. Implemented insertion function.
+
 		@param data - Class data
 		@return New node
 	*/
@@ -37,6 +38,7 @@ public:
 
 	/*
 		Set to previous element according to index. Used in displayAll() function.
+
 		@param data - Class node
 		@param counter - Number of element to move forward
 		@return New pointer location of the node
@@ -50,9 +52,9 @@ public:
 		return data;
 	}
 
-	// Display info by pages
 	/*
 		Display linked list elements by pages.
+
 		@return Pointer to selected node by input index
 	*/
 	node<T>* displayAllUniversity() {
@@ -113,7 +115,8 @@ public:
 						cout << "No previous page available!" << endl;
 						tmp = setToPreviousElement(tmp, MAX_ITEM_PER_PAGE - 1);
 						counter = 0;
-						Util::sleepClean(1);
+						Util::sleep(1);
+						Util::printHeader("University List");
 						continue;
 					}
 					else {
@@ -142,6 +145,7 @@ public:
 
 	/*
 		Insert class data to head of linked list
+
 		@param data - Class data
 	*/
 	void insertToFrontList(T* data) {
@@ -160,6 +164,7 @@ public:
 
 	/*
 		Insert node to specific location in linked list
+
 		@param index - Index location of new node
 		@param data - node to be inserted
 		@return Insertion status
@@ -190,6 +195,7 @@ public:
 
 	/*
 		Insert node to end of list
+
 		@param data - Inserted data
 	*/
 	void insertToEndList(T* data) {
@@ -208,6 +214,7 @@ public:
 
 	/*
 		Delete node from head of linked list
+
 		@return Deleted data in class format
 	*/
 	T deleteFromFrontList() {
@@ -235,6 +242,7 @@ public:
 
 	/*
 		Delete node from specific location of linked list
+
 		@param index - Location of node to be deleted
 		@return Deleted data in class format
 	*/
@@ -278,6 +286,7 @@ public:
 
 	/*
 		Delete node from end of linked list
+
 		@return Deleted data in class format
 	*/
 	T deleteFromEndList() {
@@ -298,7 +307,8 @@ public:
 	}
 
 	/*
-		Check if list is empty
+		Check if linked list is empty
+
 		@return True if list is empty
 	*/
 	bool isEmpty() {
@@ -307,6 +317,7 @@ public:
 
 	/*
 		Check for user credential based on input
+
 		@param tmpName - Input username
 		@param tmpPass - Input password
 		@return Pointer to class data if found, NULL if not found
@@ -343,7 +354,13 @@ public:
 		return tmp + 1;
 	}
 
-	// Get username from linked list
+	/*
+		Get name from linked list
+
+		@param list - Linked list to be searched
+		@param searchId - Primary Id to be searched
+		@return Name of user / institution
+	*/
 	string getName(LinkedList<T>* list, int searchId) {
 		// Initialize variables
 		node<T>* current = list->head;
@@ -359,25 +376,9 @@ public:
 	}
 
 	/*
-		Swap two nodes in linked list
-		@param node1 - First node
-		@param node2 - Second node
-		@return swap status
-	*/
-	//bool swapNode(node<T>* node1, node<T>* node2) {
-	//	if (node1 == NULL || node2 == NULL) {
-	//		return false;
-	//	}
-
-	//	T tmp = node1->data;
-	//	node1->data = node2->data;
-	//	node2->data = tmp;
-
-	//	return true;
-	//}
-
-	/*
-		Convert Linked list to array
+		Convert Linked list to array.
+		* Note: This function is only used for printing data. As some class value not included in the array.
+		
 		@return 2D string array
 	*/
 	string** convertTo2DArray() {
@@ -410,6 +411,8 @@ public:
 
 	/*
 		Convert 2D array to linked list
+		* Note: This function is only used for display data. As some class value not included in the array.
+		
 		@param dataList - 2D string array
 		@param totalRow - Total row of 2D array
 	*/
@@ -427,6 +430,12 @@ public:
 		}
 	}
 
+	/*
+		Search a class by primary ID
+
+		@param searchID - Primary ID
+		@return Pointer to class data if found, NULL if not found
+	*/
 	T* findNodeByID(int searchID) {
 		node<T>* current = head;
 
@@ -437,6 +446,12 @@ public:
 		return new T();
 	}
 
+	/*
+		Search a node by primary ID
+
+		@param searchID - Primary ID
+		@return Pointer to node if found, NULL if not found
+	*/
 	node<T>* findNodeListByID(int searchID) {
 		node<T>* current = head;
 
@@ -447,6 +462,11 @@ public:
 		return new node<T>();
 	}
 
+	/*
+		Clear every record in linked list
+
+		@return True if success
+	*/
 	bool clearList() {
 		node<T>* current = head;
 
