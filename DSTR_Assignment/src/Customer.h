@@ -733,6 +733,8 @@ public:
 		int counter = 0, numRows = 0;
 
 		arr = binarySearch(arr, uniList->size, uniName, 1, &numRows);
+		//LinkedList<University>* tmp = linearSearch(uniList, uniName, 1);
+		//arr = tmp->convertTo2DArray();
 
 		if (arr == NULL) {
 			cout << "No result found." << endl;
