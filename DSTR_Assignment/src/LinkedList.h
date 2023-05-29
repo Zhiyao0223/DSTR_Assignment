@@ -18,6 +18,7 @@ public:
 	node<T>* tail;
 	int size;
 
+	// Constructor
 	LinkedList<T>() {
 		node<T>* newNode = NULL;
 		head = tail = newNode;
@@ -325,7 +326,7 @@ public:
 	T* lookUpProfile(string tmpName, string tmpPass) {
 		// Initialize variables
 		node<T>* current = head;
-		T* classData;
+		T* classData = new T();
 		int counter = 0;
 
 		// Loop through linked list and compare matched data
@@ -378,7 +379,7 @@ public:
 	/*
 		Convert Linked list to array.
 		* Note: This function is only used for printing data. As some class value not included in the array.
-		
+
 		@return 2D string array
 	*/
 	string** convertTo2DArray() {
@@ -412,7 +413,7 @@ public:
 	/*
 		Convert 2D array to linked list
 		* Note: This function is only used for display data. As some class value not included in the array.
-		
+
 		@param dataList - 2D string array
 		@param totalRow - Total row of 2D array
 	*/
@@ -462,17 +463,11 @@ public:
 		return new node<T>();
 	}
 
-	/*
-		Clear every record in linked list
-
-		@return True if success
-	*/
-	bool clearList() {
-		node<T>* current = head;
-
+	// Clear every record in linked list
+	void clearList() {
 		for (int i = this->size; i > 0; i++) {
 			deleteFromFrontList();
 		}
-		return true;
+		return;
 	}
 };

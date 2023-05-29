@@ -1,11 +1,11 @@
 #pragma once
 
-#include <iostream>
 #include <ctime>
 #include <chrono>
+#include <iomanip>
+#include <iostream>
 #include <sstream>
 #include <string>
-#include <iomanip>
 using namespace std;
 
 class Date {
@@ -21,7 +21,7 @@ public:
 		year = month = day = -1;
 	}
 
-	// Constructor with date format "D/MM/YYYY"
+	// Constructor with date format "DD/MM/YYYY"
 	Date(string tmpDate) {
 		istringstream iss(tmpDate);
 		string tmp;
@@ -47,7 +47,7 @@ public:
 		return to_string(day) + "/" + to_string(month) + "/" + to_string(year);
 	}
 
-	// Get today date
+	// Get today date in tm format
 	tm getToday() {
 		time_t currentTime = time(nullptr);
 		tm localTime;

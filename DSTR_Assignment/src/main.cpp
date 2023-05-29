@@ -1,16 +1,15 @@
-#include <iostream>
 #include <chrono>
-#include "Customer.h"
+#include <iostream>
 #include "Admin.h"
+#include "Customer.h"
 #include "Favorite.h"
 #include "Feedback.h"
 #include "FileIO.h"
-#include "University.h"
-#include "Sort.h"
 #include "LinkedList.h"
-#include "Validation.h"
-#include "Util.h"
 #include "Sort.h"
+#include "University.h"
+#include "Util.h"
+#include "Validation.h"
 using namespace std;
 
 void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>* uniList);
@@ -97,10 +96,24 @@ int main() {
 	}
 
 	// Deallocate memory
+	delete admin;
+	delete cust;
+	delete custList;
+	delete adminList;
+	delete favList;
+	delete feedbackList;
 	delete uniList;
 }
 
-// Admin Platform
+/*
+	Admin Platform
+
+	@param currentAdmin: Current admin
+	@param favList: Favorite linked list
+	@param uniList: University linked list
+	@param custList: Customer linked list
+	@param feedbackList: Feedback linked list
+*/
 void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList) {
 	//Admin Menu
 	while (true) {
@@ -112,7 +125,7 @@ void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedLis
 			<< "Please select your action:" << endl
 			<< "[1] Add University" << endl
 			<< "[2] Display Registered Users' Detail" << endl
-			<< "[3] Delete inactive account" << endl
+			<< "[3] Delete Inactive Account" << endl
 			<< "[4] Feedback" << endl
 			<< "[5] Generate Report" << endl
 			<< "[6] Compare Algorithm Runtime" << endl
@@ -241,6 +254,7 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 					else {
 						cout << endl << tmp->getUsername() << " login successfully" << endl;
 						currentCust = tmp;
+						Util::sleep(1);
 					}
 					break;
 				case 5:
@@ -248,6 +262,7 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 					if (tmp != nullptr) {
 						cout << endl << tmp->getUsername() << " register successfully" << endl;
 						currentCust = tmp;
+						Util::sleep(1);
 					}
 					break;
 				case 6:
@@ -260,10 +275,13 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 		}
 		catch (exception) {
 			cout << "Invalid Option." << endl << endl;
-			Util::sleepClean(1);
+			Util::sleep(1);
 		}
 		Util::cleanScreen();
 	}
+
+	// Deallocate Memory
+	delete currentCust;
 }
 
 /*
@@ -327,7 +345,11 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	// Modify data for testing purpose
 	feedbackList->head->data.setReply(feedbackNewId, 4, "Reply", "1111", true);
 	feedbackList->head->data.setSpecificDate("12/4/2022");
+	feedbackList->head->nextAddress->data.setSpecificDate("20/4/2023");
+	feedbackList->head->nextAddress->nextAddress->data.setSpecificDate("10/5/2023");
+	feedbackList->head->nextAddress->nextAddress->nextAddress->data.setSpecificDate("29/4/2023");
+	feedbackList->head->nextAddress->nextAddress->nextAddress->nextAddress->data.setSpecificDate("1/5/2023");
 
-	node<Feedback>* current = feedbackList->head->nextAddress;
-	current->data.setSpecificDate("22/5/2023");
+	//node<Feedback>* current = feedbackList->head->nextAddress;
+	//current->data.setSpecificDate("22/5/2023");
 }

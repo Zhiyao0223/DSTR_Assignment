@@ -2,9 +2,8 @@
 
 #include <iostream>
 #include "Customer.h"
-#include "University.h"
 #include "LinkedList.h"
-
+#include "University.h"
 using namespace std;
 
 class Favorite {
@@ -24,26 +23,36 @@ public:
 		ID = UID = insitution = NULL;
 	}
 
-	//// Return specified column value
-	//template <typename T>
-	//T getColumn(int index) {
-	//	/*
-	//	*	Column Index:
-	//	*	0 - ID
-	//	*	1 - UID
-	//	*	2 - institution
-	//	*/
-	//	switch (index) {
-	//	case 0:
-	//		return ID;
-	//	case 1:
-	//		return UID;
-	//	case 2:
-	//		return insitution;
-	//	}
-	//}
+	/*
+		Return specified column value. Used in search and sort functions.
 
-	// Get specific university from list
+		@param index - column index
+		@return - column value
+	*/
+	template <typename T>
+	T getColumn(int index) {
+		/*
+		*	Column Index:
+		*	0 - ID
+		*	1 - UID
+		*	2 - institution
+		*/
+		switch (index) {
+		case 0:
+			return ID;
+		case 1:
+			return UID;
+		case 2:
+			return insitution;
+		}
+	}
+
+	/*
+		Get specific university from list
+
+		@param id - university rank
+		@return - university object
+	*/
 	University* getUniversity(int id) {
 		FileIO file;
 		LinkedList<University>* uniList = file.readFile();
@@ -56,11 +65,8 @@ public:
 		return NULL;
 	}
 
+	// Convert data to string for CSV export
 	string toDataString() {
-		//string username = custList->getName(custList, UID);
-		//string insitutionName = uniList->getName(uniList, insitution);
-
-		//return to_string(ID) + "," + username + "," + insitutionName;
 		return to_string(ID) + "," + to_string(UID) + "," + to_string(insitution);
 	}
 

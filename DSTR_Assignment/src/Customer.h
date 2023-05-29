@@ -1,14 +1,14 @@
 #pragma once
 
 #include <iostream>
-#include "User.h"
 #include "Date.h"
 #include "FileIO.h"
 #include "Feedback.h"
 #include "Favorite.h"
-#include "Util.h"
-#include "Search.h"
 #include "LinkedList.h"
+#include "Search.h"
+#include "User.h"
+#include "Util.h"
 #include "Validation.h"
 using namespace std;
 
@@ -56,7 +56,12 @@ public:
 		return lastLogDate->isExpired();
 	}
 
-	// Login function
+	/*
+		Login
+
+		@param list - Customer list
+		@return Customer object
+	*/
 	Customer* login(LinkedList<Customer>* list) {
 		Util::printHeader("Login");
 
@@ -76,6 +81,7 @@ public:
 		return list->lookUpProfile(tmpUsername, tmpPass);
 	}
 
+	// Display menu for guest
 	void displayNotLoginMenu() {
 		Util::printHeader("Customer Platform");
 
@@ -90,6 +96,7 @@ public:
 		cout << "Option: ";
 	}
 
+	// Display menu for registered user
 	void displayLoginMenu() {
 		Util::printHeader("Customer Platform");
 
@@ -105,6 +112,12 @@ public:
 		cout << "Option: ";
 	}
 
+	/*
+		Register for an account
+
+		@param custList - Customer list
+		@return Customer object
+	*/
 	Customer* registration(LinkedList<Customer>* custList) {
 		string tmpUsername, tmpEmail, tmpPass, confirmPass, tmpPhoneNo, tmpPostcode, tmpAddress, tmpState, tmpCountry;
 
@@ -168,7 +181,8 @@ public:
 				cout << "City field cannot empty" << endl;
 				Util::sleep(1);
 				continue;
-			} else if (!Validation::isString(tmpAddress)) {
+			}
+			else if (!Validation::isString(tmpAddress)) {
 				cout << "City field cannot contain number" << endl;
 				Util::sleep(1);
 				continue;
@@ -187,8 +201,8 @@ public:
 				cout << "Postcode field cannot contain alphabet." << endl;
 				Util::sleep(1);
 				continue;
-			} 
-			else if (!Validation::isNumberInRange(stoi(tmpState), 0, 99999)) {
+			}
+			else if (!Validation::isNumberInRange(stoi(tmpPostcode), 0, 99999)) {
 				cout << "Invalid state field format" << endl;
 				Util::sleep(1);
 				continue;
@@ -202,7 +216,8 @@ public:
 				cout << "State field cannot empty" << endl;
 				Util::sleep(1);
 				continue;
-			} else if (!Validation::isString(tmpState)) {
+			}
+			else if (!Validation::isString(tmpState)) {
 				cout << "State field cannot contain number" << endl;
 				Util::sleep(1);
 				continue;
@@ -216,7 +231,8 @@ public:
 				cout << "Country field cannot empty" << endl;
 				Util::sleep(1);
 				continue;
-			} else if (!Validation::isString(tmpCountry)) {
+			}
+			else if (!Validation::isString(tmpCountry)) {
 				cout << "Country field cannot contain number" << endl;
 				Util::sleep(1);
 				continue;
@@ -232,21 +248,30 @@ public:
 		return newCust;
 	}
 
+	/*
+		Check if email is registered before
+
+		@param custList - Customer list
+		@param email - Email to be checked
+		@return true if email is registered, false if vice versa
+	*/
 	bool checkRegisteredEmail(LinkedList<Customer>* custList, string email) {
 		node<Customer>* temp = custList->head;
 
 		while (temp != NULL) {
 			if (temp->data.getEmail() == email) {
-				//delete temp;
 				return true;
 			}
 			temp = temp->nextAddress;
 		}
-		//delete temp;
 		return false;
 	}
 
-	// Profile Menu
+	/*
+		Profile Menu
+
+		@param custList - Customer list
+	*/
 	void profileMenu(LinkedList<Customer>* custList) {
 		string tmp;
 
@@ -286,7 +311,12 @@ public:
 		cout << "Option: ";
 	}
 
-	// Edit Profile
+	/*
+		Edit Profile
+
+		@param custList - Customer List
+		@return true if success, false if failed
+	*/
 	bool editProfile(LinkedList<Customer>* custList) {
 		string index, newData;
 		while (true) {
@@ -429,7 +459,11 @@ public:
 
 	/*
 		Display University
-		@para favList: Favorite List
+
+		@param favList - Favorite List
+		@param uniList -University List
+		@param selectedUniIndex - Selected University Index
+
 	*/
 	void viewUniversity(LinkedList<Favorite>* favList, LinkedList<University>* uniList, int selectedUniIndex = 0) {
 		Util::printHeader("University List");
@@ -450,12 +484,12 @@ public:
 					return;
 				}
 				else {
-					Util::cleanScreen();
+					Util::printHeader("University Information");
 					selectedUni->data.display();
 
-					cout << "Please select your action:" << endl;
+					cout << endl << "Please select your action:" << endl;
 					cout << "[1] Add to Wishlist" << endl;
-					cout << "[2] Back" << endl;
+					cout << "[2] Back" << endl << endl;
 					cout << "Option: ";
 
 					string index;
@@ -476,12 +510,15 @@ public:
 					}
 				}
 			}
-			else break;
+			else {
+				break;
+			}
 		}
 	}
 
 	/*
-		Display Favorite
+		Favorite Menu
+
 		@param favList - Favorite List
 	*/
 	void displayFav(LinkedList<Favorite>* favList) {
@@ -543,13 +580,13 @@ public:
 							tmpClass = tmp->data;
 
 							if (tmpClass.getInstitutionRank() == uniRank) {
-								Favorite tmp;
+								Favorite tmpFav;
 
-								if (counter == 0) tmp = favList->deleteFromFrontList(); // Delete from front
-								else if (counter == favList->size - 1) tmp = favList->deleteFromEndList(); // Delete from end
+								if (counter == 0) tmpFav = favList->deleteFromFrontList(); // Delete from front
+								else if (counter == favList->size - 1) tmpFav = favList->deleteFromEndList(); // Delete from end
 								else favList->deleteFromSpecificLocation(counter); // Delete from specific location
 
-								if (Validation::isEmpty(to_string(tmp.getID()))) {
+								if (Validation::isEmpty(to_string(tmpFav.getID()))) {
 									cout << "Error: Unable to remove from wishlist." << endl;
 									Util::sleep(1);
 									return;
@@ -583,7 +620,12 @@ public:
 		}
 	}
 
-	// View Feedback
+	/*
+		Feedback Menu
+
+		@param feedbackList - Feedback List
+		@param isAdmin - Check if user is admin
+	*/
 	void displayFeedback(LinkedList<Feedback>* feedbackList, bool isAdmin = false) {
 		// Initialize variables
 		node<Feedback>* current = feedbackList->tail;
@@ -663,7 +705,7 @@ public:
 		}
 		else if ((selection == "2" && ticketCounter != 1 && !isAdmin) || (selection == "1" && isAdmin && ticketCounter != 1)) {
 			cout << endl << "Please enter the index number you wish to view: ";
-			cin >> selection;
+			getline(cin, selection);
 
 			try {
 				int indexInt = stoi(selection);
@@ -707,9 +749,7 @@ public:
 		}
 	}
 
-	/*
-		Convert account status enum to string
-	*/
+	// Convert account status enum to string
 	string accountStatusToString(AccountStatus tmpStatus) {
 		switch (tmpStatus) {
 		case AccountStatus::ACTIVE:
@@ -725,6 +765,13 @@ public:
 		}
 	}
 
+	/*
+		Display University Detail by reading 2D array
+
+		@param arr 2D array of university
+		@param row Number of row in 2D array
+		@return Selected University data in array, NULL if none selected
+	*/
 	string* displayUniByArray(string** arr, int row) {
 		Util::printHeader("Search University");
 
@@ -733,6 +780,10 @@ public:
 		string option, rank;
 
 		for (int i = 0; i < row; i++) {
+			if (arr[i][0] == "-1") {
+				arr[i][0] = "-";
+			}
+
 			for (int j = 4; j < 21; j++) {
 				if (arr[i][j] == "-1") {
 					arr[i][j] = "-";
@@ -755,17 +806,6 @@ public:
 			cout << "International Research Network (rank)" << "\t" << ": " << arr[i][16] << " (" << arr[i][17] << ")" << endl;
 			cout << "Employment Outcome (rank)" << "\t\t" << ": " << arr[i][18] << " (" << arr[i][19] << ")" << endl;
 			cout << "Overall Score" << "\t\t\t\t" << ": " << arr[i][20] << endl;
-
-			//cout << "Rank: " <<  << endl;
-			//cout << "Institution Name: " << arr[i][1] << endl;
-			//cout << "Location: " << arr[i][2] << endl;
-			//cout << "Academic Reputation (rank): " << arr[i][3] << endl;
-			//cout << "Employer Reputation (rank): " << arr[i][4] << endl;
-			//cout << "Faculty / Student Ratio (rank): " << arr[i][5] << endl;
-			//cout << "Citations Per Faculty (rank): " << arr[i][6] << endl;
-			//cout << "Internation Faculty Ratio (rank): " << arr[i][7] << endl;
-			//cout << "International Student Ratio (rank): " << arr[i][8] << endl;
-			//cout << "Overall Score: " << arr[i][9] << endl << endl;
 		}
 
 		cout << endl << "[1] Add University to Favourite" << endl;
@@ -804,7 +844,10 @@ public:
 	}
 
 	/*
-		Search university. IN PROGRESS
+		Search university Menu
+
+		@param uniList - Pointer to the linked list of universities
+		@param favList - Pointer to the linked list of favourites
 	*/
 	void searchUniversity(LinkedList<University>* uniList, LinkedList<Favorite>* favList) {
 		Util::printHeader("Search University");
@@ -823,8 +866,6 @@ public:
 		int counter = 0, numRows = 0;
 
 		arr = binarySearch(arr, uniList->size, uniName, 1, &numRows);
-		//LinkedList<University>* tmp = linearSearch(uniList, uniName, 1);
-		//arr = tmp->convertTo2DArray();
 
 		if (arr == NULL) {
 			cout << "No result found." << endl;
@@ -848,12 +889,15 @@ public:
 		}
 	}
 
+	/*
+		Sort University Menu.
+
+		@param uniList - Pointer to University LinkedList.
+		@param favList - Pointer to Favorite LinkedList.
+		@param isLogin - Boolean to check if user is logged in.
+	*/
 	void sortUniversity(LinkedList<University>* uniList, LinkedList<Favorite>* favList, bool isLogin = false) {
-		Util::cleanScreen();
-		Util::printBorderLine();
-		cout << "\t\t\t\t" << "Sort University" << endl;
-		Util::printBorderLine();
-		cout << endl;
+		Util::printHeader("Sort University");
 
 		if (isLogin) {
 			cout << "Please select the sorting method: " << endl
@@ -938,7 +982,6 @@ public:
 		quicksort(arr, 0, uniList->size - 1, colIndex, isAsc);
 		tmpList->convertToLinkedList(arr, uniList->size);
 
-		//Util::cleanScreen();
 		node<University>* newNode = tmpList->displayAllUniversity();
 		if (newNode != NULL) {
 			if (Validation::isEmpty(getUsername())) {
@@ -951,9 +994,15 @@ public:
 			cout << endl << newNode->data.getInstitution() << " added to wishlist." << endl;
 			Util::sleep(1);
 		}
+		Util::destroy2dArray(arr, uniList->size);
+		delete tmpList;
 	}
 
-	// Update Inactive Account to Status 'INACTIVE'
+	/*
+		Update Inactive Account to Status 'INACTIVE'
+
+		@param custList - Customer List
+	*/
 	void updateUserStatus(LinkedList<Customer>* custList) {
 		// Check by using checkInactiveStatus function
 		// If true, update the status to 'INACTIVE'

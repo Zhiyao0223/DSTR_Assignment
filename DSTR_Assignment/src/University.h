@@ -50,7 +50,6 @@ public:
 	// Constructor
 	University() {
 		dataCount = 21;
-		// Delete this constructor later coz no use, declare for no error temporary.
 	}
 
 	University(string tmpName, string tmpLocationCode, string tmpLocation, float data[]) {
@@ -78,6 +77,12 @@ public:
 		dataCount = 21;
 	}
 
+	/*
+		Get value of specific column. Used in search and sort functions.
+
+		@param columnIndex - index of column to be returned
+		@return value of specified column
+	*/
 	string getColumn(int columnIndex) {
 		/*
 		*	Column index:
@@ -176,24 +181,7 @@ public:
 		cout << "Overall Score" << "\t\t\t\t" << ": " << arr[20] << endl;
 	}
 
-	/*
-		Sort University (2 algorithm needed), parameter not fix yet depend design.
-		@param data - Data to be sorted
-		@return Sorted data
-	*/
-	University* sortUniversity(University* data) {
-		// To complete
-		return new University();
-	}
-
-	/*
-		Compare two university. Param not fix yet can change
-	*/
-	University* compareUniversity(int university[]) {
-		// To complete
-		return new University();
-	}
-
+	// Convert data to string array. Used in converting to 2D array
 	string* toStringArray() {
 		return new string[21]{ to_string(rank),institution, locationCode, location, to_string(ArScore), to_string(ArRank),
 			to_string(ErScore), to_string(ErRank), to_string(FsrScore), to_string(FsrRank), to_string(CpfScore),
@@ -201,6 +189,7 @@ public:
 			to_string(IrnScore), to_string(IrnRank), to_string(GerScore), to_string(GerRank), to_string(scoreScaled) };
 	}
 
+	// Convert data to string. Used in CSV export.
 	string toDataString() {
 		return to_string(rank) + "," + institution + "," + locationCode + "," + location + "," + to_string(ArScore) + ","
 			+ to_string(ArRank) + "," + to_string(ErScore) + "," + to_string(ErRank) + "," + to_string(FsrScore) + ","
@@ -211,6 +200,10 @@ public:
 
 	/*
 		Check if a university exist in linked list by name
+
+		@param list - university linked list
+		@param tmpName - new university name
+		@return true if exist, false if not exist
 	*/
 	bool isUniExist(LinkedList<University>* list, string tmpName) {
 		LinkedList<University>* tmp = linearSearch(list, tmpName, 1);
@@ -218,10 +211,10 @@ public:
 		return (tmp == NULL) ? false : true;
 	}
 
-
 	/*
-	*	Set object value from string array. Used in converting 2D array to linked list
-	*	@param dataArr - linked list data in array format
+		Set object value from string array. Used in converting 2D array to linked list
+
+		@param dataArr - linked list data in array format
 	*/
 	void setColumnValue(string* dataArr) {
 		this->setRank(stoi(dataArr[0]));

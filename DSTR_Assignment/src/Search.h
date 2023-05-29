@@ -1,9 +1,9 @@
 #pragma once
 
-#include <iostream>
-#include <string>
 #include <cmath>
+#include <iostream>
 #include <regex>
+#include <string>
 #include "LinkedList.h"
 #include "Sort.h"
 using namespace std;
@@ -84,7 +84,7 @@ string** binarySearch(string** array, int arraySize, string key, int columnIndex
 	@param array: the array to search in.
 	@param key: the key to search for.
 	@param columnIndex: the index of the column to search in.
-	@return : the linked list of matching rows.
+	@return : linked list of matching rows.
 */
 template <class T>
 LinkedList<T>* linearSearch(LinkedList<T>* list, string key, int columnIndex) {

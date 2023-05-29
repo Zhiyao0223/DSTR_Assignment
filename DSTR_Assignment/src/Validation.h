@@ -1,9 +1,9 @@
 #pragma once
 
-#include <iostream>
-#include <string>
 #include <cmath>
+#include <iostream>
 #include <regex>
+#include <string>
 using namespace std;
 
 class Validation {
@@ -101,7 +101,7 @@ public:
 		@return True if input match username format
 	*/
 	static bool isUsername(string test) {
-		regex format("^[a-zA-Z_]{3,50}$");
+		regex format("^[a-zA-Z_]{1,50}$");
 		return regex_match(test, format);
 	}
 

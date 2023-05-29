@@ -56,8 +56,13 @@ public:
 		return tmpPass;
 	}
 
-	// Destroy 2d Array, prevent memory leak
-	static void destroy2dArray(int** arr, int row) {
+	/*
+		Destroy 2D array, prevent memory leak
+
+		@param arr - 2D array
+		@param row - row of 2D array
+	*/
+	static void destroy2dArray(string** arr, int row) {
 		for (int i = 0; i < row; i++) {
 			delete[] arr[i];
 		}
@@ -69,7 +74,7 @@ public:
 		cout << "====================================================================================" << endl;
 	}
 
-	// Print header
+	// Print header with specified title
 	static void printHeader(string title) {
 		Util::cleanScreen();
 		Util::printBorderLine();
