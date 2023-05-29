@@ -67,23 +67,23 @@ public:
 	/*
 		Return specific column value indexed
 	*/
-	//template <typename T>
-	//T getColumn(int index) {
-	//	/*
-	//	*	Column Index:
-	//	*	0 - ID
-	//	*	1 - UID
-	//	*	2 - status
-	//	*/
-	//	switch (index) {
-	//	case 0:
-	//		return ID;
-	//	case 1:
-	//		return UID;
-	//	case 2:
-	//		return FeedbackStatusToString(status);
-	//	}
-	//}
+	template <typename T>
+	T getColumn(int index) {
+		/*
+		*	Column Index:
+		*	0 - ID
+		*	1 - UID
+		*	2 - status
+		*/
+		switch (index) {
+		case 0:
+			return ID;
+		case 1:
+			return UID;
+		case 2:
+			return FeedbackStatusToString(status);
+		}
+	}
 
 	// Return string of data for csv export
 	string toDataString() {
@@ -115,13 +115,13 @@ public:
 		Display feedback in detail
 	*/
 	void display(LinkedList<Feedback>* feedbackList, bool isAdmin = false) {
-		Util::cleanScreen();
+		Util::printHeader("Ticket Details");
 
 		cout << "Ticket ID" << "\t" << ": " << ID << endl
 			<< "UID:" << "\t\t" << ": " << UID << endl
 			<< "Status: " << "\t" << ": " << FeedbackStatusToString(status) << endl
 			<< "Title" << "\t\t" << ": " << title << endl << endl
-			<< "#-------- Comment ---------#" << endl << endl
+			<< "#-------------------------------- Comment --------------------------------#" << endl << endl
 			<< UserRoleToString(role) << " [" << date->toString() << "] :" << endl
 			<< comment << endl << endl;
 
@@ -143,7 +143,7 @@ public:
 		string option, tmpComment;
 		int newUID = feedbackList->getNewUID();
 		Feedback* newNode = new Feedback();
-		cin >> option;
+		getline(cin, option);
 
 		if (option == "1") {
 			cout << endl << endl << "Please enter your comment: ";
@@ -172,8 +172,8 @@ public:
 		}
 		else if (option != "2") {
 			cout << "Invalid option" << endl;
+			Util::sleep(1);
 		}
-		cin.clear();
 	}
 
 	/*

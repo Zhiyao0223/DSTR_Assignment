@@ -173,52 +173,82 @@ public:
 		int counter = 0;
 
 		// Display inactive accounts
-		cout << "Inactive Accounts:\n";
+		
 		while (tmp != nullptr) {
 			if (tmp->data.getAccountStatus() == tmp->data.accountStatusToString(AccountStatus::INACTIVE)) {
 				if (counter == 0) {
-					cout << "No." << "\t" << "Customer ID" << "\t" << "Customer Name" << endl;
-					cout << "----------------------------------" << endl << endl;
+					cout << "\t" << "Customer ID" << "\t" << "Customer Name" << endl;
 				}
-				cout << "[" << counter << "] " << tmp->data.getUID() << "\t\t" << tmp->data.getUsername() << endl;
+				cout << "[" << counter+1 << "] " << "\t   " << tmp->data.getUID() << "\t\t" << tmp->data.getUsername() << endl;
 				counter++;
 			}
 			tmp = tmp->nextAddress;
 		}
 
+		if (counter == 0) {
+			cout << endl << "No Inactive Account" << endl;
+			Util::sleep(1);
+			return;
+		}
+
+		cout << endl << endl << "Total Inactive Accounts: " << counter << endl << endl;
+
 		string choice;
-		cout << "\nEnter your choice:\n";
-		cout << "1. Select and Delete an INACTIVE account\n";
-		cout << "2. Delete all INACTIVE account\n";
+		cout << "Enter your choice:" << endl;
+		cout << "[1] Select and Delete an INACTIVE account" << endl;
+		cout << "[2] Delete all INACTIVE account" << endl;
+		cout << "[3] Back" << endl << endl;
 		cout << "Option: ";
 		getline(cin, choice);
+		cout << endl;
 
 		// Change status based on user choice
 		tmp = custList->head;
-		while (tmp != nullptr) {
-			if (tmp->data.getAccountStatus() == tmp->data.accountStatusToString(AccountStatus::INACTIVE)) {
-				if (choice == "1") {
-					int customerId;
-					cout << "Enter customer ID to Delete: ";
-					cin >> customerId;
+		int tmpCounter = 0;
+		string customerId = "-1";
+		bool isAllDelete = false;
 
-					if (tmp->data.getUID() == customerId) {
-						tmp->data.setAccountStatus(AccountStatus::FREEZE);
-						cout << "Account status changed to FREEZE for customer ID " << customerId << endl;
-						break;  // Exit loop after finding and changing the specific customer's account status
-					}
-				}
-				else if (choice == "2") {
+		if (choice == "1") {
+			cout << endl << "Enter customer ID to Delete: ";
+			getline(cin, customerId);
+		}
+		else if (choice == "2") {
+			isAllDelete = true;
+		}
+		else if (choice == "3") {
+			return;
+		}
+		else {
+			cout << "Invalid Option." << endl;
+			Util::sleep(1);
+			return;
+		}
+
+		while (tmp != nullptr) {
+			if (tmp->data.getUID() == stoi(customerId)) {
+				if (tmp->data.getAccountStatus() == tmp->data.accountStatusToString(AccountStatus::INACTIVE)) {
 					tmp->data.setAccountStatus(AccountStatus::FREEZE);
+
+					cout << "Account status changed to FREEZE for customer ID " << customerId << endl;
+					Util::sleep(1);
+					return;
 				}
 				else {
-					cout << "Invalid Option." << endl;
+					cout << "Error: Account is not INACTIVE" << endl;
 					Util::sleep(1);
-					break;
+					return;
+				}
+			}
+			else if (tmp->data.getAccountStatus() == tmp->data.accountStatusToString(AccountStatus::INACTIVE)) {
+				if (isAllDelete) {
+					tmp->data.setAccountStatus(AccountStatus::FREEZE);
+					cout << "Account status changed to FREEZE for customer ID " << tmp->data.getUID() << endl;
 				}
 			}
 			tmp = tmp->nextAddress;
 		}
+		cout << endl;
+		Util::pause();
 	}
 
 	/*
@@ -264,23 +294,22 @@ public:
 		}
 
 		//Display the list
-		cout << "UID\tUsername\tEmail\t\t\tPhone No.\tPostcode\tCity\t\tState\t\tCountry" << endl << endl;
+		cout << "UID\tUsername\tEmail\t\t\tAccount Status" << endl;
 
 		node<Customer>* current = cusList->head;
 		while (current != nullptr) {
 			Customer tmp = current->data;
-			cout << tmp.getUID() << "\t" << tmp.getUsername() << "\t\t" << tmp.getEmail() << "\t\t" 
-				 << tmp.getPhoneNo() << "\t" << tmp.getPostcode() << "\t\t" << tmp.getCity() << "\t" 
-				 << tmp.getState() << "\t" << tmp.getCountry() << endl << endl
-				 << "-------------------------------------------------------------------------------------------------------------------------" << endl << endl;
+
+			cout << tmp.getUID() << "\t" << tmp.getUsername() << "\t\t" << tmp.getEmail() << "\t\t" << tmp.getAccountStatus() << endl
+				<< "-----------------------------------------------------------------" << endl;
 			current = current->nextAddress;
 		}
 
 		// Ask for user selection
 		string index;
 		try {
-			cout << "* Enter -1 to exit *" << endl << endl;
-			cout << "Enter the user index you want to modify: ";
+			cout << endl << "* Enter -1 to exit *" << endl << endl;
+			cout << "Enter the UID you want to modify: ";
 			getline(cin, index);
 
 			if (index == "-1") return;
@@ -511,98 +540,103 @@ public:
 		@param feedbackList - feedback list
 	*/
 	void displayFeedbackByDate(LinkedList<Feedback>* feedbackList) {
-		// Initialize variables
-		node<Feedback>* current = feedbackList->tail;
-		int ticketCounter = 1;
+		while (true) {
+			// Initialize variables
+			node<Feedback>* current = feedbackList->tail;
+			int ticketCounter = 1;
 
-		Util::printHeader("Feedback");
+			Util::printHeader("Feedback");
 
-		// Display ticket in brief info
-		while (current != NULL) {
-			// Ignore reply feedback
-			if (current->data.getIsReply()) {
+			// Display ticket in brief info
+			while (current != NULL) {
+				// Ignore reply feedback
+				if (current->data.getIsReply()) {
+					current = current->prevAddress;
+					continue;
+				}
+
+				if (ticketCounter == 1) {
+					cout << "   No." << "\t\t" << "Latest Date" << "\t" << "Status" << endl;
+				}
+
+				if (ticketCounter < 10) {
+					cout << "   [" << ticketCounter << "] " << "\t\t"
+						<< current->data.getDate() << "\t"
+						<< current->data.getStatus() << endl;
+				}
+
+				else {
+					cout << "   [" << ticketCounter << "] " << "\t"
+						<< current->data.getDate() << "\t"
+						<< current->data.getStatus() << endl;
+				}
+
+				ticketCounter++;
 				current = current->prevAddress;
-				continue;
 			}
+			cout << endl;
 
+			// Prompt if no ticket found
 			if (ticketCounter == 1) {
-				cout << "    No." << "\t\t" << "Latest Date" << "\t" << "Status" << endl;
+				cout << "No ticket at the moment." << endl;
+				Util::sleepClean(2);
+				return;
 			}
-
-			if (ticketCounter < 10) {
-				cout << "   [" << ticketCounter << "] " << "\t\t"
-					<< current->data.getDate() << "\t"
-					<< current->data.getStatus() << endl;
-			}
-
 			else {
-				cout << "   [" << ticketCounter << "] " << "\t"
-					<< current->data.getDate() << "\t"
-					<< current->data.getStatus() << endl;
+				cout << "Please select your action:" << endl;
+				cout << "[1] Check Ticket Details" << endl;
+				cout << "[2] Back" << endl << endl;
+				cout << "Option: ";
 			}
 
-			ticketCounter++;
-			current = current->prevAddress;
-		}
-		cout << endl;
+			string selection, indexSelection;
+			getline(cin, selection);
 
-		// Prompt if no ticket found
-		if (ticketCounter == 1) {
-			cout << "No ticket at the moment." << endl;
-			Util::sleepClean(2);
-			return;
-		}
-		else {
-			cout << "Please select your action:" << endl;
-			cout << "[1] Check Ticket Details" << endl;
-			cout << "[2] Back" << endl;
-			cout << "Option: ";
-		}
+			if (selection == "1" && ticketCounter != 1) {
+				cout << endl << "Please enter the index number you wish to view: ";
+				getline(cin, indexSelection);
 
-		string selection;
-		getline(cin, selection);
+				try {
+					int indexInt = stoi(indexSelection);
+					if (indexInt > 0 && indexInt < ticketCounter) {
+						current = feedbackList->tail;
+						int counter = 0;
 
-		if (selection == "1" && ticketCounter != 1) {
-			cout << endl << "Please enter the index number you wish to view: ";
-			cin >> selection;
+						while (current != NULL) {
+							// Ignore reply feedback
+							if (current->data.getIsReply()) {
+								current = current->prevAddress;
+								continue;
+							}
 
-			try {
-				int indexInt = stoi(selection);
-				if (indexInt > 0 && indexInt < ticketCounter) {
-					current = feedbackList->tail;
-					int counter = 0;
-
-					while (current != NULL) {
-						// Ignore reply feedback
-						if (current->data.getIsReply()) {
+							if (counter == indexInt - 1) {
+								current->data.display(feedbackList, true);
+								break;
+							}
+							counter++;
 							current = current->prevAddress;
-							continue;
 						}
-
-						if (counter == indexInt - 1) {
-							current->data.display(feedbackList, true);
-							break;
-						}
-						counter++;
-						current = current->prevAddress;
+					}
+					else {
+						cout << "Invalid option." << endl;
+						Util::sleep(1);
+						return;
 					}
 				}
-				else {
+				catch (exception) {
 					cout << "Invalid option." << endl;
 					Util::sleep(1);
+					return;
 				}
 			}
-			catch (exception) {
-				cout << "Invalid option." << endl;
-				Util::sleep(1);
+			else if (selection == "2") {
+				return;
 			}
-		}
-		else if (selection == "2") {
-			return;
-		}
-		else {
-			cout << "Invalid option." << endl;
-			Util::sleepClean(1);
+			else {
+				cout << "Invalid option." << endl;
+				Util::sleepClean(1);
+				return;
+			}
 		}
 	};
 
@@ -665,7 +699,7 @@ public:
 		Util::printHeader("Compare Time Complexity");
 
 		cout << "Search Algorithm" << "\t" << ": " << "Linear Search, Binary Search" << endl;
-		cout << "Sort Algorithm: " << "\t" << ":" << "Selection Sort, Quick Sort" << endl << endl;
+		cout << "Sort Algorithm " << "\t\t" << ": " << "Selection Sort, Quick Sort" << endl << endl;
 		cout << "Please select the operation you wish to perform:" << endl;
 		cout << "[1] Search Comparison" << endl;
 		cout << "[2] Sort Comparison" << endl;
