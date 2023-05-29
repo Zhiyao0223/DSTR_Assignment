@@ -8,7 +8,7 @@
 #include "LinkedList.h"
 using namespace std;
 
-// All extra features throw here
+// Extra Features
 class Util {
 public:
 	// Clean screen
@@ -19,6 +19,11 @@ public:
 	// Freeze system
 	static void sleep(int second) {
 		this_thread::sleep_for(chrono::seconds(second));
+	}
+
+	// Pause System
+	static void pause() {
+		system("pause");
 	}
 
 	// Freeze and sleep screen
@@ -51,11 +56,30 @@ public:
 		return tmpPass;
 	}
 
-	// Destroy 2d Array, prevent memory leak
-	static void destroy2dArray(int** arr, int row) {
+	/*
+		Destroy 2D array, prevent memory leak
+
+		@param arr - 2D array
+		@param row - row of 2D array
+	*/
+	static void destroy2dArray(string** arr, int row) {
 		for (int i = 0; i < row; i++) {
 			delete[] arr[i];
 		}
 		delete[] arr;
+	}
+
+	// Print border line for header
+	static void printBorderLine() {
+		cout << "====================================================================================" << endl;
+	}
+
+	// Print header with specified title
+	static void printHeader(string title) {
+		Util::cleanScreen();
+		Util::printBorderLine();
+		cout << "\t\t\t\t" << title << endl;
+		Util::printBorderLine();
+		cout << endl;
 	}
 };

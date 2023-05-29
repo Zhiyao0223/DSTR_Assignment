@@ -4,8 +4,8 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include "University.h"
 #include "LinkedList.h"
+#include "University.h"
 #include "Validation.h"
 using namespace std;
 
@@ -17,6 +17,7 @@ public:
 
 	/*
 		Read CSV file and store data into doubly linked list
+
 		@return Doubly linked list contain of all institution records.
 	*/
 	LinkedList<University>* readFile() {
@@ -45,8 +46,11 @@ public:
 			int commaCounter = 0, arrayCounter = 0;
 
 			while (getline(ss, field, ',')) {
-				if (Validation::isEmpty(field)) {
+				if (Validation::isZeroLength(field)) {
 					field = "-";
+				}
+				else if (field[0] == ' ') {
+					institutionName = field.substr(1);
 				}
 				else if (field.front() == '\"' && field.back() != '\"') {
 					string nextSentence;
@@ -55,10 +59,14 @@ public:
 						field += nextSentence;
 
 						if (!Validation::isEmpty(nextSentence) && nextSentence.back() == '\"') {
-							institutionName = field;
+							institutionName = field.substr(1, field.length() - 2);
 							break;
 						}
 					}
+				}
+				else if (field.front() == '\"' && field.back() == '\"') {
+					field.erase(remove(field.begin(), field.end(), '\"'), field.end());
+					institutionName = field;
 				}
 				else if (commaCounter > 0 && commaCounter < 4) {
 					if (commaCounter == 1) institutionName = field;
@@ -78,15 +86,5 @@ public:
 			delete tmp;
 		}
 		return list;
-	}
-
-	// On progress
-	template <class T>
-	bool writeFile(LinkedList<T>* data) {
-		// Write data to file
-		ofstream file(filePath);
-
-		// Print error message if file not founds
-		cout << "File not found." << endl;
 	}
 };

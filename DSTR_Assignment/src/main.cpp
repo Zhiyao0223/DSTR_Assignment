@@ -1,148 +1,203 @@
+#include <chrono>
 #include <iostream>
-#include "Customer.h"
 #include "Admin.h"
+#include "Customer.h"
 #include "Favorite.h"
 #include "Feedback.h"
 #include "FileIO.h"
-#include "University.h"
-#include "Sort.h"
 #include "LinkedList.h"
-#include "Validation.h"
+#include "Sort.h"
+#include "University.h"
 #include "Util.h"
-
+#include "Validation.h"
 using namespace std;
 
-//void test();
-void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList);
-void adminPlatform(Admin* currentAdmin);
-void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList);
+void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>* uniList);
+void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList);
+void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>** uniList);
 
 int main() {
-	test();
-
+	// Initialize doubly linked list, classes and variables
 	Admin* admin = new Admin();
 	Customer* cust = new Customer();
 	LinkedList<Admin>* adminList = new LinkedList<Admin>();
 	LinkedList<Customer>* custList = new LinkedList<Customer>();
 	LinkedList<Favorite>* favList = new LinkedList<Favorite>();
 	LinkedList<Feedback>* feedbackList = new LinkedList<Feedback>();
-
-	setupUser(custList, adminList, favList, feedbackList);
+	LinkedList<University>* uniList = new LinkedList<University>();
 
 	string option;
+	string programName = "University Rating System";
+	string welcomeMsg = "This system is a university rating platform.\n"
+		"Get ready to explore the world of command-line magic\n";
+	string thanksBanner = R"(
+			       ^ ^                         ^ ^
+			      (O,O)                       (O,O)
+			      (   )       Thank You       (   )
+		            ---"-"-------------------------"-"---
 
-	//// Print welcome message, draft only for now
-	//while (true) {
-	//	cout << "Welcome to XXX System" << endl;
-	//	cout << "---------------------------------------" << endl;
+		If you have any feedback or suggestions, please let us know.
+				       Have a great day!
+						)";
 
-	//	cout << "Please select your role:" << endl;
-	//	cout << "1. Customer" << endl;
-	//	cout << "2. Admin" << endl;
-	//	cout << "3. Exit" << endl;
-	//	cout << "Option: ";
+	// Setup dummy data
+	setupUser(custList, adminList, favList, feedbackList, &uniList);
 
-	//	getline(cin, option);
-	//	cout << endl;
+	// Update inactive user status
+	cust->updateUserStatus(custList);
 
-	//	try {
-	//		switch (stoi(option)) {
-	//		case 1:
-	//			custPlatform(custList, favList, feedbackList);
-	//			break;
-	//		case 2:
-	//			admin = admin->login(adminList);
-	//			if (admin == nullptr) {
-	//				cout << "Invalid username or password" << endl;
-	//			}
-	//			else {
-	//				adminPlatform(admin);
-	//			}
-	//			break;
-	//		case 3:
-	//			cout << "Thanks for using the system" << endl;
-	//			return  0;
-	//		default:
-	//			cout << "Please enter only the option available." << endl << endl;
-	//		}
-	//	}
-	//	catch (exception) {
-	//		cout << "Please enter only the option available." << endl << endl;
-	//	}
-	//	Util::sleepClean(1);
-	//}
-}
-
-// Admin Platform
-void adminPlatform(Admin* currentAdmin) {
-	Util::cleanScreen();
-
-	//Admin Menu
+	// Get user role
 	while (true) {
-		cout << "Welcome to Admin Platform" << endl;
-		cout << "---------------------------------------" << endl;
+		// Print welcome message
+		Util::printHeader(programName);
+		cout << welcomeMsg << endl;
 
-		cout << "Please select your action:" << endl;
-		cout << "[1] Add University" << endl;
-		cout << "[2] Edit University" << endl;
-		cout << "[3] Delete University" << endl;
-		cout << "[4] Display University" << endl;
-		cout << "[5] Generate Report" << endl;
-		cout << "[6] Profile" << endl;
-		cout << "[7] Logout" << endl;
+		// Select role
+		cout << endl << "Please select your role:" << endl;
+		cout << "1. Customer" << endl;
+		cout << "2. Admin" << endl;
+		cout << "3. Exit" << endl;
 		cout << "Option: ";
 
+		// Get option
+		string option;
+		getline(cin, option);
+
+		// Redirect user to its platform. If invalid option, print error message
+		try {
+			switch (stoi(option)) {
+			case 1:
+				custPlatform(custList, favList, feedbackList, uniList);
+				break;
+			case 2:
+				admin = admin->login(adminList);
+				if (admin == nullptr) {
+					cout << "Invalid username or password" << endl;
+					Util::sleep(1);
+				}
+				else {
+					adminPlatform(admin, favList, uniList, custList, feedbackList);
+				}
+				break;
+			case 3:
+				admin->generateReport(uniList, custList, adminList, feedbackList, favList);
+				cout << endl << thanksBanner << endl;
+				return  0;
+			default:
+				cout << "Invalid Option." << endl;
+				Util::sleep(1);
+			}
+		}
+		catch (exception) {
+			cout << "Invalid Option." << endl;
+			Util::sleep(1);
+		}
+		Util::cleanScreen();
+	}
+
+	// Deallocate memory
+	delete admin;
+	delete cust;
+	delete custList;
+	delete adminList;
+	delete favList;
+	delete feedbackList;
+	delete uniList;
+}
+
+/*
+	Admin Platform
+
+	@param currentAdmin: Current admin
+	@param favList: Favorite linked list
+	@param uniList: University linked list
+	@param custList: Customer linked list
+	@param feedbackList: Feedback linked list
+*/
+void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList) {
+	//Admin Menu
+	while (true) {
+		// Print header
+		Util::printHeader("Admin Platform");
+
+		// Display admin menu
+		cout << "Welcome, " << currentAdmin->getUsername() << "!" << endl << endl
+			<< "Please select your action:" << endl
+			<< "[1] Add University" << endl
+			<< "[2] Display Registered Users' Detail" << endl
+			<< "[3] Delete Inactive Account" << endl
+			<< "[4] Feedback" << endl
+			<< "[5] Generate Report" << endl
+			<< "[6] Compare Algorithm Runtime" << endl
+			<< "[7] Logout" << endl
+			<< "Option: ";
+
+		// Redirect admin to different features. If invalid option, print error message
 		string option;
 		getline(cin, option);
 
 		try {
 			switch (stoi(option)) {
 			case 1:
-				//admin.addUniversity();
+				currentAdmin->addUniversity(uniList);
 				break;
 			case 2:
-				//admin.editUniversity();
+				currentAdmin->displayAndModifyUser(custList);
 				break;
 			case 3:
-				//admin.deleteUniversity();
+				currentAdmin->changeInactiveToFreeze(custList);
 				break;
 			case 4:
-				//admin.displayUniversity();
+				currentAdmin->displayFeedbackByDate(feedbackList);
 				break;
 			case 5:
-				//admin.generateReport();
+				currentAdmin->summarizeTop10Preferred(favList);
 				break;
 			case 6:
-				//admin.viewProfile();
+				currentAdmin->compareTimeComplexity(uniList);
 				break;
 			case 7:
 				currentAdmin->logOut();
 				return;
 			default:
-				cout << "Please enter only the option available." << endl << endl;
+				cout << "Invalid Option." << endl << endl;
+				Util::sleep(1);
 			}
 		}
 		catch (exception) {
-			cout << "Please enter only the option available." << endl << endl;
+			cout << "Invalid Option." << endl << endl;
+			Util::sleep(1);
 		}
+		Util::cleanScreen();
 	}
-	Util::sleepClean(1);
 }
 
-// Customer Platform
-void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList) {
+/*
+	Customer Platform
+
+	@param custList: Customer linked list
+	@param favList: Favorite linked list
+	@param feedbackList: Feedback linked list
+	@param uniList: University linked list
+*/
+
+void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>* uniList) {
+	// Store login customer information
 	Customer* currentCust = new Customer();
 
+	// Record login status
 	bool isLogin = false;
 
 	Util::cleanScreen();
 
-	// Customer Menu
+	// Display customer Menu
 	while (true) {
+		// Check if currentCust has value to determine login status
 		isLogin = !Validation::isEmpty(currentCust->getUsername());
 
 		isLogin ? currentCust->displayLoginMenu() : currentCust->displayNotLoginMenu();
 
+		// Redirect user to different features. If invalid option, print error message
 		string option;
 		getline(cin, option);
 		cout << endl;
@@ -152,25 +207,29 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 				// Registered user menu
 				switch (stoi(option)) {
 				case 1:
-					currentCust->viewUniversity(favList);
+					currentCust->viewUniversity(favList, uniList);
 					break;
 				case 2:
-					//cust.searchUniversity();
+					currentCust->searchUniversity(uniList, favList);
 					break;
 				case 3:
-					currentCust->displayFav(favList);
+					currentCust->sortUniversity(uniList, favList, true);
 					break;
 				case 4:
-					currentCust->displayFeedback(feedbackList);
+					currentCust->displayFav(favList);
 					break;
 				case 5:
-					currentCust->displayProfileMenu();
+					currentCust->displayFeedback(feedbackList);
 					break;
 				case 6:
+					currentCust->profileMenu(custList);
+					break;
+				case 7:
 					currentCust->logOut();
 					return;
 				default:
-					cout << "Please enter only the option available." << endl << endl;
+					cout << "Invalid Option." << endl << endl;
+					Util::sleep(1);
 				}
 			}
 			else {
@@ -178,59 +237,82 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 				Customer* tmp = new Customer();
 				switch (stoi(option)) {
 				case 1:
-					currentCust->viewUniversity(favList);
+					currentCust->viewUniversity(favList, uniList);
 					break;
 				case 2:
-					//currentCust->searchUni();
+					currentCust->searchUniversity(uniList, favList);
 					break;
 				case 3:
+					currentCust->sortUniversity(uniList, favList);
+					break;
+				case 4:
 					tmp = tmp->login(custList);
 					if (tmp == nullptr) {
 						cout << "Invalid username or password" << endl;
+						Util::sleep(1);
 					}
 					else {
 						cout << endl << tmp->getUsername() << " login successfully" << endl;
 						currentCust = tmp;
+						Util::sleep(1);
 					}
 					break;
-				case 4:
+				case 5:
 					tmp = tmp->registration(custList);
 					if (tmp != nullptr) {
 						cout << endl << tmp->getUsername() << " register successfully" << endl;
 						currentCust = tmp;
+						Util::sleep(1);
 					}
 					break;
-				case 5:
+				case 6:
 					return;
 				default:
-					cout << "Please enter only the option available." << endl << endl;
+					cout << "Invalid Option." << endl << endl;
+					Util::sleep(1);
 				}
 			}
 		}
 		catch (exception) {
-			cout << "Please enter only the option available." << endl << endl;
-			Util::sleepClean(2);
+			cout << "Invalid Option." << endl << endl;
+			Util::sleep(1);
 		}
 		Util::cleanScreen();
 	}
+
+	// Deallocate Memory
+	delete currentCust;
 }
 
 /*
 	Setup dummy data for testing purpose
-	Cust: ali, 123
-	Admin: admin1, 123
+	Cust (ali, 123)
+	Admin (admin1, 123)
+
+	@param custList	 : customer list
+	@param adminList : admin list
+	@param favList : favorite list
+	@param feedbackList : feedback list
+	@param uniList : university list
 */
-void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList) {
+void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>** uniList) {
+	// Get new ID for new data
 	int custNewId = custList->getNewUID();
 	int adminNewId = adminList->getNewUID();
 	int favNewId = favList->getNewUID();
 	int feedbackNewId = feedbackList->getNewUID();
 
-	custList->insertToEndList(new Customer(custNewId, "ali", "ali1@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda1, Shah Alam", "Selangor", "Malaysia"));
-	custList->insertToEndList(new Customer(custNewId + 1, "abu", "ali2@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda2, Shah Alam", "Selangor", "Malaysia"));
-	custList->insertToEndList(new Customer(custNewId + 2, "ah Meng", "ali3@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda3, Shah Alam", "Selangor", "Malaysia"));
-	custList->insertToEndList(new Customer(custNewId + 3, "aliu", "ali4@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda4, Shah Alam", "Selangor", "Malaysia"));
-	custList->insertToEndList(new Customer(custNewId + 4, "aliaa", "ali5@gmail.com", "123", "01112345678", "57000", "Taman Sri Muda5, Shah Alam", "Selangor", "Malaysia"));
+	// Read university data from file
+	FileIO file;
+	*uniList = file.readFile();
+
+	// Add dummy data
+	custList->insertToEndList(new Customer(custNewId, "ali", "ali1@gmail.com", "123", "01112345678", "57000", "Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId + 1, "abu", "ali2@gmail.com", "123", "01112345678", "57000", "Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId + 2, "ah Meng", "ali3@gmail.com", "123", "01112345678", "57000", "Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId + 3, "aliu", "ali4@gmail.com", "123", "01112345678", "57000", "Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId + 4, "aliaa", "ali5@gmail.com", "123", "01112345678", "57000", "Shah Alam", "Selangor", "Malaysia"));
+	custList->tail->data.setLastLogDate(new Date("12/12/2020"));
 
 	adminList->insertToEndList(new Admin(adminNewId, "admin1", "admin1@gmail.com", "123", "01112345678"));
 	adminList->insertToEndList(new Admin(adminNewId + 1, "admin2", "admin2@gmail.com", "123", "01112345678"));
@@ -245,23 +327,29 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	favList->insertToEndList(new Favorite(favNewId + 7, 4, 5));
 	favList->insertToEndList(new Favorite(favNewId + 8, 4, 2));
 	favList->insertToEndList(new Favorite(favNewId + 9, 4, 21));
-}
+	favList->insertToEndList(new Favorite(favNewId + 10, 5, 2));
+	favList->insertToEndList(new Favorite(favNewId + 11, 5, 21));
+	favList->insertToEndList(new Favorite(favNewId + 12, 5, 2));
 
-// Purely use for testing, delete later
-void test() {
-	LinkedList<University>* tmp = new LinkedList<University>();
+	feedbackList->insertToEndList(new Feedback(feedbackNewId, 1, "Title", "haha"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 1, 1, "Title2", "9"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 2, 2, "Title3", "12"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 3, 2, "Title4", "12"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 4, 2, "Title5", "12"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 5, 3, "Title6", "212"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 6, 3, "Title7", "2"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 7, 4, "Title8", "25"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 8, 4, "Title9", "2"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 9, 4, "Test", "21"));
 
-	FileIO fileIO;
-	LinkedList<University>* uniList = fileIO.readFile();
-	string** arr = uniList->convertTo2DArray();
+	// Modify data for testing purpose
+	feedbackList->head->data.setReply(feedbackNewId, 4, "Reply", "1111", true);
+	feedbackList->head->data.setSpecificDate("12/4/2022");
+	feedbackList->head->nextAddress->data.setSpecificDate("20/4/2023");
+	feedbackList->head->nextAddress->nextAddress->data.setSpecificDate("10/5/2023");
+	feedbackList->head->nextAddress->nextAddress->nextAddress->data.setSpecificDate("29/4/2023");
+	feedbackList->head->nextAddress->nextAddress->nextAddress->nextAddress->data.setSpecificDate("1/5/2023");
 
-	int sortColumnIndex = 2;  // Sort based on the second column
-	int dataCount = uniList->head->data.getDataCount();
-	quicksort(arr, 0, uniList->size - 1, sortColumnIndex);
-
-
-	for (int i = 0; i < 20; i++) {
-		cout << arr[i][sortColumnIndex] << " ";
-		cout << std::endl;
-	}
+	//node<Feedback>* current = feedbackList->head->nextAddress;
+	//current->data.setSpecificDate("22/5/2023");
 }

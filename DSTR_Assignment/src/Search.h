@@ -1,88 +1,91 @@
 #pragma once
 
-#include <iostream>
-#include <string>
 #include <cmath>
+#include <iostream>
 #include <regex>
+#include <string>
 #include "LinkedList.h"
+#include "Sort.h"
 using namespace std;
 
-// Binary Search (Modified Version for Linked List)
-template <class T>
-LinkedList<T>* binarySearch(LinkedList<T>* list, string key, int columnIndex) {
-	if (list == nullptr || list->head == nullptr) {
-		return nullptr;  // Empty list, return nullptr
+/*
+	Binary Search.
+	Can only search for exact match.
+
+	@param array: the array to search in.
+	@param arraySize: the size of the array.
+	@param key: the key to search for.
+	@param columnIndex: the index of the column to search in.
+	@param count: the number of matching rows.
+	@return: the array of matching rows.
+*/
+string** binarySearch(string** array, int arraySize, string key, int columnIndex, int* count) {
+	string* tmpArr = new string[arraySize];
+	for (int i = 0; i < arraySize; i++) {
+		tmpArr[i] = "0";
 	}
 
-	LinkedList<T>* result = nullptr;
-	node<T>* start = list->head;
-	node<T>* end = getEndNode(start);
+	int low = 0;
+	int high = arraySize - 1;
+	int resultCount = 0;  // Count the number of matching rows
 
-	while (start != end) {
-		node<T>* mid = getMiddleNode(start, end);
-		if (mid->data.getColumn(columnIndex) == key) {
-			if (result == nullptr) {
-				result = new LinkedList<T>();
+	// Count the number of matching rows
+	while (low <= high) {
+		int mid = low + (high - low) / 2;
+
+		if (array[mid][columnIndex] == key) {
+			tmpArr[resultCount] = to_string(mid);
+
+			// Key found, increment the result count
+			resultCount++;
+			// Continue counting other matching keys
+			int left = mid - 1;
+			int right = mid + 1;
+			while (left >= low && array[left][columnIndex] == key) {
+				tmpArr[resultCount] = to_string(left);
+				resultCount++;
+				left--;
 			}
-			result->insertToEndList(mid->data);
-			// Continue searching in the left and right halves
-			searchRange(start, mid->previousAddress, columnIndex, key, result);
-			searchRange(mid->nextAddress, end, columnIndex, key, result);
-			break;  // Found a match, no need to continue searching
+			while (right <= high && array[right][columnIndex] == key) {
+				tmpArr[resultCount] = to_string(right);
+				resultCount++;
+				right++;
+			}
+			break;
 		}
-		else if (mid->data.getColumn(columnIndex) < key) {
-			start = mid->nextAddress;
+
+		if (array[mid][columnIndex] < key) {
+			low = mid + 1;
 		}
 		else {
-			end = mid->previousAddress;
+			high = mid - 1;
 		}
 	}
 
-	// Check if the last node matches the key
-	if (start != nullptr && start->data.getColumn(columnIndex) == key) {
-		if (result == nullptr) {
-			result = new LinkedList<T>();
-		}
-		result->insertToEndList(start->data);
+	if (resultCount == 0) return NULL;
+
+	// Create the result array with the appropriate size
+	string** resultArray = new string * [resultCount + 1];
+
+	// Copy the matching rows to the result array
+	for (int i = 0; i < resultCount; i++) {
+		int index = stoi(tmpArr[i]);
+		resultArray[i] = array[index];
 	}
 
-	return result;
+	*count = resultCount;
+
+	return resultArray;
 }
 
-template <class T>
-void searchRange(node<T>* start, node<T>* end, int columnIndex, string key, LinkedList<T>* result) {
-	node<T>* current = start;
-	while (current != end) {
-		if (current->data.getColumn(columnIndex) == key) {
-			result->insertToEndList(current->data);
-		}
-		current = current->nextAddress;
-	}
-}
+/*
+	Linear Search.
 
-template <class T>
-node<T>* getMiddleNode(node<T>* start, node<T>* end) {
-	node<T>* slow = start;
-	node<T>* fast = start;
-
-	while (fast != end && fast->nextAddress != end) {
-		slow = slow->nextAddress;
-		fast = fast->nextAddress->nextAddress;
-	}
-
-	return slow;
-}
-
-template <class T>
-node<T>* getEndNode(node<T>* start) {
-	node<T>* current = start;
-	while (current->nextAddress != nullptr) {
-		current = current->nextAddress;
-	}
-	return current;
-}
-
-//Linear Search
+	@param array: the array to search in.
+	@param key: the key to search for.
+	@param columnIndex: the index of the column to search in.
+	@return : linked list of matching rows.
+*/
 template <class T>
 LinkedList<T>* linearSearch(LinkedList<T>* list, string key, int columnIndex) {
 	if (list == nullptr || list->head == nullptr) {
@@ -96,7 +99,7 @@ LinkedList<T>* linearSearch(LinkedList<T>* list, string key, int columnIndex) {
 			if (result == nullptr) {
 				result = new LinkedList<T>();
 			}
-			result->insertToEndList(current->data);
+			result->insertToEndList(&(current->data));
 		}
 		current = current->nextAddress;
 	}

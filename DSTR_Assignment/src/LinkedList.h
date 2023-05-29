@@ -18,6 +18,7 @@ public:
 	node<T>* tail;
 	int size;
 
+	// Constructor
 	LinkedList<T>() {
 		node<T>* newNode = NULL;
 		head = tail = newNode;
@@ -25,7 +26,9 @@ public:
 
 	/*
 		Used to create new node for linked list. Implemented insertion function.
+
 		@param data - Class data
+		@return New node
 	*/
 	node<T>* createNewNode(T* data) {
 		node<T>* newNode = new node<T>();
@@ -36,6 +39,7 @@ public:
 
 	/*
 		Set to previous element according to index. Used in displayAll() function.
+
 		@param data - Class node
 		@param counter - Number of element to move forward
 		@return New pointer location of the node
@@ -49,15 +53,24 @@ public:
 		return data;
 	}
 
-	// Display info by pages
-	node<T>* displayAll() {
+	/*
+		Display linked list elements by pages.
+
+		@return Pointer to selected node by input index
+	*/
+	node<T>* displayAllUniversity() {
+		Util::printHeader("University List");
+
+		// Initialize variables
 		node<T>* tmp = head;
 		T test;
 		string option = "";
 		int counter = 0;
 		const int MAX_ITEM_PER_PAGE = 5;
 
+		// Display all elements in linked list
 		while (tmp != NULL) {
+			// Continue display if elements are less than max limit per page. Prompt if reach max limit.
 			if (counter < MAX_ITEM_PER_PAGE) {
 				cout << endl << "[" << counter + 1 << "]" << endl;
 				test = tmp->data;
@@ -101,13 +114,20 @@ public:
 
 					if (newPointer == NULL) {
 						cout << "No previous page available!" << endl;
+						tmp = setToPreviousElement(tmp, MAX_ITEM_PER_PAGE - 1);
+						counter = 0;
+						Util::sleep(1);
+						Util::printHeader("University List");
 						continue;
 					}
-					else tmp = newPointer;
+					else {
+						tmp = newPointer;
+						Util::printHeader("University List");
+					}
 				}
 				// Set to next five records
 				else if (option == "3") {
-					// Do nothing
+					Util::printHeader("University List");
 				}
 				// Return to previous page
 				else if (option == "4") {
@@ -126,6 +146,7 @@ public:
 
 	/*
 		Insert class data to head of linked list
+
 		@param data - Class data
 	*/
 	void insertToFrontList(T* data) {
@@ -144,6 +165,7 @@ public:
 
 	/*
 		Insert node to specific location in linked list
+
 		@param index - Index location of new node
 		@param data - node to be inserted
 		@return Insertion status
@@ -174,12 +196,13 @@ public:
 
 	/*
 		Insert node to end of list
+
 		@param data - Inserted data
 	*/
 	void insertToEndList(T* data) {
 		node<T>* newNode = createNewNode(data);
 
-		if (tail == NULL) {
+		if (tail == NULL || head == NULL) {
 			head = tail = newNode;
 		}
 		else {
@@ -192,6 +215,7 @@ public:
 
 	/*
 		Delete node from head of linked list
+
 		@return Deleted data in class format
 	*/
 	T deleteFromFrontList() {
@@ -203,7 +227,14 @@ public:
 		node<T>* temp = head;
 		T data = temp->data;
 
-		head = head->nextAddress;
+		if (head == tail) {
+			head = tail = NULL;
+		}
+		else {
+			head = head->nextAddress;
+			head->prevAddress = NULL;
+		}
+
 		delete temp;
 		size--;
 
@@ -212,6 +243,7 @@ public:
 
 	/*
 		Delete node from specific location of linked list
+
 		@param index - Location of node to be deleted
 		@return Deleted data in class format
 	*/
@@ -255,6 +287,7 @@ public:
 
 	/*
 		Delete node from end of linked list
+
 		@return Deleted data in class format
 	*/
 	T deleteFromEndList() {
@@ -267,6 +300,7 @@ public:
 		T data = temp->data;
 
 		tail = tail->prevAddress;
+		tail->nextAddress = NULL;
 		delete temp;
 		size--;
 
@@ -274,19 +308,28 @@ public:
 	}
 
 	/*
-		Check if list is empty
+		Check if linked list is empty
+
 		@return True if list is empty
 	*/
 	bool isEmpty() {
 		return (size == 0);
 	}
 
-	// Check for user login status
+	/*
+		Check for user credential based on input
+
+		@param tmpName - Input username
+		@param tmpPass - Input password
+		@return Pointer to class data if found, NULL if not found
+	*/
 	T* lookUpProfile(string tmpName, string tmpPass) {
+		// Initialize variables
 		node<T>* current = head;
-		T* classData;
+		T* classData = new T();
 		int counter = 0;
 
+		// Loop through linked list and compare matched data
 		while (current != NULL) {
 			classData = &current->data;
 
@@ -298,11 +341,13 @@ public:
 		return NULL;
 	}
 
-	// Get last UID in linked list and add one to its, in progress
+	// Get last UID in linked list and add one to it
 	int getNewUID() {
+		// Initialize variables
 		int tmp = 0;
 		node<T>* dataNode = head;
 
+		// Loop through last node in linked list and return its ID + 1
 		while (dataNode != NULL) {
 			tmp = dataNode->data.getUID();
 			dataNode = dataNode->nextAddress;
@@ -311,31 +356,38 @@ public:
 	}
 
 	/*
-		Swap two nodes in linked list
-		@param node1 - First node
-		@param node2 - Second node
-		@return swap status
+		Get name from linked list
+
+		@param list - Linked list to be searched
+		@param searchId - Primary Id to be searched
+		@return Name of user / institution
 	*/
-	bool swapNode(node<T>* node1, node<T>* node2) {
-		if (node1 == NULL || node2 == NULL) {
-			return false;
+	string getName(LinkedList<T>* list, int searchId) {
+		// Initialize variables
+		node<T>* current = list->head;
+
+		// Loop through linked list and compare matched data
+		while (current != NULL) {
+			if (current->data.getUID() == searchId) {
+				return current->data.getUsername();
+			}
+			current = current->nextAddress;
 		}
-
-		T tmp = node1->data;
-		node1->data = node2->data;
-		node2->data = tmp;
-
-		return true;
+		return "";
 	}
 
 	/*
-		Convert Linked list to array
+		Convert Linked list to array.
+		* Note: This function is only used for printing data. As some class value not included in the array.
+
 		@return 2D string array
 	*/
 	string** convertTo2DArray() {
+		// Initialize variables
 		node<T>* current = this->head;
 		int numCols = current->data.getDataCount();
 		int numRows = this->size;
+		string* tmpData;
 
 		// Create 2D array
 		int row = 0;
@@ -343,8 +395,6 @@ public:
 		for (int i = 0; i < numRows; i++) {
 			newData[i] = new string[numCols];
 		}
-
-		string* tmpData;
 
 		// Loop through linked list
 		while (current != NULL) {
@@ -362,18 +412,62 @@ public:
 
 	/*
 		Convert 2D array to linked list
+		* Note: This function is only used for display data. As some class value not included in the array.
+
 		@param dataList - 2D string array
 		@param totalRow - Total row of 2D array
 	*/
 	void convertToLinkedList(string** dataList, int totalRow) {
+		// Initialize variables
 		node<T>* current = head;
 		int currentRow = 0;
 
+		// Loop through 2D array and add data to linked list
 		while (currentRow != totalRow) {
 			T* data = new T();
 			data->setColumnValue(dataList[currentRow]);
 			this->insertToEndList(data);
 			currentRow++;
 		}
+	}
+
+	/*
+		Search a class by primary ID
+
+		@param searchID - Primary ID
+		@return Pointer to class data if found, NULL if not found
+	*/
+	T* findNodeByID(int searchID) {
+		node<T>* current = head;
+
+		while (current != NULL) {
+			if (current->data.getUID() == searchID) return &(current->data);
+			current = current->nextAddress;
+		}
+		return new T();
+	}
+
+	/*
+		Search a node by primary ID
+
+		@param searchID - Primary ID
+		@return Pointer to node if found, NULL if not found
+	*/
+	node<T>* findNodeListByID(int searchID) {
+		node<T>* current = head;
+
+		while (current != NULL) {
+			if (current->data.getUID() == searchID) return current;
+			current = current->nextAddress;
+		}
+		return new node<T>();
+	}
+
+	// Clear every record in linked list
+	void clearList() {
+		for (int i = this->size; i > 0; i++) {
+			deleteFromFrontList();
+		}
+		return;
 	}
 };

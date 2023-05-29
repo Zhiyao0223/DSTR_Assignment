@@ -1,6 +1,9 @@
 #pragma once
 
 #include <iostream>
+#include "Customer.h"
+#include "LinkedList.h"
+#include "University.h"
 using namespace std;
 
 class Favorite {
@@ -20,7 +23,12 @@ public:
 		ID = UID = insitution = NULL;
 	}
 
-	// Return specified column value
+	/*
+		Return specified column value. Used in search and sort functions.
+
+		@param index - column index
+		@return - column value
+	*/
 	template <typename T>
 	T getColumn(int index) {
 		/*
@@ -39,7 +47,12 @@ public:
 		}
 	}
 
-	// Get specific university from list
+	/*
+		Get specific university from list
+
+		@param id - university rank
+		@return - university object
+	*/
 	University* getUniversity(int id) {
 		FileIO file;
 		LinkedList<University>* uniList = file.readFile();
@@ -50,6 +63,11 @@ public:
 			tmp = tmp->nextAddress;
 		}
 		return NULL;
+	}
+
+	// Convert data to string for CSV export
+	string toDataString() {
+		return to_string(ID) + "," + to_string(UID) + "," + to_string(insitution);
 	}
 
 	// Getter Function

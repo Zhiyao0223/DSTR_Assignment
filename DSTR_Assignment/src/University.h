@@ -1,6 +1,8 @@
 #pragma once
 
 #include <iostream>
+#include "Customer.h"
+#include "Search.h"
 using namespace std;
 
 class University {
@@ -47,7 +49,7 @@ public:
 
 	// Constructor
 	University() {
-		// Delete this constructor later coz no use, declare for no error temporary.
+		dataCount = 21;
 	}
 
 	University(string tmpName, string tmpLocationCode, string tmpLocation, float data[]) {
@@ -75,8 +77,13 @@ public:
 		dataCount = 21;
 	}
 
-	template <typename T>
-	T getColumn(int index) {
+	/*
+		Get value of specific column. Used in search and sort functions.
+
+		@param columnIndex - index of column to be returned
+		@return value of specified column
+	*/
+	string getColumn(int columnIndex) {
 		/*
 		*	Column index:
 		*	0 - rank;
@@ -102,9 +109,9 @@ public:
 		*	20 - Scorescaled
 		*/
 
-		switch (index) {
+		switch (columnIndex) {
 		case 0:
-			return rank;
+			return to_string(rank);
 		case 1:
 			return institution;
 		case 2:
@@ -112,76 +119,69 @@ public:
 		case 3:
 			return location;
 		case 4:
-			return ArScore;
+			return to_string(ArScore);
 		case 5:
-			return ArRank;
+			return to_string(ArRank);
 		case 6:
-			return ErScore;
+			return to_string(ErScore);
 		case 7:
-			return ErRank;
+			return to_string(ErRank);
 		case 8:
-			return FsrScore;
+			return to_string(FsrScore);
 		case 9:
-			return FsrRank;
+			return to_string(FsrRank);
 		case 10:
-			return CpfScore;
+			return to_string(CpfScore);
 		case 11:
-			return CpfRank;
+			return to_string(CpfRank);
 		case 12:
-			return IfrScore;
+			return to_string(IfrScore);
 		case 13:
-			return IfrRank;
+			return to_string(IfrRank);
 		case 14:
-			return IsrScore;
+			return to_string(IsrScore);
 		case 15:
-			return IsrRank;
+			return to_string(IsrRank);
 		case 16:
-			return IrnScore;
+			return to_string(IrnScore);
 		case 17:
-			return IrnRank;
+			return to_string(IrnRank);
 		case 18:
-			return GerScore;
+			return to_string(GerScore);
 		case 19:
-			return GerRank;
+			return to_string(GerRank);
 		case 20:
-			return scoreScaled;
+			return to_string(scoreScaled);
 		}
 	}
 
 	// Display University Information
 	void display() {
-		cout << "Rank: " << getRank() << endl;
-		cout << "Intitution Name: " << getInstitution() << endl;
-		cout << "Location :" << getLocation() << " (" << getLocationCode() << ")" << endl;
-		cout << "Academic Reputation (rank): " << getArScore() << " (" << getArRank() << ")" << endl;
-		cout << "Employer Reputation (rank): " << getErScore() << " (" << getErRank() << ")" << endl;
-		cout << "Faculty / Student Ratio (rank): " << getFsrScore() << " (" << getFsrRank() << ")" << endl;
-		cout << "Citations Per Faculty (rank): " << getCpfScore() << " (" << getCpfRank() << ")" << endl;
-		cout << "Internation Faculty Ratio (rank): " << getIfrScore() << " (" << getIfrRank() << ")" << endl;
-		cout << "Internation Student Ratio (rank): " << getIsrScore() << " (" << getIsrRank() << ")" << endl;
-		cout << "International Research Network (rank): " << getIrnScore() << " (" << getIrnRank() << ")" << endl;
-		cout << "Employment Outcome (rank): " << getGerScore() << " (" << getGerRank() << ")" << endl;
-		cout << "Score Scaled: " << scoreScaled << endl << endl;
+		string* arr = toStringArray();
+		for (int i = 4; i < dataCount; i++) {
+			if (arr[i] == "-1") {
+				arr[i] = "-";
+			}
+			else if (arr[i] == "501" || arr[i] == "601") {
+				arr[i] += "+";
+			}
+		}
+
+		cout << "Rank " << "\t\t\t\t\t" << ": " << getRank() << endl;
+		cout << "Intitution Name" << "\t\t\t\t" << ": " << getInstitution() << endl;
+		cout << "Location " << "\t\t\t\t" << ": " << getLocation() << " (" << getLocationCode() << ")" << endl;
+		cout << "Academic Reputation (rank)" << "\t\t" << ": " << arr[4] << " (" << arr[5] << ")" << endl;
+		cout << "Employer Reputation (rank)" << "\t\t" << ": " << arr[6] << " (" << arr[7] << ")" << endl;
+		cout << "Faculty / Student Ratio (rank)" << "\t\t" << ": " << arr[8] << " (" << arr[9] << ")" << endl;
+		cout << "Citations Per Faculty (rank)" << "\t\t" << ": " << arr[10] << " (" << arr[11] << ")" << endl;
+		cout << "Internation Faculty Ratio (rank)" << "\t" << ": " << arr[12] << " (" << arr[13] << ")" << endl;
+		cout << "Internation Student Ratio (rank)" << "\t" << ": " << arr[14] << " (" << arr[15] << ")" << endl;
+		cout << "International Research Network (rank)" << "\t" << ": " << arr[16] << " (" << arr[17] << ")" << endl;
+		cout << "Employment Outcome (rank)" << "\t\t" << ": " << arr[18] << " (" << arr[19] << ")" << endl;
+		cout << "Overall Score" << "\t\t\t\t" << ": " << arr[20] << endl;
 	}
 
-	/*
-		Sort University (2 algorithm needed), parameter not fix yet depend design.
-		@param data - Data to be sorted
-		@return Sorted data
-	*/
-	University* sortUniversity(University* data) {
-		// To complete
-		return new University();
-	}
-
-	/*
-		Compare two university. Param not fix yet can change
-	*/
-	University* compareUniversity(int university[]) {
-		// To complete
-		return new University();
-	}
-
+	// Convert data to string array. Used in converting to 2D array
 	string* toStringArray() {
 		return new string[21]{ to_string(rank),institution, locationCode, location, to_string(ArScore), to_string(ArRank),
 			to_string(ErScore), to_string(ErRank), to_string(FsrScore), to_string(FsrRank), to_string(CpfScore),
@@ -189,9 +189,32 @@ public:
 			to_string(IrnScore), to_string(IrnRank), to_string(GerScore), to_string(GerRank), to_string(scoreScaled) };
 	}
 
+	// Convert data to string. Used in CSV export.
+	string toDataString() {
+		return to_string(rank) + "," + institution + "," + locationCode + "," + location + "," + to_string(ArScore) + ","
+			+ to_string(ArRank) + "," + to_string(ErScore) + "," + to_string(ErRank) + "," + to_string(FsrScore) + ","
+			+ to_string(FsrRank) + "," + to_string(CpfScore) + "," + to_string(CpfRank) + "," + to_string(IfrScore) + ","
+			+ to_string(IfrRank) + "," + to_string(IsrScore) + "," + to_string(IsrRank) + "," + to_string(IrnScore) + ","
+			+ to_string(IrnRank) + "," + to_string(GerScore) + "," + to_string(GerRank) + "," + to_string(scoreScaled);
+	}
+
 	/*
-	*	Set object value from string array. Used in converting 2D array to linked list
-	*	@param dataArr - linked list data in array format
+		Check if a university exist in linked list by name
+
+		@param list - university linked list
+		@param tmpName - new university name
+		@return true if exist, false if not exist
+	*/
+	bool isUniExist(LinkedList<University>* list, string tmpName) {
+		LinkedList<University>* tmp = linearSearch(list, tmpName, 1);
+
+		return (tmp == NULL) ? false : true;
+	}
+
+	/*
+		Set object value from string array. Used in converting 2D array to linked list
+
+		@param dataArr - linked list data in array format
 	*/
 	void setColumnValue(string* dataArr) {
 		this->setRank(stoi(dataArr[0]));
@@ -223,6 +246,10 @@ public:
 	}
 
 	int getRank() {
+		return rank;
+	}
+
+	int getUID() {
 		return rank;
 	}
 

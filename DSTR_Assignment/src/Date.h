@@ -1,11 +1,11 @@
 #pragma once
 
-#include <iostream>
 #include <ctime>
 #include <chrono>
+#include <iomanip>
+#include <iostream>
 #include <sstream>
 #include <string>
-#include <iomanip>
 using namespace std;
 
 class Date {
@@ -21,6 +21,7 @@ public:
 		year = month = day = -1;
 	}
 
+	// Constructor with date format "DD/MM/YYYY"
 	Date(string tmpDate) {
 		istringstream iss(tmpDate);
 		string tmp;
@@ -46,7 +47,7 @@ public:
 		return to_string(day) + "/" + to_string(month) + "/" + to_string(year);
 	}
 
-	// Get today date
+	// Get today date in tm format
 	tm getToday() {
 		time_t currentTime = time(nullptr);
 		tm localTime;
@@ -65,26 +66,16 @@ public:
 	}
 
 	// Check if account is expired
-	// Reference: https://stackoverflow.com/a/13788001
 	bool isExpired() {
+		// Get today date
 		tm today = getToday();
 
-		string todays = to_string(today.tm_mday) + "/" + to_string(today.tm_mon + 1) + "/" + to_string(today.tm_year + 1900);
-		char const* todayDate = todays.c_str();
-		char const* userDate = toString().c_str();
+		// Check if different year more than 1
+		if ((today.tm_year + 1900) - year != 0) return true;
 
-		// Compare years
-		// Start from 6th index with a length of 4
-		int diff = strncmp(todayDate + 6, userDate + 6, 4);
-		if (diff != 0)
-			return true;
+		// Check if different month more than maximum inactive month
+		if ((today.tm_mon + 1) - month > maxInactiveMonth) return true;
 
-		// Compare months
-		diff = strncmp(todayDate + 3, userDate + 3, 2);
-
-		delete todayDate;
-		delete userDate;
-
-		return (diff > maxInactiveMonth);
+		return false;
 	};
 };

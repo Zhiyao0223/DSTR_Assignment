@@ -15,6 +15,7 @@ protected:
 	bool loginStatus;
 
 public:
+	// Constructor
 	User() {
 		ID = NULL;
 		username = email = password = "";
@@ -32,7 +33,6 @@ public:
 	void logOut() {
 		setLoginStatus(false);
 		cout << this->getUsername() << " logging out." << endl;
-		Util::sleepClean(1);
 	}
 
 	// Getter Function
