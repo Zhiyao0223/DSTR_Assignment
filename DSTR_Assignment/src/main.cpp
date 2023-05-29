@@ -254,6 +254,7 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 					else {
 						cout << endl << tmp->getUsername() << " login successfully" << endl;
 						currentCust = tmp;
+						Util::sleep(1);
 					}
 					break;
 				case 5:
@@ -261,6 +262,7 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 					if (tmp != nullptr) {
 						cout << endl << tmp->getUsername() << " register successfully" << endl;
 						currentCust = tmp;
+						Util::sleep(1);
 					}
 					break;
 				case 6:
@@ -273,7 +275,7 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 		}
 		catch (exception) {
 			cout << "Invalid Option." << endl << endl;
-			Util::sleepClean(1);
+			Util::sleep(1);
 		}
 		Util::cleanScreen();
 	}
@@ -343,7 +345,11 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	// Modify data for testing purpose
 	feedbackList->head->data.setReply(feedbackNewId, 4, "Reply", "1111", true);
 	feedbackList->head->data.setSpecificDate("12/4/2022");
+	feedbackList->head->nextAddress->data.setSpecificDate("20/4/2023");
+	feedbackList->head->nextAddress->nextAddress->data.setSpecificDate("10/5/2023");
+	feedbackList->head->nextAddress->nextAddress->nextAddress->data.setSpecificDate("29/4/2023");
+	feedbackList->head->nextAddress->nextAddress->nextAddress->nextAddress->data.setSpecificDate("1/5/2023");
 
-	node<Feedback>* current = feedbackList->head->nextAddress;
-	current->data.setSpecificDate("22/5/2023");
+	//node<Feedback>* current = feedbackList->head->nextAddress;
+	//current->data.setSpecificDate("22/5/2023");
 }

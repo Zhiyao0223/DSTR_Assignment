@@ -2,9 +2,8 @@
 
 #include <iostream>
 #include <string>
-#include "University.h"
 #include "LinkedList.h"
-
+#include "University.h"
 using namespace std;
 
 /*
@@ -69,7 +68,7 @@ bool compareStrings(const string& a, const string& b, int colIndex, bool isAsc) 
 	}
 }
 
-// Swap two strings
+// Swap two 1D arrays
 void swapStrings(string** a, string** b) {
 	string* temp = *a;
 	*a = *b;

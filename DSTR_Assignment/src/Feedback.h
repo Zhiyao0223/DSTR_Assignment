@@ -2,9 +2,9 @@
 
 #include <iostream>
 #include "Customer.h"
-#include "University.h"
 #include "LinkedList.h"
 #include "Sort.h"
+#include "University.h"
 #include "Util.h"
 using namespace std;
 
@@ -39,6 +39,7 @@ protected:
 public:
 	int dataCount;
 
+	// Constructor
 	Feedback() {
 		ID = UID = NULL;
 		reply = NULL;
@@ -66,6 +67,9 @@ public:
 
 	/*
 		Return specific column value indexed
+
+		@param index - Column index
+		@return value of column
 	*/
 	template <typename T>
 	T getColumn(int index) {
@@ -87,10 +91,6 @@ public:
 
 	// Return string of data for csv export
 	string toDataString() {
-		//string username = custList->getName(custList, UID);
-
-		//return to_string(ID) + "," + username + "," + UserRoleToString(role) + "," + title + "," + comment + ","
-		//	+ getReply() + "," + enumToString(status) + "," + date->toString();
 		return to_string(ID) + "," + to_string(UID) + "," + UserRoleToString(role) + "," + title + "," + comment + ","
 			+ getReply() + "," + FeedbackStatusToString(status) + "," + date->toString();
 	}
@@ -100,19 +100,25 @@ public:
 
 		@param tmpID - Ticket ID
 		@param tmpUID - userID who replied
+		@param tmpTitle - Title
 		@param tmpComment - Comment
+		@param isAdmin - Is admin or not
 		@return Pointer of new feedback node
 	*/
 	Feedback* createNewReply(int tmpID, int tmpUID, string tmpTitle, string tmpComment, bool isAdmin) {
 		return new Feedback(tmpID, tmpUID, tmpTitle, tmpComment, true, isAdmin);
 	}
 
+	// Convert data to string array for converting to 2d array
 	string* toStringArray() {
 		return new string[9]{ to_string(getID()), to_string(getUID()), getTitle(), getComment(), getStatus(), getDate(), UserRoleToString(role), to_string(getIsReply()), getReply() };
 	}
 
 	/*
 		Display feedback in detail
+
+		@param feedbackList - Feedback list
+		@param isAdmin - Is admin or not
 	*/
 	void display(LinkedList<Feedback>* feedbackList, bool isAdmin = false) {
 		Util::printHeader("Ticket Details");
@@ -176,11 +182,7 @@ public:
 		}
 	}
 
-	/*
-		Convert enum to string
-		@param tmpStatus - enum FeedbackStatus
-		@return value of enum
-	*/
+	// Convert FeedbackStatus enum to string
 	string FeedbackStatusToString(FeedbackStatus tmpStatus) {
 		switch (tmpStatus) {
 		case FeedbackStatus::OPEN:
@@ -196,6 +198,7 @@ public:
 		}
 	}
 
+	// Convert UserRole enum to string
 	string UserRoleToString(UserRole tmpRole) {
 		switch (tmpRole) {
 		case UserRole::ADMIN:
@@ -240,7 +243,6 @@ public:
 			tmp = tmp->reply;
 			replyID += "," + to_string(tmp->getID());
 		}
-
 		return replyID;
 	}
 
@@ -260,6 +262,14 @@ public:
 		return isReply;
 	}
 
+	/*
+		Get feedback node by index
+
+		@param feedbackList - Feedback list
+		@param searchIndex - Index of selected feedback in menu
+		@return Pointer of feedback node
+
+	*/
 	node<Feedback>* getNodeByIndex(LinkedList<Feedback>* feedbackList, int searchIndex) {
 		node<Feedback>* current = feedbackList->head;
 		int index = 0;
@@ -271,6 +281,7 @@ public:
 			current = current->nextAddress;
 			index++;
 		}
+		return NULL;
 	}
 
 	// Setter
@@ -290,6 +301,15 @@ public:
 		comment = tmp;
 	}
 
+	/*
+		Set reply for feedback
+
+		@param ID - ID of feedback
+		@param UID - UID of feedback
+		@param tmpTitle - Title of feedback
+		@param tmpComment - Comment of feedback
+		@param isAdmin - Check if user is admin or not
+	*/
 	void setReply(int ID, int UID, string tmpTitle, string tmpComment, bool isAdmin = false) {
 		reply = createNewReply(ID, UID, tmpTitle, tmpComment, isAdmin);
 	}
@@ -310,6 +330,11 @@ public:
 		this->date = new Date(tmpDate);
 	}
 
+	/*
+		Set 2D array column value
+
+		@param dataArr - array of column value
+	*/
 	void setColumnValue(string* dataArr) {
 		setID(stoi(dataArr[0]));
 		setUID(stoi(dataArr[1]));
@@ -332,6 +357,13 @@ public:
 		else setIsReply(false);
 	}
 
+	/*
+		Set reply back into linked list when converting from 2D array
+		* Note: Not yet implement into system due to unforeseen bug.
+
+		@param tmp - 2D array of reply ID
+		@param feedbackList - Feedback list
+	*/
 	void setReplyByString(string** tmp, LinkedList<Feedback>* feedbackList) {
 		int count = 0;
 		string tmpNo;

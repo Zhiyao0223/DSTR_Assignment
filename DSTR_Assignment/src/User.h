@@ -15,6 +15,7 @@ protected:
 	bool loginStatus;
 
 public:
+	// Constructor
 	User() {
 		ID = NULL;
 		username = email = password = "";

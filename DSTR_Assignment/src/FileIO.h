@@ -4,8 +4,8 @@
 #include <fstream>
 #include <sstream>
 #include <string>
-#include "University.h"
 #include "LinkedList.h"
+#include "University.h"
 #include "Validation.h"
 using namespace std;
 
@@ -17,6 +17,7 @@ public:
 
 	/*
 		Read CSV file and store data into doubly linked list
+
 		@return Doubly linked list contain of all institution records.
 	*/
 	LinkedList<University>* readFile() {
