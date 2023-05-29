@@ -12,7 +12,7 @@
 
 using namespace std;
 
-void test();
+//void test();
 void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList);
 void adminPlatform(Admin* currentAdmin);
 void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList);
@@ -20,16 +20,16 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 int main() {
 	test();
 
-	//Admin* admin = new Admin();
-	//Customer* cust = new Customer();
-	//LinkedList<Admin>* adminList = new LinkedList<Admin>();
-	//LinkedList<Customer>* custList = new LinkedList<Customer>();
-	//LinkedList<Favorite>* favList = new LinkedList<Favorite>();
-	//LinkedList<Feedback>* feedbackList = new LinkedList<Feedback>();
+	Admin* admin = new Admin();
+	Customer* cust = new Customer();
+	LinkedList<Admin>* adminList = new LinkedList<Admin>();
+	LinkedList<Customer>* custList = new LinkedList<Customer>();
+	LinkedList<Favorite>* favList = new LinkedList<Favorite>();
+	LinkedList<Feedback>* feedbackList = new LinkedList<Feedback>();
 
-	//setupUser(custList, adminList, favList, feedbackList);
+	setupUser(custList, adminList, favList, feedbackList);
 
-	//string option;
+	string option;
 
 	//// Print welcome message, draft only for now
 	//while (true) {
