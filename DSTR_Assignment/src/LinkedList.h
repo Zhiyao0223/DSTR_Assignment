@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "Util.h"
+#include "Sort.h"
 using namespace std;
 
 template <class T>
@@ -473,6 +474,16 @@ public:
 		for (int i = this->size; i > 0; i++) {
 			deleteFromFrontList();
 		}
+		return true;
+	}
+
+	/*
+		Check if a university exist in linked list by name
+	*/
+	bool isUniExist(LinkedList<University>* list, string tmpName) {
+		//LinkedList<University>* tmp = linearSearch(list, tmpName, 1);
+		
+		//return (tmp == NULL) ? false : true;
 		return true;
 	}
 };
