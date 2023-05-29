@@ -67,3 +67,24 @@ string** binarySearch(string** array, int arraySize, string key, int columnIndex
 
 	return resultArray;
 }
+
+//Linear Search
+template <class T>
+LinkedList<T>* linearSearch(LinkedList<T>* list, string key, int columnIndex) {
+	if (list == nullptr || list->head == nullptr) {
+		return nullptr;  // Empty list, return nullptr
+	}
+
+	LinkedList<T>* result = nullptr;
+	node<T>* current = list->head;
+	while (current != nullptr) {
+		if (current->data.getColumn(columnIndex) == key) {
+			if (result == nullptr) {
+				result = new LinkedList<T>();
+			}
+			result->insertToEndList(current->data);
+		}
+		current = current->nextAddress;
+	}
+	return result;
+}
