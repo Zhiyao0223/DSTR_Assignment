@@ -118,7 +118,7 @@ public:
 
 			if (tmpUsername == "-1") return NULL;
 			else if (!Validation::isUsername(tmpUsername)) {
-				cout << "Username could only accept alphabet, number and underscore." << endl;
+				cout << "Username could only accept alphabet and underscore." << endl;
 				Util::sleep(1);
 				continue;
 			}
@@ -144,6 +144,11 @@ public:
 				Util::sleep(1);
 				continue;
 			}
+			else if (checkRegisteredEmail(custList, tmpEmail)) {
+				cout << "Email is being registered. Please proceed with login." << endl;
+				Util::sleep(1);
+				return NULL;
+			}
 			else if (tmpUsername == "-1") return NULL;
 
 			cout << "Phone Number" << "\t\t" << ": ";
@@ -163,6 +168,10 @@ public:
 				cout << "City field cannot empty" << endl;
 				Util::sleep(1);
 				continue;
+			} else if (!Validation::isString(tmpAddress)) {
+				cout << "City field cannot contain number" << endl;
+				Util::sleep(1);
+				continue;
 			}
 			else if (tmpUsername == "-1") return NULL;
 
@@ -171,6 +180,16 @@ public:
 
 			if (Validation::isEmpty(tmpPostcode)) {
 				cout << "Postcode field cannot empty." << endl;
+				Util::sleep(1);
+				continue;
+			}
+			else if (!Validation::isNumber(tmpPostcode)) {
+				cout << "Postcode field cannot contain alphabet." << endl;
+				Util::sleep(1);
+				continue;
+			} 
+			else if (!Validation::isNumberInRange(stoi(tmpState), 0, 99999)) {
+				cout << "Invalid state field format" << endl;
 				Util::sleep(1);
 				continue;
 			}
@@ -183,6 +202,10 @@ public:
 				cout << "State field cannot empty" << endl;
 				Util::sleep(1);
 				continue;
+			} else if (!Validation::isString(tmpState)) {
+				cout << "State field cannot contain number" << endl;
+				Util::sleep(1);
+				continue;
 			}
 			else if (tmpUsername == "-1") return NULL;
 
@@ -191,6 +214,10 @@ public:
 
 			if (Validation::isEmpty(tmpCountry)) {
 				cout << "Country field cannot empty" << endl;
+				Util::sleep(1);
+				continue;
+			} else if (!Validation::isString(tmpCountry)) {
+				cout << "Country field cannot contain number" << endl;
 				Util::sleep(1);
 				continue;
 			}
@@ -205,8 +232,22 @@ public:
 		return newCust;
 	}
 
+	bool checkRegisteredEmail(LinkedList<Customer>* custList, string email) {
+		node<Customer>* temp = custList->head;
+
+		while (temp != NULL) {
+			if (temp->data.getEmail() == email) {
+				//delete temp;
+				return true;
+			}
+			temp = temp->nextAddress;
+		}
+		//delete temp;
+		return false;
+	}
+
 	// Profile Menu
-	void profileMenu() {
+	void profileMenu(LinkedList<Customer>* custList) {
 		string tmp;
 
 		while (true) {
@@ -216,7 +257,7 @@ public:
 			try {
 				switch (stoi(tmp)) {
 				case 1:
-					editProfile();
+					editProfile(custList);
 				case 2:
 					break;
 				default:
@@ -239,20 +280,20 @@ public:
 		Util::printHeader("Profile Menu");
 		display();
 
-		cout << "Please select your action:" << endl;
+		cout << endl << "Please select your action:" << endl;
 		cout << "[1] Edit Profile" << endl;
 		cout << "[2] Back" << endl;
 		cout << "Option: ";
 	}
 
 	// Edit Profile
-	bool editProfile() {
+	bool editProfile(LinkedList<Customer>* custList) {
 		string index, newData;
 		while (true) {
 			Util::printHeader("Edit Profile");
 			display();
 
-			cout << "Please select your action:" << endl;
+			cout << endl << "Please select your action:" << endl;
 			cout << "[1] Edit Email" << endl;
 			cout << "[2] Edit Phone Number" << endl;
 			cout << "[3] Edit Postcode" << endl;
@@ -268,6 +309,8 @@ public:
 			}
 			catch (exception) {
 				cout << "Invalid option." << endl;
+				Util::sleep(1);
+				return false;
 			}
 
 			if (stoi(index) < 0 || stoi(index) > 7) {
@@ -283,26 +326,61 @@ public:
 		try {
 			switch (stoi(index)) {
 			case 1:
+				if (!Validation::isEmail(newData)) {
+					cout << "Invalid email format." << endl;
+					Util::sleep(1);
+					return false;
+				}
+				else if (checkRegisteredEmail(custList, newData)) {
+					cout << "Email already registered." << endl;
+					Util::sleep(1);
+					return false;
+				}
 				setEmail(newData);
 				cout << "Email updated." << endl;
 				break;
 			case 2:
+				if (!Validation::isNumber(newData)) {
+					cout << "Invalid phone number format." << endl;
+					Util::sleep(1);
+					return false;
+				}
 				setPhoneNo(newData);
 				cout << "Phone Number updated." << endl;
 				break;
 			case 3:
+				if (!Validation::isNumber(newData)) {
+					cout << "Invalid postcode format." << endl;
+					Util::sleep(1);
+					return false;
+				}
 				setPostcode(newData);
 				cout << "Postcode updated." << endl;
 				break;
 			case 4:
+				if (!Validation::isString(newData)) {
+					cout << "Invalid address format." << endl;
+					Util::sleep(1);
+					return false;
+				}
 				setCity(newData);
 				cout << "City updated." << endl;
 				break;
 			case 5:
+				if (!Validation::isString(newData)) {
+					cout << "Invalid state format." << endl;
+					Util::sleep(1);
+					return false;
+				}
 				setState(newData);
 				cout << "State updated." << endl;
 				break;
 			case 6:
+				if (!Validation::isString(newData)) {
+					cout << "Invalid country format." << endl;
+					Util::sleep(1);
+					return false;
+				}
 				setCountry(newData);
 				cout << "Country updated." << endl;
 				break;
@@ -321,13 +399,13 @@ public:
 
 	// Display individual profile
 	void display() {
-		cout << "Username: " << username << endl;
-		cout << "Email: " << email << endl;
-		cout << "Phone Number: " << getPhoneNo() << endl;
-		cout << "Postcode: " << postcode << endl;
-		cout << "City: " << city << endl;
-		cout << "State: " << state << endl;
-		cout << "Country: " << country << endl;
+		cout << "Username" << "\t\t" << ": " << username << endl;
+		cout << "Email" << "\t\t\t" << ": " << email << endl;
+		cout << "Phone Number" << "\t\t" << ": " << getPhoneNo() << endl;
+		cout << "Postcode" << "\t\t" << ": " << postcode << endl;
+		cout << "City" << "\t\t\t" << ": " << city << endl;
+		cout << "State" << "\t\t\t" << ": " << state << endl;
+		cout << "Country" << "\t\t\t" << ": " << country << endl;
 	}
 
 	// Return string of data for csv export

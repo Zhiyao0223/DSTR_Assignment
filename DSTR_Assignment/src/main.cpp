@@ -13,14 +13,11 @@
 #include "Sort.h"
 using namespace std;
 
-void test();
 void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>* uniList);
 void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedList<University>* uniList, LinkedList<Customer>* custList, LinkedList<Feedback>* feedbackList);
 void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, LinkedList<Favorite>* favList, LinkedList<Feedback>* feedbackList, LinkedList<University>** uniList);
 
 int main() {
-	//test();
-
 	// Initialize doubly linked list, classes and variables
 	Admin* admin = new Admin();
 	Customer* cust = new Customer();
@@ -115,7 +112,6 @@ void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedLis
 			<< "Please select your action:" << endl
 			<< "[1] Add University" << endl
 			<< "[2] Display Registered Users' Detail" << endl
-			<< "[3] Modify User Detail" << endl
 			<< "[3] Delete inactive account" << endl
 			<< "[4] Feedback" << endl
 			<< "[5] Generate Report" << endl
@@ -146,6 +142,7 @@ void adminPlatform(Admin* currentAdmin, LinkedList<Favorite>* favList, LinkedLis
 				break;
 			case 6:
 				currentAdmin->compareTimeComplexity(uniList);
+				break;
 			case 7:
 				currentAdmin->logOut();
 				return;
@@ -212,13 +209,14 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 					currentCust->displayFeedback(feedbackList);
 					break;
 				case 6:
-					currentCust->displayProfileMenu();
+					currentCust->profileMenu(custList);
 					break;
 				case 7:
 					currentCust->logOut();
 					return;
 				default:
 					cout << "Invalid Option." << endl << endl;
+					Util::sleep(1);
 				}
 			}
 			else {
@@ -238,6 +236,7 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 					tmp = tmp->login(custList);
 					if (tmp == nullptr) {
 						cout << "Invalid username or password" << endl;
+						Util::sleep(1);
 					}
 					else {
 						cout << endl << tmp->getUsername() << " login successfully" << endl;
@@ -255,6 +254,7 @@ void custPlatform(LinkedList<Customer>* custList, LinkedList<Favorite>* favList,
 					return;
 				default:
 					cout << "Invalid Option." << endl << endl;
+					Util::sleep(1);
 				}
 			}
 		}
@@ -330,8 +330,4 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 
 	node<Feedback>* current = feedbackList->head->nextAddress;
 	current->data.setSpecificDate("22/5/2023");
-}
-
-// Purely use for testing, delete later
-void test() {
 }

@@ -8,7 +8,7 @@
 #include "LinkedList.h"
 using namespace std;
 
-// All extra features throw here
+// Extra Features
 class Util {
 public:
 	// Clean screen
@@ -21,6 +21,7 @@ public:
 		this_thread::sleep_for(chrono::seconds(second));
 	}
 
+	// Pause System
 	static void pause() {
 		system("pause");
 	}

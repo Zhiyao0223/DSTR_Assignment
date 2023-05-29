@@ -8,6 +8,17 @@
 #include "Sort.h"
 using namespace std;
 
+/*
+	Binary Search.
+	Can only search for exact match.
+
+	@param array: the array to search in.
+	@param arraySize: the size of the array.
+	@param key: the key to search for.
+	@param columnIndex: the index of the column to search in.
+	@param count: the number of matching rows.
+	@return: the array of matching rows.
+*/
 string** binarySearch(string** array, int arraySize, string key, int columnIndex, int* count) {
 	string* tmpArr = new string[arraySize];
 	for (int i = 0; i < arraySize; i++) {
@@ -67,7 +78,14 @@ string** binarySearch(string** array, int arraySize, string key, int columnIndex
 	return resultArray;
 }
 
-//Linear Search
+/*
+	Linear Search.
+
+	@param array: the array to search in.
+	@param key: the key to search for.
+	@param columnIndex: the index of the column to search in.
+	@return : the linked list of matching rows.
+*/
 template <class T>
 LinkedList<T>* linearSearch(LinkedList<T>* list, string key, int columnIndex) {
 	if (list == nullptr || list->head == nullptr) {

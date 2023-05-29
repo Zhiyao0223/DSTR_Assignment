@@ -130,28 +130,37 @@ public:
 		@param custList: customer list
 	*/
 	void changeInactiveToFreeze(LinkedList<Customer>* custList) {
+		Util::printHeader("Inactive Platform");
+
 		node<Customer>* tmp = custList->head;
+		int counter = 0;
 
 		// Display inactive accounts
 		cout << "Inactive Accounts:\n";
 		while (tmp != nullptr) {
 			if (tmp->data.getAccountStatus() == tmp->data.accountStatusToString(AccountStatus::INACTIVE)) {
-				cout << "Customer ID: " << tmp->data.getUID() << endl;
+				if (counter == 0) {
+					cout << "No." << "\t" << "Customer ID" << "\t" << "Customer Name" << endl;
+					cout << "----------------------------------" << endl << endl;
+				}
+				cout << "[" << counter << "] " << tmp->data.getUID() << "\t\t" << tmp->data.getUsername() << endl;
+				counter++;
 			}
 			tmp = tmp->nextAddress;
 		}
 
-		int choice;
+		string choice;
 		cout << "\nEnter your choice:\n";
 		cout << "1. Select and Delete an INACTIVE account\n";
 		cout << "2. Delete all INACTIVE account\n";
-		cin >> choice;
+		cout << "Option: ";
+		getline(cin, choice);
 
 		// Change status based on user choice
 		tmp = custList->head;
 		while (tmp != nullptr) {
 			if (tmp->data.getAccountStatus() == tmp->data.accountStatusToString(AccountStatus::INACTIVE)) {
-				if (choice == 1) {
+				if (choice == "1") {
 					int customerId;
 					cout << "Enter customer ID to Delete: ";
 					cin >> customerId;
@@ -162,8 +171,13 @@ public:
 						break;  // Exit loop after finding and changing the specific customer's account status
 					}
 				}
-				else if (choice == 2) {
+				else if (choice == "2") {
 					tmp->data.setAccountStatus(AccountStatus::FREEZE);
+				}
+				else {
+					cout << "Invalid Option." << endl;
+					Util::sleep(1);
+					break;
 				}
 			}
 			tmp = tmp->nextAddress;
@@ -226,10 +240,12 @@ public:
 		// Ask for user selection
 		string index;
 		try {
-			cout << "* Enter -1 to exit *" << endl;
+			cout << "* Enter -1 to exit *" << endl << endl;
 			cout << "Enter the user index you want to modify: ";
 			getline(cin, index);
-			if (stoi(index) < 0 || stoi(index) >= cusList->size) {
+
+			if (index == "-1") return;
+			else if (stoi(index) < 1 || stoi(index) >= cusList->size) {
 				cout << "Invalid option." << endl;
 				Util::sleepClean(1);
 				return;
@@ -249,6 +265,7 @@ public:
 		// Get the user from the linked list based on UID
 		Customer* selectedUser = NULL;
 		node<Customer>* editNode = cusList->head;
+
 		while (editNode != nullptr) {
 			if (editNode->data.getUID() == stoi(index)) {
 				selectedUser = &(editNode->data);
@@ -259,7 +276,7 @@ public:
 
 		if (selectedUser != NULL) {
 			// Edit the profile of the selected user
-			if (selectedUser->editProfile()) {
+			if (selectedUser->editProfile(cusList)) {
 				selectedUser->display();
 			}
 		}
@@ -423,7 +440,7 @@ public:
 		}
 
 		// Print the top 10 preferred universities
-		cout << "Top 10 Preferred Universities by Parents in Malaysia:" << endl;
+		cout << "Top 10 Preferred Universities by Parents in Malaysia:" << endl << endl;
 		for (int i = 0; i < MAX_UNIVERSITIES; i++) {
 			if (universityIDs[i] == 0) {
 				break;
@@ -435,77 +452,17 @@ public:
 					University* university = currentUniversity->data.getUniversity(universityID);
 					if (university != NULL) {
 						string universityName = university->getInstitution(); // Assuming the University class has a `getInstitution` method
-						cout << "University Name: " << universityName << ", Frequency: " << universityFrequencies[i] << endl;
+						cout << "[" << i+1 << "] " << "University Name: " << universityName << ", Frequency: " << universityFrequencies[i] << endl;
 						break; // Exit the loop once the university is found
 					}
 				}
 				currentUniversity = currentUniversity->nextAddress;
 			}
 		}
+
+		cout << endl;
+		Util::pause();
 	}
-
-	/*
-		Change user details
-		@param editUser - user list
-	//*/
-	//void modifyUser(LinkedList<Customer>* editUser) {
-	//// Display the list of users
-	//	Util::printHeader("Customer List");
-
-	//	node<Customer>* currentNode = editUser->head;
-	//	while (currentNode != nullptr) {
-	//		cout << "ID: " << currentNode->data.getUID() << endl;
-	//		cout << "Username: " << currentNode->data.getUsername() << endl;
-	//		cout << "Email: " << currentNode->data.getEmail() << endl;
-	//		cout << "Phone: " << currentNode->data.getPhoneNo() << endl;
-	//		cout << "Password: " << currentNode->data.getPassword() << endl;
-	//		cout << "Postcode: " << currentNode->data.getPostcode() << endl;
-	//		cout << "City: " << currentNode->data.getCity() << endl;
-	//		cout << "State: " << currentNode->data.getState() << endl;
-	//		cout << "Country: " << currentNode->data.getCountry() << endl;
-	//		cout << "---------------------------------------" << endl;
-
-	//		currentNode = currentNode->nextAddress;
-	//	}
-
-	//	// Ask for user selection
-	//	string index;
-	//	while (true) {
-	//		try {
-	//			cout << "Enter the user index you want to modify: ";
-	//			getline(cin, index);
-	//			int tmp = stoi(index);
-	//			break;
-	//		}
-	//		catch (exception) {
-	//		}
-	//	}
-
-	//	Util::cleanScreen();
-
-	//	// Get the user from the linked list based on UID
-	//	Customer* selectedUser = nullptr;
-	//	node<Customer>* editNode = editUser->head;
-	//	while (editNode != nullptr) {
-	//		if (editNode->data.getUID() == stoi(index)) {
-	//			selectedUser = &(editNode->data);
-	//			break;
-	//		}
-	//		editNode = editNode->nextAddress;
-	//	}
-
-	//	if (selectedUser) {
-	//		// Edit the profile of the selected user
-	//		if (selectedUser->editProfile()) {
-	//			selectedUser->display();
-	//		}
-	//	}
-	//	else {
-	//		cout << "User with UID " << index << " not found." << endl;
-	//		Util::sleepClean(1);
-	//		modifyUser(editUser);
-	//	}
-	//};
 
 	/*
 		Display Feedback sort by latest date
@@ -516,9 +473,7 @@ public:
 		node<Feedback>* current = feedbackList->tail;
 		int ticketCounter = 1;
 
-		Util::cleanScreen();
-		cout << "Feedback" << endl;
-		cout << "---------------------------------------" << endl << endl;
+		Util::printHeader("Feedback");
 
 		// Display ticket in brief info
 		while (current != NULL) {
@@ -529,7 +484,7 @@ public:
 			}
 
 			if (ticketCounter == 1) {
-				cout << "    No." << "\t" << "Latest Date" << "\t" << "Status" << endl;
+				cout << "    No." << "\t\t" << "Latest Date" << "\t" << "Status" << endl;
 			}
 
 			if (ticketCounter < 10) {
@@ -667,9 +622,11 @@ public:
 	void compareTimeComplexity(LinkedList<University>* list) {
 		Util::printHeader("Compare Time Complexity");
 
+		cout << "Search Algorithm" << "\t" << ": " << "Linear Search, Binary Search" << endl;
+		cout << "Sort Algorithm: " << "\t" << ":" << "Selection Sort, Quick Sort" << endl << endl;
 		cout << "Please select the operation you wish to perform:" << endl;
-		cout << "[1] Search" << endl;
-		cout << "[2] Sort" << endl;
+		cout << "[1] Search Comparison" << endl;
+		cout << "[2] Sort Comparison" << endl;
 		cout << "Option: ";
 
 		string selection;

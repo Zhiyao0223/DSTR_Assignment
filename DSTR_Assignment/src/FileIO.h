@@ -45,7 +45,7 @@ public:
 			int commaCounter = 0, arrayCounter = 0;
 
 			while (getline(ss, field, ',')) {
-				if (Validation::isEmpty(field)) {
+				if (Validation::isZeroLength(field)) {
 					field = "-";
 				}
 				else if (field[0] == ' ') {
