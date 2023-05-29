@@ -616,15 +616,16 @@ public:
 	*/
 	double countTimeComplexitySearch(LinkedList<University>* list, string key, int colIndex, string searchMethod) {
 		string** arr = list->convertTo2DArray();
+		int tmpCount = 0;
 
 		auto startTime = std::chrono::steady_clock::now();
 
 		// Perform the search operation
 		if (searchMethod == "linear") {
-			//linearSearch();
+			linearSearch(list, key, colIndex);
 		}
 		else {
-			binarySearch(arr, list->size, key, colIndex);
+			binarySearch(arr, list->size, key, colIndex, &tmpCount);
 		}
 
 		auto endTime = chrono::steady_clock::now();

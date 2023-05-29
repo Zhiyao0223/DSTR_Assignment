@@ -334,32 +334,4 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 
 // Purely use for testing, delete later
 void test() {
-	FileIO file;
-	LinkedList<University>* uniList = file.readFile();
-
-	int size = uniList->size; // Number of universities
-
-	// Create a 2D array to hold the university data
-	string** universityData = uniList->convertTo2DArray();
-	int index = 2;
-
-	auto startTime = std::chrono::high_resolution_clock::now();
-	selectionSort(universityData, size, index);
-	auto endTime = std::chrono::high_resolution_clock::now();
-	auto duration = std::chrono::duration_cast<std::chrono::microseconds>(endTime - startTime).count();
-
-	auto startTime1 = std::chrono::high_resolution_clock::now();
-	quicksort(universityData, 0, size - 1, index, true);
-	auto endTime1 = std::chrono::high_resolution_clock::now();
-	auto duration1 = std::chrono::duration_cast<std::chrono::microseconds>(endTime1 - startTime1).count();
-
-	// Display the sorted university data
-	for (int i = 0; i < size; i++) {
-		cout << universityData[i][index] << ", " << universityData[i][1] << endl;
-	}
-
-	cout << duration << endl;
-	cout << duration1 << endl;
-
-	//uniList->displayAllUniversity(universityData, size);
 }
