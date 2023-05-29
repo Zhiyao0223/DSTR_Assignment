@@ -72,54 +72,77 @@ public:
 		@param list - university list
 	*/
 	void addUniversity(LinkedList<University>* list) {
-		Util::printHeader("Add University");
+		string tmpName, tmpLocationCode, tmpLocation, input;
+		float data[17] = { 0 };
+		string dataLabels[17] = {"AR Score", "AR Rank", "ER Score", "ER Rank", "FSR Score", "FSR Rank",
+								"Cpf Score", "Cpf Rank", "Ifr Score", "Ifr Rank", "ISr Score", "ISr Rank",
+								"Irn Score", "Irn Rank", "Ger Score", "Ger Rank", "Score Scaled"};
 
-		string tmpName, tmpLocationCode, tmpLocation;
-		float data[17];
+		while (true) {
+			Util::printHeader("Add University");
 
-		cout << "Enter University Name: ";
-		getline(cin, tmpName);
-
-		while (Validation::isEmpty(tmpName) || !Validation::isString(tmpName)) {
-			cout << "Error: University name should only contain alphabetic characters and cannot be empty. Please re-enter: ";
+			cout << "* Enter -1 to exit" << endl << endl;
+			cout << "Enter University Name: ";
 			getline(cin, tmpName);
-		}
 
-		cout << "Enter Location Code: ";
-		getline(cin, tmpLocationCode);
-
-		while (Validation::isEmpty(tmpLocationCode) || !Validation::isString(tmpLocationCode)) {
-			cout << "Error: Location code should only contain alphabetic characters and cannot be empty. " << endl << "Please re - enter:";
-			getline(cin, tmpLocationCode);
-		}
-
-		cout << "Enter Location: ";
-		getline(cin, tmpLocation);
-
-		string dataLabels[17] = {
-			"AR Rank", "AR Score", "ER Score", "ER Rank", "FSR Score", "FSR Rank",
-			"Cpf Score", "Cpf Rank", "Ifr Score", "Ifr Rank", "ISr Score", "ISr Rank",
-			"Irn Score", "Irn Rank", "Ger Score", "Ger Rank", "Score Scaled"
-		};
-
-		for (int i = 0; i < 17; i++) {
-			cout << "Enter " << dataLabels[i] << ": ";
-			string input;
-			getline(cin, input);
-
-			while (!Validation::isFloat(input)) {
-				cout << "Error: Invalid input for " << dataLabels[i] << ". Expected a float. Please re-enter: ";
-				getline(cin, input);
+			if (tmpName == "-1") {
+				break;
+			}
+			else if (Validation::isEmpty(tmpName) || !Validation::isString(tmpName)) {
+				cout << "Error: University name should only contain alphabetic characters and cannot be empty. Please re-enter: ";
+				continue;
+			}
+			else if (list->isUniExist(list, tmpName)) {
+				cout << "Error: University name already exists. Please re-enter: ";
+				continue;
 			}
 
-			data[i] = stof(input);
+			cout << "Enter Location Code: ";
+			getline(cin, tmpLocationCode);
+			if (tmpName == "-1") {
+				break;
+			}
+			else if (Validation::isEmpty(tmpLocationCode) || !Validation::isString(tmpLocationCode)) {
+				cout << "Error: Location code should only contain alphabetic characters and cannot be empty. " << endl;
+				continue;
+			}
+
+			cout << "Enter Location: ";
+			getline(cin, tmpLocation);
+			if (tmpName == "-1") {
+				break;
+			}
+			else if (Validation::isEmpty(tmpLocation) || !Validation::isString(tmpLocation)) {
+				cout << "Error: Location code should only contain alphabetic characters and cannot be empty. " << endl;
+				continue;
+			}
+
+			for (int i = 0; i < 17; i++) {
+				cout << "Enter " << dataLabels[i] << ": ";
+				getline(cin, input);
+
+				if (tmpName == "-1") {
+					return;
+				}
+				else if (Validation::isEmpty(input)) {
+					cout << "Error: " << dataLabels[i] << " cannot be empty.";
+					continue;
+				}
+				else if (!Validation::isNumber(input)) {
+					cout << "Error: Invalid input for " << dataLabels[i] << ". Expected a number.";
+					continue;
+				} else if (Validation::isNumberInRange(stoi(input), 0, 1000)) {
+					cout << "Error: Invalid input for " << dataLabels[i] << endl;
+					continue;
+				}
+
+				data[i] = stoi(input);
+			}
+			break;
 		}
 
-		// Create a new University instance
-		University* uni = new University(tmpName, tmpLocationCode, tmpLocation, data);
-
 		// Add University to List
-		list->insertToEndList(uni);
+		list->insertToEndList(new University(tmpName, tmpLocationCode, tmpLocation, data));
 
 		cout << "University added successfully!" << endl;
 		Util::sleep(1);
