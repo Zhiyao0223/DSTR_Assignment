@@ -297,7 +297,7 @@ public:
 			cout << "[1] Edit Email" << endl;
 			cout << "[2] Edit Phone Number" << endl;
 			cout << "[3] Edit Postcode" << endl;
-			cout << "[4] Edit Address" << endl;
+			cout << "[4] Edit City" << endl;
 			cout << "[5] Edit State" << endl;
 			cout << "[6] Edit Country" << endl;
 			cout << "[7] Back" << endl;
@@ -315,6 +315,8 @@ public:
 
 			if (stoi(index) < 0 || stoi(index) > 7) {
 				cout << "Invalid option." << endl;
+				Util::sleep(1);
+				return false;
 			}
 			else if (stoi(index) == 7) return false;
 			break;
@@ -354,12 +356,22 @@ public:
 					Util::sleep(1);
 					return false;
 				}
+				else if (newData.length() != 5) {
+					cout << "Postcode must be 5 digits." << endl;
+					Util::sleep(1);
+					return false;
+				}
 				setPostcode(newData);
 				cout << "Postcode updated." << endl;
 				break;
 			case 4:
 				if (!Validation::isString(newData)) {
-					cout << "Invalid address format." << endl;
+					cout << "Invalid city format." << endl;
+					Util::sleep(1);
+					return false;
+				}
+				else if (Validation::isEmpty(newData)) {
+					cout << "City cannot be empty." << endl;
 					Util::sleep(1);
 					return false;
 				}

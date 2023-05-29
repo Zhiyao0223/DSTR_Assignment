@@ -2,6 +2,7 @@
 
 #include <iostream>
 #include "Customer.h"
+#include "Search.h"
 using namespace std;
 
 class University {
@@ -207,6 +208,16 @@ public:
 			+ to_string(IfrRank) + "," + to_string(IsrScore) + "," + to_string(IsrRank) + "," + to_string(IrnScore) + ","
 			+ to_string(IrnRank) + "," + to_string(GerScore) + "," + to_string(GerRank) + "," + to_string(scoreScaled);
 	}
+
+	/*
+		Check if a university exist in linked list by name
+	*/
+	bool isUniExist(LinkedList<University>* list, string tmpName) {
+		LinkedList<University>* tmp = linearSearch(list, tmpName, 1);
+
+		return (tmp == NULL) ? false : true;
+	}
+
 
 	/*
 	*	Set object value from string array. Used in converting 2D array to linked list

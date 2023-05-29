@@ -86,54 +86,68 @@ public:
 			getline(cin, tmpName);
 
 			if (tmpName == "-1") {
-				break;
+				return;
 			}
 			else if (Validation::isEmpty(tmpName) || !Validation::isString(tmpName)) {
-				cout << "Error: University name should only contain alphabetic characters and cannot be empty. Please re-enter: ";
-				continue;
+				cout << "Error: University name should only contain alphabetic characters and cannot be empty.";
+				Util::sleep(1);
+				return;
 			}
-			else if (list->isUniExist(list, tmpName)) {
-				cout << "Error: University name already exists. Please re-enter: ";
-				continue;
+			else if (list->head->data.isUniExist(list, tmpName)) {
+				cout << "Error: University name already exists.";
+				Util::sleep(1);
+				return;
 			}
 
 			cout << "Enter Location Code: ";
 			getline(cin, tmpLocationCode);
-			if (tmpName == "-1") {
-				break;
+			if (tmpLocationCode == "-1") {
+				return;
 			}
 			else if (Validation::isEmpty(tmpLocationCode) || !Validation::isString(tmpLocationCode)) {
 				cout << "Error: Location code should only contain alphabetic characters and cannot be empty. " << endl;
-				continue;
+				Util::sleep(1);
+				return;
 			}
 
 			cout << "Enter Location: ";
 			getline(cin, tmpLocation);
-			if (tmpName == "-1") {
-				break;
+			if (tmpLocation == "-1") {
+				return;
 			}
 			else if (Validation::isEmpty(tmpLocation) || !Validation::isString(tmpLocation)) {
-				cout << "Error: Location code should only contain alphabetic characters and cannot be empty. " << endl;
-				continue;
+				cout << "Error: Location code should only contain alphabetic characters and cannot be empty." << endl;
+				Util::sleep(1);
+				return;
 			}
 
 			for (int i = 0; i < 17; i++) {
 				cout << "Enter " << dataLabels[i] << ": ";
 				getline(cin, input);
 
-				if (tmpName == "-1") {
+				if (input == "-1") {
 					return;
 				}
 				else if (Validation::isEmpty(input)) {
 					cout << "Error: " << dataLabels[i] << " cannot be empty.";
-					continue;
+					Util::sleep(1);
+					return;
 				}
 				else if (!Validation::isNumber(input)) {
 					cout << "Error: Invalid input for " << dataLabels[i] << ". Expected a number.";
-					continue;
+					Util::sleep(1);
+					return;
 				} else if (Validation::isNumberInRange(stoi(input), 0, 1000)) {
 					cout << "Error: Invalid input for " << dataLabels[i] << endl;
-					continue;
+					Util::sleep(1);
+					return;
+				}
+				else if (i % 2 == 0) {
+					if (stoi(input) < 0 || stoi(input) > 100) {
+						cout << "Error: Invalid input for " << dataLabels[i] << ". Expected a number between 0 and 100.";
+						Util::sleep(1);
+						return;
+					}
 				}
 
 				data[i] = stoi(input);
@@ -250,13 +264,15 @@ public:
 		}
 
 		//Display the list
-		cout << "UID\tUsername\tEmail\t\t\tPhone No." << endl;
+		cout << "UID\tUsername\tEmail\t\t\tPhone No.\tPostcode\tCity\t\tState\t\tCountry" << endl << endl;
 
 		node<Customer>* current = cusList->head;
 		while (current != nullptr) {
 			Customer tmp = current->data;
-			cout << tmp.getUID() << "\t" << tmp.getUsername() << "\t\t" << tmp.getEmail() << "\t\t" << tmp.getPhoneNo() << endl;
-			cout << "-----------------------------------------------------------------" << endl;
+			cout << tmp.getUID() << "\t" << tmp.getUsername() << "\t\t" << tmp.getEmail() << "\t\t" 
+				 << tmp.getPhoneNo() << "\t" << tmp.getPostcode() << "\t\t" << tmp.getCity() << "\t" 
+				 << tmp.getState() << "\t" << tmp.getCountry() << endl << endl
+				 << "-------------------------------------------------------------------------------------------------------------------------" << endl << endl;
 			current = current->nextAddress;
 		}
 
@@ -268,7 +284,7 @@ public:
 			getline(cin, index);
 
 			if (index == "-1") return;
-			else if (stoi(index) < 1 || stoi(index) >= cusList->size) {
+			else if (stoi(index) < 1 || stoi(index) > cusList->size) {
 				cout << "Invalid option." << endl;
 				Util::sleepClean(1);
 				return;
@@ -300,7 +316,10 @@ public:
 		if (selectedUser != NULL) {
 			// Edit the profile of the selected user
 			if (selectedUser->editProfile(cusList)) {
+				Util::printHeader("User Profile");
 				selectedUser->display();
+				cout << endl;
+				Util::pause();
 			}
 		}
 		else {
