@@ -643,12 +643,21 @@ public:
 				}
 
 				if (ticketCounter == 1) {
-					cout << "Ticket ID" << "\t" << "Latest Date" << "\t" << "Status" << endl;
+					cout << "Ticket ID" << "\t" << "Latest Date" << "\t" << "Status" << "\t\t\t" << "Title" << endl;
 				}
 
-				cout << "   [" << ticketCounter << "] " << "\t\t"
-					<< current->data.getDate() << "\t"
-					<< current->data.getStatus() << endl;
+				if (current->data.getStatus() == "WAITING FOR CUSTOMER" || current->data.getStatus() == "WAITING FOR SUPPORT") {
+					cout << "   [" << ticketCounter << "] " << "\t\t"
+						<< current->data.getDate() << "\t"
+						<< current->data.getStatus() << "\t"
+						<< current->data.getTitle() << endl;
+				}
+				else {
+					cout << "   [" << ticketCounter << "] " << "\t\t"
+						<< current->data.getDate() << "\t"
+						<< current->data.getStatus() << "\t\t\t"
+						<< current->data.getTitle() << endl;
+				}
 
 				ticketCounter++;
 			}

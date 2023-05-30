@@ -578,19 +578,37 @@ public:
 				}
 
 				if (ticketCounter == 1) {
-					cout << "   No." << "\t\t" << "Created Date" << "\t" << "Status" << endl;
+					cout << "   No." << "\t\t" << "Created Date" << "\t" << "Status" << "\t\t\t" << "Title" << endl;
 				}
 
 				if (ticketCounter < 10) {
-					cout << "   [" << ticketCounter << "] " << "\t\t"
-						<< current->data.getDate() << "\t"
-						<< current->data.getStatus() << endl;
+					if (current->data.getStatus() == "WAITING FOR CUSTOMER" || current->data.getStatus() == "WAITING FOR SUPPORT") {
+						cout << "   [" << ticketCounter << "] " << "\t\t"
+							<< current->data.getDate() << "\t"
+							<< current->data.getStatus() << "\t\t"
+							<< current->data.getTitle() << endl;
+					}
+					else {
+						cout << "   [" << ticketCounter << "] " << "\t\t"
+							<< current->data.getDate() << "\t"
+							<< current->data.getStatus() << "\t\t\t"
+							<< current->data.getTitle() << endl;
+					}
 				}
 
 				else {
-					cout << "   [" << ticketCounter << "] " << "\t"
-						<< current->data.getDate() << "\t"
-						<< current->data.getStatus() << endl;
+					if (current->data.getStatus() == "WAITING FOR CUSTOMER" || current->data.getStatus() == "WAITING FOR SUPPORT") {
+						cout << "   [" << ticketCounter << "] " << "\t"
+							<< current->data.getDate() << "\t"
+							<< current->data.getStatus() << "\t"
+							<< current->data.getTitle() << endl;
+					}
+					else {
+						cout << "   [" << ticketCounter << "] " << "\t"
+							<< current->data.getDate() << "\t"
+							<< current->data.getStatus() << "\t\t\t"
+							<< current->data.getTitle() << endl;
+					}
 				}
 
 				ticketCounter++;
@@ -614,7 +632,7 @@ public:
 			string selection, indexSelection;
 			getline(cin, selection);
 
-			if (selection == "1" && ticketCounter != 1) {
+			if (selection == "1") {
 				cout << endl << "Please enter the index number you wish to view: ";
 				getline(cin, indexSelection);
 
@@ -654,7 +672,6 @@ public:
 				}
 			}
 			else if (selection == "2") {
-				
 				return;
 			}
 			else {

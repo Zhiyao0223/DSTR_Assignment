@@ -307,15 +307,15 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	*uniList = file.readFile();
 
 	// Add dummy data
-	custList->insertToEndList(new Customer(custNewId, "ali", "ali1@gmail.com", "123", "01112345678", "57000", "Shah Alam", "Selangor", "Malaysia"));
-	custList->insertToEndList(new Customer(custNewId + 1, "abu", "ali2@gmail.com", "123", "01112345678", "57000", "Shah Alam", "Selangor", "Malaysia"));
-	custList->insertToEndList(new Customer(custNewId + 2, "ah Meng", "ali3@gmail.com", "123", "01112345678", "57000", "Shah Alam", "Selangor", "Malaysia"));
-	custList->insertToEndList(new Customer(custNewId + 3, "aliu", "ali4@gmail.com", "123", "01112345678", "57000", "Shah Alam", "Selangor", "Malaysia"));
-	custList->insertToEndList(new Customer(custNewId + 4, "aliaa", "ali5@gmail.com", "123", "01112345678", "57000", "Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId, "ali", "ali@gmail.com", "123", "01112345678", "57000", "Bukit Jalil", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId + 1, "abu", "abu@hotmail.com", "123", "01122223333", "40150", "Shah Alam", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId + 2, "ah Meng", "ahmeng@gmail.com", "123", "0171236677", "41700", "Puchong", "Selangor", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId + 3, "akao", "akao@hotmail.com", "123", "0125553344", "28000", "Temerloh", "Pahang", "Malaysia"));
+	custList->insertToEndList(new Customer(custNewId + 4, "tan", "tan@gmail.com", "123", "0107898565", "30000", "Ipoh", "Perak", "Malaysia"));
 	custList->tail->data.setLastLogDate(new Date("12/12/2020"));
 
-	adminList->insertToEndList(new Admin(adminNewId, "admin1", "admin1@gmail.com", "123", "01112345678"));
-	adminList->insertToEndList(new Admin(adminNewId + 1, "admin2", "admin2@gmail.com", "123", "01112345678"));
+	adminList->insertToEndList(new Admin(adminNewId, "admin1", "admin1@gmail.com", "123", "0125555667"));
+	adminList->insertToEndList(new Admin(adminNewId + 1, "admin2", "admin2@gmail.com", "123", "0103344667"));
 
 	favList->insertToEndList(new Favorite(favNewId, 1, 2));
 	favList->insertToEndList(new Favorite(favNewId + 1, 1, 9));
@@ -331,24 +331,25 @@ void setupUser(LinkedList<Customer>* custList, LinkedList<Admin>* adminList, Lin
 	favList->insertToEndList(new Favorite(favNewId + 11, 5, 21));
 	favList->insertToEndList(new Favorite(favNewId + 12, 5, 2));
 
-	feedbackList->insertToEndList(new Feedback(feedbackNewId, 1, "Title", "haha"));
-	feedbackList->insertToEndList(new Feedback(feedbackNewId + 1, 1, "Title2", "9"));
-	feedbackList->insertToEndList(new Feedback(feedbackNewId + 2, 2, "Title3", "12"));
-	feedbackList->insertToEndList(new Feedback(feedbackNewId + 3, 2, "Title4", "12"));
-	feedbackList->insertToEndList(new Feedback(feedbackNewId + 4, 2, "Title5", "12"));
-	feedbackList->insertToEndList(new Feedback(feedbackNewId + 5, 3, "Title6", "212"));
-	feedbackList->insertToEndList(new Feedback(feedbackNewId + 6, 3, "Title7", "2"));
-	feedbackList->insertToEndList(new Feedback(feedbackNewId + 7, 4, "Title8", "25"));
-	feedbackList->insertToEndList(new Feedback(feedbackNewId + 8, 4, "Title9", "2"));
-	feedbackList->insertToEndList(new Feedback(feedbackNewId + 9, 4, "Test", "21"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId, 1, "Trouble in Login", "Hi, I'm having trouble accessing the university recommendation system. Is there a technical issue?"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 1, 1, "Lack of Response to User Feedback", "I have previously provided feedback on certain university ratings, but there doesn't seem to be any response or acknowledgment. It would be great to receive some feedback on the suggestions and concerns raised."));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 2, 2, "System Crash during Navigation", "Whenever I search for a uni, the system just stop responding"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 3, 2, "Slow Loading Time", "Very slow eh"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 4, 2, "For fun", "nothing here"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 5, 3, "Clickbait", "Never gonna give you up~"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 6, 3, "Unresponsive user interface", "Nothing happen after I enter option"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 7, 4, "Forget Password", "I forget pass bruh"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 8, 4, "Unable to Register Account", "It keep say my email is being registered"));
+	feedbackList->insertToEndList(new Feedback(feedbackNewId + 9, 4, "For testing", "You can't see me"));
 
 	// Modify data for testing purpose
-	feedbackList->head->data.setReply(feedbackNewId, 4, "Reply", "1111", true);
+	feedbackList->head->data.setReply(feedbackNewId, 4, "Trouble in Login", "Hello! Sorry to hear about the issue. Could you please provide more details about the problem you're experiencing?", true);
+	feedbackList->head->data.setStatus(FeedbackStatus::WAITING_FOR_CUSTOMER);
 	feedbackList->head->data.setSpecificDate("12/4/2022");
 	feedbackList->head->nextAddress->data.setSpecificDate("20/4/2023");
-	feedbackList->head->nextAddress->nextAddress->data.setSpecificDate("10/5/2023");
-	feedbackList->head->nextAddress->nextAddress->nextAddress->data.setSpecificDate("29/4/2023");
-	feedbackList->head->nextAddress->nextAddress->nextAddress->nextAddress->data.setSpecificDate("1/5/2023");
+	feedbackList->head->nextAddress->nextAddress->data.setSpecificDate("29/4/2023");
+	feedbackList->head->nextAddress->nextAddress->nextAddress->data.setSpecificDate("10/5/2023");
+	feedbackList->head->nextAddress->nextAddress->nextAddress->nextAddress->data.setSpecificDate("17/5/2023");
 
 	//node<Feedback>* current = feedbackList->head->nextAddress;
 	//current->data.setSpecificDate("22/5/2023");
