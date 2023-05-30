@@ -177,7 +177,7 @@ public:
 		@param custList: customer list
 	*/
 	void changeInactiveToFreeze(LinkedList<Customer>* custList) {
-		Util::printHeader("Inactive Platform");
+		Util::printHeader("Inactive User Platform");
 
 		node<Customer>* tmp = custList->head;
 		int counter = 0;
@@ -315,7 +315,7 @@ public:
 		while (current != nullptr) {
 			Customer tmp = current->data;
 
-			cout << tmp.getUID() << "\t" << tmp.getUsername() << "\t\t" << tmp.getEmail() << "\t\t" << tmp.getAccountStatus() << endl
+			cout << tmp.getUID() << "\t" << tmp.getUsername() << "\t\t" << tmp.getEmail() << "       \t" << tmp.getAccountStatus() << endl
 				<< "-----------------------------------------------------------------" << endl;
 			current = current->nextAddress;
 		}
@@ -585,7 +585,7 @@ public:
 					if (current->data.getStatus() == "WAITING FOR CUSTOMER" || current->data.getStatus() == "WAITING FOR SUPPORT") {
 						cout << "   [" << ticketCounter << "] " << "\t\t"
 							<< current->data.getDate() << "\t"
-							<< current->data.getStatus() << "\t\t"
+							<< current->data.getStatus() << "\t"
 							<< current->data.getTitle() << endl;
 					}
 					else {
